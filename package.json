@@ -3,8 +3,10 @@
   "name": "deepmerge",
   "description": "A library for deep (recursive) merging of Javascript objects",
   "version": "0.0.1",
+  "homepage": "https://github.com/nrf110/deepmerge",
   "repository": {
-    "url": ""
+    "type": "git",
+    "url": "git://github.com/nrf110/deepmerge.git"
   },
   "main": "index",
   "engines": {
