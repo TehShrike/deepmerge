@@ -49,4 +49,40 @@ describe 'merge', ->
 		merge target, src
 
 		expect(target).toEqual(expected)
+
+	it 'should replace simple key with nested object in target', ->
+		src =
+			key1: 
+				subkey1: 'subvalue1'
+				subkey2: 'subvalue2'
+		target =
+			key1: 'value1'
+			key2: 'value2'
+
+		expected =
+			key1:
+				subkey1: 'subvalue1'
+				subkey2: 'subvalue2'
+			key2: 'value2'
+
+		merge target, src
+
+		expect(target).toEqual(expected)
+
+	it 'should replace object with simple key in target', ->
+		src =
+			key1: 'value1'
+		target =
+			key1:
+				subkey1: 'subvalue1'
+				subkey2: 'subvalue2'
+			key2: 'value2'
+
+		expected =
+			key1: 'value1'
+			key2: 'value2'
+
+		merge target, src
+
+		expect(target).toEqual(expected)
 	
