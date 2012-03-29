@@ -21,7 +21,8 @@ test('merge existing simple keys in target at the roots', function (t) {
         key2 : 'value2',
         key3 : 'value3',
     }
-
+    
+    t.deepEqual(target, { key1: 'value1', key3: 'value3' })
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
@@ -47,7 +48,13 @@ test('merge nested objects into target', function (t) {
             subkey3: 'added',
         }
     }
-
+    
+    t.deepEqual(target, {
+        key1 : {
+            subkey1 : 'value1',
+            subkey2 : 'value2',
+        }
+    })
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
@@ -71,7 +78,8 @@ test('replace simple key with nested object in target', function (t) {
         },
         key2 : 'value2',
     }
-
+    
+    t.deepEqual(target, { key1 : 'value1', key2 : 'value2' })
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
@@ -87,7 +95,14 @@ test('should replace object with simple key in target', function (t) {
     }
 
     var expected = { key1 : 'value1', key2 : 'value2' }
-
+    
+    t.deepEqual(target, {
+        key1 : {
+            subkey1: 'subvalue1',
+            subkey2: 'subvalue2',
+        },
+        key2 : 'value2',
+    });
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
