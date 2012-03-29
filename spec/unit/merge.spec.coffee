@@ -1,3 +1,4 @@
+should = require 'should'	
 merge = require '../../lib/merge'
 
 describe 'merge', ->
@@ -11,7 +12,7 @@ describe 'merge', ->
 
 		merge target, src
 
-		expect(target).toEqual(target)
+		target.should.eql target
 	
 	it 'should merge existing simple keys in target at the roots', ->
 		src = 
@@ -28,7 +29,7 @@ describe 'merge', ->
 
 		merge target, src
 
-		expect(target).toEqual(expected)
+		target.should.eql expected
 	
 	it 'should merge nested objects into target', ->
 		src =
@@ -48,7 +49,7 @@ describe 'merge', ->
 
 		merge target, src
 
-		expect(target).toEqual(expected)
+		target.should.eql expected
 
 	it 'should replace simple key with nested object in target', ->
 		src =
@@ -67,7 +68,7 @@ describe 'merge', ->
 
 		merge target, src
 
-		expect(target).toEqual(expected)
+		target.should.eql expected
 
 	it 'should replace object with simple key in target', ->
 		src =
@@ -84,5 +85,5 @@ describe 'merge', ->
 
 		merge target, src
 
-		expect(target).toEqual(expected)
+		target.should.eql expected
 	
