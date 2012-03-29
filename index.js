@@ -7,7 +7,7 @@ module.exports = function merge (target, src) {
             if (!target[key] || typeof target[key] !== 'object') {
                 target[key] = {}
             }
-            merge(target[key], src[key]);
+            merge(target[key], src[key])
         }
-    });
-};
+    })
+}
