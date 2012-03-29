@@ -1,4 +1,4 @@
-merge = require '../lib/merge'
+merge = require '../'
 test = require('tap').test
 
 test 'add keys in target that do not exist at the root', (t) ->
