@@ -9,10 +9,14 @@ example
 ```js
 var util = require('util')
 var merge = require('deepmerge')
-var x = { foo : { 'bar' : 3 }, 'array' : [{ does: 'work', too: [1, 2, 3] }] }
-var y = { foo : { 'baz' : 4 }, quux : 5, 'array' : [{ does: 'work', too: [4, 5, 6] }, { really: 'yes' }] }
-var merged = merge(x, y)
-console.log(util.inspect(merged, false, null))
+
+var x = { foo: { bar: 3 },
+  array: [ { does: 'work', too: [ 1, 2, 3 ] } ] }
+var y = { foo: { baz: 4 },
+  quux: 5,
+  array: [ { does: 'work', too: [ 4, 5, 6 ] }, { really: 'yes' } ] }
+
+console.log(util.inspect(merge(x, y), false, null))
 ```
 
 output:
