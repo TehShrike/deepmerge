@@ -7,17 +7,20 @@ example
 =======
 
 ``` js
+var util = require('util')
 var merge = require('deepmerge')
-var x = { foo : { 'bar' : 3 } }
-var y = { foo : { 'baz' : 4 }, quux : 5 }
+var x = { foo : { 'bar' : 3 }, 'array' : [{ do: 'work', too: [1, 2, 3] }] }
+var y = { foo : { 'baz' : 4 }, quux : 5, 'array' : [{ do: 'work', too: [4, 5, 6] }, { really: 'yes' }] }
 var merged = merge(x, y)
-console.dir(merged)
+console.log(util.inspect(merged, false, null))
 ```
 
 output:
 
 ```
-{ foo: { bar: 3, baz: 4 }, quux: 5 }
+{ foo: { bar: 3, baz: 4 },
+  array: [ { do: 'work', too: [ 1, 2, 3, 4, 5, 6 ] }, { really: 'yes' } ],
+  quux: 5 }
 ```
 
 methods
@@ -35,6 +38,8 @@ If an element at the same key is present for both `x` and `y`, the value from
 `y` will appear in the result.
 
 The merge is immutable, so neither `x` nor `y` will be modified.
+
+The merge will also merge arrays and array values.
 
 install
 =======
