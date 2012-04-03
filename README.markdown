@@ -6,7 +6,7 @@ Merge the enumerable attributes of two objects deeply.
 example
 =======
 
-``` js
+```js
 var util = require('util')
 var merge = require('deepmerge')
 var x = { foo : { 'bar' : 3 }, 'array' : [{ does: 'work', too: [1, 2, 3] }] }
@@ -17,7 +17,7 @@ console.log(util.inspect(merged, false, null))
 
 output:
 
-```
+```js
 { foo: { bar: 3, baz: 4 },
   array: [ { does: 'work', too: [ 1, 2, 3, 4, 5, 6 ] }, { really: 'yes' } ],
   quux: 5 }
