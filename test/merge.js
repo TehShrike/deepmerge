@@ -119,7 +119,7 @@ test('should work on simple array', function (t) {
     t.end()
 })
 
-test('should work on stored arrays', function (t) {
+test('should work on array properties', function (t) {
     var src = {key1 : ['one', 'three'], key2 : ['four']}
     var target = {key1 : ['one', 'two']}
 
@@ -131,3 +131,20 @@ test('should work on stored arrays', function (t) {
     t.ok(Array.isArray(merge(target, src).key2))
     t.end()
 })
+
+test('should work on array of objects', function (t) {
+    var src = [{key1: ['one', 'three'], key2: ['one']}, {key3: ['five']}]
+    var target = [{key1: ['one', 'two']}, {key3 : ['four']}]
+
+    var expected = [{key1: ['one', 'two', 'three'], key2: ['one']}, {key3: ['four', 'five']}]
+
+    t.deepEqual(target, [{key1: ['one', 'two']}, {key3 : ['four']}])
+    t.deepEqual(merge(target, src), expected)
+    t.ok(Array.isArray(merge(target, src)), 'result should be an array')
+    t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
+
+    t.end()
+})
+
+
+

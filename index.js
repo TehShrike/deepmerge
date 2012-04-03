@@ -3,10 +3,15 @@ module.exports = function merge (target, src) {
   var dst = array && [] || {}
 
   if (array) {
+    target = target || []
     dst = dst.concat(target || [])
-    src.forEach(function(e, i){
-      if (!target || target.indexOf(e) === -1) {
-        dst.push(e);
+    src.forEach(function(e, i) {
+      if (typeof e === 'object') {
+        dst[i] = merge(target[i], e)
+      } else {
+        if (target.indexOf(e) === -1) {
+          dst.push(e);
+        }
       }
     })
   } else {
