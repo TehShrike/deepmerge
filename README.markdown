@@ -6,18 +6,25 @@ Merge the enumerable attributes of two objects deeply.
 example
 =======
 
-``` js
+```js
+var util = require('util')
 var merge = require('deepmerge')
-var x = { foo : { 'bar' : 3 } }
-var y = { foo : { 'baz' : 4 }, quux : 5 }
-var merged = merge(x, y)
-console.dir(merged)
+
+var x = { foo: { bar: 3 },
+  array: [ { does: 'work', too: [ 1, 2, 3 ] } ] }
+var y = { foo: { baz: 4 },
+  quux: 5,
+  array: [ { does: 'work', too: [ 4, 5, 6 ] }, { really: 'yes' } ] }
+
+console.log(util.inspect(merge(x, y), false, null))
 ```
 
 output:
 
-```
-{ foo: { bar: 3, baz: 4 }, quux: 5 }
+```js
+{ foo: { bar: 3, baz: 4 },
+  array: [ { does: 'work', too: [ 1, 2, 3, 4, 5, 6 ] }, { really: 'yes' } ],
+  quux: 5 }
 ```
 
 methods
@@ -35,6 +42,8 @@ If an element at the same key is present for both `x` and `y`, the value from
 `y` will appear in the result.
 
 The merge is immutable, so neither `x` nor `y` will be modified.
+
+The merge will also merge arrays and array values.
 
 install
 =======
