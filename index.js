@@ -20,13 +20,16 @@ module.exports = function merge (target, src) {
                 dst[key] = target[key]
             })
         }
-
         Object.keys(src).forEach(function (key) {
             if (typeof src[key] !== 'object' || !src[key]) {
                 dst[key] = src[key]
             }
             else {
-                dst[key] = merge(target[key], src[key])
+                if (!target[key]) {
+                    dst[key] = src[key]
+                } else {
+                    dst[key] = merge(target[key], src[key])
+                }
             }
         })
     }

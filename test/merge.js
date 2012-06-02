@@ -84,6 +84,28 @@ test('replace simple key with nested object in target', function (t) {
     t.end()
 })
 
+test('should add nested object in target', function(t) {
+    var src = {
+        "b": {
+            "c": {}
+        }
+    }
+
+    var target = {
+        "a": {}
+    }
+
+    var expected = {
+        "a": {},
+        "b": {
+            "c": {}
+        }
+    }
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
 test('should replace object with simple key in target', function (t) {
     var src = { key1: 'value1' }
     var target = {
