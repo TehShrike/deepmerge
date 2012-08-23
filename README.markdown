@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/nrf110/deepmerge.png)](http://travis-ci.org/nrf110/deepmerge)
 deepmerge
 =========
 
