@@ -191,5 +191,21 @@ test('should work on array of objects', function (t) {
     t.end()
 })
 
+test('should work on arrays of nested objects', function(t) {
+    var target = [
+        { key1: { subkey: 'one' }}
+    ]
 
+    var src = [
+        { key1: { subkey: 'two' }},
+        { key2: { subkey: 'three' }}
+    ]
 
+    var expected = [
+        { key1: { subkey: 'two' }},
+        { key2: { subkey: 'three' }}
+    ]
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})

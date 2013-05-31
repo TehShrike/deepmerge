@@ -6,7 +6,9 @@ module.exports = function merge (target, src) {
         target = target || []
         dst = dst.concat(target)
         src.forEach(function(e, i) {
-            if (typeof e === 'object') {
+            if (typeof target[i] === 'undefined') {
+                dst[i] = e
+            } else if (typeof e === 'object') {
                 dst[i] = merge(target[i], e)
             } else {
                 if (target.indexOf(e) === -1) {
