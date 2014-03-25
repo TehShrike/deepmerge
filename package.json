@@ -2,7 +2,7 @@
   "author": "Nick Fisher",
   "name": "deepmerge",
   "description": "A library for deep (recursive) merging of Javascript objects",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "homepage": "https://github.com/nrf110/deepmerge",
   "repository": {
     "type": "git",
