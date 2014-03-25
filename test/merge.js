@@ -141,6 +141,17 @@ test('should work on simple array', function (t) {
     t.end()
 })
 
+test('should work on another simple array', function(t) {
+    var target = ["a1","a2","c1","f1","p1"];
+    var src = ["t1","s1","c2","r1","p2","p3"];
+
+    var expected = ["a1", "a2", "c1", "f1", "p1", "t1", "s1", "c2", "r1", "p2", "p3"]
+    t.deepEqual(target, ["a1", "a2", "c1", "f1", "p1"])
+    t.deepEqual(merge(target, src), expected)
+    t.ok(Array.isArray(merge(target, src)))
+    t.end()
+})
+
 test('should work on array properties', function (t) {
     var src = {
         key1: ['one', 'three'],
