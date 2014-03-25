@@ -13,10 +13,10 @@
     "node": ">=0.4.0"
   },
   "scripts": {
-    "test" : "tap test/*.js"
+    "test": "tap test/*.js"
   },
   "dependencies": {},
   "devDependencies": {
-    "tap" : "~0.2.4"
+    "tap": "~0.4.8"
   }
 }

@@ -1,4 +1,14 @@
-module.exports = function merge (target, src) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(factory)
+    } else if (typeof exports === 'object') {
+        module.exports = factory()
+    } else {
+        root.deepmerge = factory()
+    }
+}(this, function () {
+
+return function deepmerge(target, src) {
     var array = Array.isArray(src)
     var dst = array && [] || {}
 
@@ -9,7 +19,7 @@ module.exports = function merge (target, src) {
             if (typeof target[i] === 'undefined') {
                 dst[i] = e
             } else if (typeof e === 'object') {
-                dst[i] = merge(target[i], e)
+                dst[i] = deepmerge(target[i], e)
             } else {
                 if (target.indexOf(e) === -1) {
                     dst.push(e)
@@ -30,7 +40,7 @@ module.exports = function merge (target, src) {
                 if (!target[key]) {
                     dst[key] = src[key]
                 } else {
-                    dst[key] = merge(target[key], src[key])
+                    dst[key] = deepmerge(target[key], src[key])
                 }
             }
         })
@@ -38,3 +48,5 @@ module.exports = function merge (target, src) {
 
     return dst
 }
+
+}))

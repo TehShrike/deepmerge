@@ -54,6 +54,12 @@ With [npm](http://npmjs.org) do:
 npm install deepmerge
 ```
 
+For the browser, you can install with [bower](http://bower.io/):
+
+```
+bower install deepmerge
+```
+
 test
 ====
 
