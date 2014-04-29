@@ -18,12 +18,12 @@ return function deepmerge(target, src) {
         src.forEach(function(e, i) {
             if (typeof dst[i] === 'undefined') {
                 dst[i] = e;
-            } else if (typeof e === 'object') {
-                dst[i] = deepmerge(target[i], e);
-            } else {
+            } else if (typeof e !== 'object' || typeof target[i] !== 'object') {
                 if (target.indexOf(e) === -1) {
                     dst.push(e);
                 }
+            } else {
+                dst[i] = deepmerge(target[i], e);
             }
         });
     } else {
