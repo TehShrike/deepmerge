@@ -152,6 +152,22 @@ test('should work on another simple array', function(t) {
     t.end()
 })
 
+
+
+test('should push on array when is missing value', function (t) {
+
+    var target = ["foo","bar"]
+    
+    var src = [{"baz":"qux"}]
+
+    var expected = ["foo", "bar", {"baz":"qux"}]
+
+    t.deepEqual(target, ["foo","bar"])
+    t.deepEqual(merge(target, src), expected)
+
+    t.end()
+})
+
 test('should work on array properties', function (t) {
     var src = {
         key1: ['one', 'three'],
