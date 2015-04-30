@@ -220,3 +220,14 @@ test('should work on arrays of nested objects', function(t) {
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
+
+test('should work on array with null in it', function(t) {
+    var target = []
+
+    var src = [null]
+
+    var expected = [null]
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
