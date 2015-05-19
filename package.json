@@ -18,5 +18,6 @@
   "dependencies": {},
   "devDependencies": {
     "tap": "~0.4.8"
-  }
+  },
+  "license": "MIT"
 }
