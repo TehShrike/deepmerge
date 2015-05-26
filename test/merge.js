@@ -6,9 +6,11 @@ test('add keys in target that do not exist at the root', function (t) {
     target = {}
 
     var res = merge(target, src)
+    var resWReplaceArray = merge(target, src, true)
 
     t.deepEqual(target, {}, 'merge should be immutable')
     t.deepEqual(res, src)
+    t.deepEqual(resWReplaceArray, src)
     t.end()
 })
 
@@ -22,8 +24,15 @@ test('merge existing simple keys in target at the roots', function (t) {
         key3: 'value3'
     }
 
+    var expectedWReplaceArray = {
+        key1: 'changed',
+        key2: 'value2',
+        key3: 'value3'
+    }
+
     t.deepEqual(target, { key1: 'value1', key3: 'value3' })
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.end()
 })
 
@@ -49,6 +58,14 @@ test('merge nested objects into target', function (t) {
         }
     }
 
+    var expectedWReplaceArray = {
+        key1: {
+            subkey1: 'changed',
+            subkey2: 'value2',
+            subkey3: 'added'
+        }
+    }
+
     t.deepEqual(target, {
         key1: {
             subkey1: 'value1',
@@ -56,6 +73,7 @@ test('merge nested objects into target', function (t) {
         }
     })
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.end()
 })
 
@@ -79,12 +97,21 @@ test('replace simple key with nested object in target', function (t) {
         key2: 'value2'
     }
 
+    var expectedWReplaceArray = {
+        key1: {
+            subkey1: 'subvalue1',
+            subkey2: 'subvalue2'
+        },
+        key2: 'value2'
+    }
+
     t.deepEqual(target, { key1: 'value1', key2: 'value2' })
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.end()
 })
 
-test('should add nested object in target', function(t) {
+test('should add nested object in target', function (t) {
     var src = {
         "b": {
             "c": {}
@@ -102,7 +129,15 @@ test('should add nested object in target', function(t) {
         }
     }
 
+    var expectedWReplaceArray = {
+        "a": {},
+        "b": {
+            "c": {}
+        }
+    }
+
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.end()
 })
 
@@ -117,6 +152,7 @@ test('should replace object with simple key in target', function (t) {
     }
 
     var expected = { key1: 'value1', key2: 'value2' }
+    var expectedWReplaceArray = { key1: 'value1', key2: 'value2' }
 
     t.deepEqual(target, {
         key1: {
@@ -126,6 +162,7 @@ test('should replace object with simple key in target', function (t) {
         key2: 'value2'
     })
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.end()
 })
 
@@ -134,20 +171,25 @@ test('should work on simple array', function (t) {
     var target = ['one', 'two']
 
     var expected = ['one', 'two', 'three']
+    var expectedWReplaceArray = ['one', 'three']
 
     t.deepEqual(target, ['one', 'two'])
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.ok(Array.isArray(merge(target, src)))
     t.end()
 })
 
-test('should work on another simple array', function(t) {
-    var target = ["a1","a2","c1","f1","p1"];
-    var src = ["t1","s1","c2","r1","p2","p3"];
+test('should work on another simple array', function (t) {
+    var target = ["a1", "a2", "c1", "f1", "p1"];
+    var src = ["t1", "s1", "c2", "r1", "p2", "p3"];
 
     var expected = ["a1", "a2", "c1", "f1", "p1", "t1", "s1", "c2", "r1", "p2", "p3"]
+    var expectedWReplaceArray = ["t1", "s1", "c2", "r1", "p2", "p3"]
+
     t.deepEqual(target, ["a1", "a2", "c1", "f1", "p1"])
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.ok(Array.isArray(merge(target, src)))
     t.end()
 })
@@ -166,11 +208,17 @@ test('should work on array properties', function (t) {
         key2: ['four']
     }
 
+    var expectedWReplaceArray = {
+        key1: ['one', 'three'],
+        key2: ['four']
+    }
+
     t.deepEqual(target, {
         key1: ['one', 'two']
     })
 
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.ok(Array.isArray(merge(target, src).key1))
     t.ok(Array.isArray(merge(target, src).key2))
     t.end()
@@ -191,18 +239,24 @@ test('should work on array of objects', function (t) {
         { key3: ['four', 'five'] }
     ]
 
+    var expectedWReplaceArray = [
+        { key1: ['one', 'three'], key2: ['one'] },
+        { key3: ['five'] }
+    ]
+
     t.deepEqual(target, [
         { key1: ['one', 'two'] },
         { key3: ['four'] }
     ])
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.ok(Array.isArray(merge(target, src)), 'result should be an array')
     t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
 
     t.end()
 })
 
-test('should work on arrays of nested objects', function(t) {
+test('should work on arrays of nested objects', function (t) {
     var target = [
         { key1: { subkey: 'one' }}
     ]
@@ -217,6 +271,39 @@ test('should work on arrays of nested objects', function(t) {
         { key2: { subkey: 'three' }}
     ]
 
+    var expectedWReplaceArray = [
+        { key1: { subkey: 'two' }},
+        { key2: { subkey: 'three' }}
+    ];
+
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
+    t.end()
+})
+
+
+test('should work on objects with array properties', function (t) {
+    var target = {
+        key1: { subkey: 'one' },
+        key2: ['one', 'two']
+    }
+
+    var src = {
+        key1: { subkey: 'two' },
+        key2: ['three']
+    }
+
+    var expected = {
+        key1: { subkey: 'two' },
+        key2: ['one', 'two', 'three']
+    }
+
+    var expectedWReplaceArray = {
+        key1: { subkey: 'two' },
+        key2: ['three']
+    }
+
+    t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, true), expectedWReplaceArray)
     t.end()
 })
