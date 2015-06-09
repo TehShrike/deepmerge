@@ -8,26 +8,27 @@
     }
 }(this, function () {
 
-    return function deepmerge(target, src, replaceArray) {
+    return function deepmerge(target, src, opts) {
+        var opts = opts || {};
         var array = Array.isArray(src);
         var dst = array && [] || {};
 
-        if (array && !replaceArray) {
+        if (array && opts.replaceArrays) {
+            dst = src;
+        } else if (array) {
             target = target || [];
             dst = dst.concat(target);
             src.forEach(function (e, i) {
                 if (typeof dst[i] === 'undefined') {
                     dst[i] = e;
                 } else if (typeof e === 'object') {
-                    dst[i] = deepmerge(target[i], e, replaceArray);
+                    dst[i] = deepmerge(target[i], e, opts);
                 } else {
                     if (target.indexOf(e) === -1) {
                         dst.push(e);
                     }
                 }
             });
-        } else if (array && replaceArray) {
-            dst = src;
         } else {
             if (target && typeof target === 'object') {
                 Object.keys(target).forEach(function (key) {
@@ -42,7 +43,7 @@
                     if (!target[key]) {
                         dst[key] = src[key];
                     } else {
-                        dst[key] = deepmerge(target[key], src[key], replaceArray);
+                        dst[key] = deepmerge(target[key], src[key], opts);
                     }
                 }
             });
