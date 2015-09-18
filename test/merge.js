@@ -220,3 +220,23 @@ test('should work on arrays of nested objects', function(t) {
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
+
+test('should push src to target if arrays opts is concat', function(t) {
+    var target = [
+        { key1: { subkey: 'one' } }
+    ]
+
+    var src = [
+        { key1: { subkey: 'two' } },
+        { key2: { subkey: 'three' } }
+    ]
+
+    var expected = [
+        { key1: { subkey: 'one' } },
+        { key1: { subkey: 'two' } },
+        { key2: {subkey: 'three' } }
+    ]
+
+    t.deepEqual(merge(target, src, { arrays: 'concat' }), expected)
+    t.end()
+})

@@ -8,21 +8,27 @@
     }
 }(this, function () {
 
-return function deepmerge(target, src) {
+return function deepmerge(target, src, opts) {
     var array = Array.isArray(src);
     var dst = array && [] || {};
+    opts = opts || {};
 
     if (array) {
         target = target || [];
         dst = dst.concat(target);
+
         src.forEach(function(e, i) {
-            if (typeof dst[i] === 'undefined') {
-                dst[i] = e;
-            } else if (typeof e === 'object') {
-                dst[i] = deepmerge(target[i], e);
+            if (opts.arrays === 'concat') {
+                dst.push(e);
             } else {
-                if (target.indexOf(e) === -1) {
-                    dst.push(e);
+                if (typeof dst[i] === 'undefined') {
+                    dst[i] = e;
+                } else if (typeof e === 'object') {
+                    dst[i] = deepmerge(target[i], e, opts);
+                } else {
+                    if (target.indexOf(e) === -1) {
+                        dst.push(e);
+                    }
                 }
             }
         });
@@ -40,7 +46,7 @@ return function deepmerge(target, src) {
                 if (!target[key]) {
                     dst[key] = src[key];
                 } else {
-                    dst[key] = deepmerge(target[key], src[key]);
+                    dst[key] = deepmerge(target[key], src[key], opts);
                 }
             }
         });
