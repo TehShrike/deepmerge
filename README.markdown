@@ -32,7 +32,7 @@ methods
 
 var merge = require('deepmerge')
 
-merge(x, y)
+merge(x, y, opts)
 -----------
 
 Merge two objects `x` and `y` deeply, returning a new merged object with the
@@ -44,6 +44,13 @@ If an element at the same key is present for both `x` and `y`, the value from
 The merge is immutable, so neither `x` nor `y` will be modified.
 
 The merge will also merge arrays and array values.
+
+### options
+
+**arrays**
+
+* `merge` (default) - Replace array values at index. e.g. `[1, 2] + [3] => [3, 2]`
+* `concat` - Push value to the bottom of the array. e.g. `[1, 2] + [3] => [1, 2, 3]`
 
 install
 =======
