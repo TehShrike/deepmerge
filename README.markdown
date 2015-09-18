@@ -47,7 +47,7 @@ The merge will also merge arrays and array values.
 
 ### options
 
-#### arrays
+**arrays**
 
 * `merge` (default) - Replace array values at index. e.g. `[1, 2] + [3] => [3, 2]`
 * `concat` - Push value to the bottom of the array. e.g. `[1, 2] + [3] => [1, 2, 3]`
