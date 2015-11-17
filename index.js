@@ -19,14 +19,18 @@
             target = target || [];
             dst = dst.concat(target);
             src.forEach(function (e, i) {
-                if (typeof dst[i] === 'undefined') {
-                    dst[i] = e;
-                } else if (typeof e === 'object') {
-                    dst[i] = deepmerge(target[i], e, opts);
+                if (opts.concatArrays) {
+                  dst.push(e);
                 } else {
-                    if (target.indexOf(e) === -1) {
-                        dst.push(e);
-                    }
+                  if (typeof dst[i] === 'undefined') {
+                      dst[i] = e;
+                  } else if (typeof e === 'object') {
+                      dst[i] = deepmerge(target[i], e, opts);
+                  } else {
+                      if (target.indexOf(e) === -1) {
+                          dst.push(e);
+                      }
+                  }
                 }
             });
         } else {

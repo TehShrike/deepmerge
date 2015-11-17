@@ -282,7 +282,6 @@ test('should work on arrays of nested objects', function (t) {
     t.end()
 })
 
-
 test('should work on objects with array properties', function (t) {
     var target = {
         key1: { subkey: 'one' },
@@ -305,6 +304,31 @@ test('should work on objects with array properties', function (t) {
     }
 
     t.deepEqual(merge(target, src), expected)
+    t.deepEqual(merge(target, src, { replaceArrays: true }), expectedWReplaceArray)
+    t.end()
+})
+
+test('should work on array properties containing objects', function (t) {
+    var target = {
+        key1: "one",
+        key2: [ { key1: "one" } ]
+    }
+
+    var src = {
+        key2: [ { key1: "two" } ]
+    }
+
+    var expected = {
+        key1: "one",
+        key2: [ { key1: "one" }, { key1: "two" } ]
+    }
+
+    var expectedWReplaceArray = {
+        key1: "one",
+        key2: [ { key1: "two" } ]
+    }
+
+    t.deepEqual(merge(target, src, { concatArrays: true }), expected)
     t.deepEqual(merge(target, src, { replaceArrays: true }), expectedWReplaceArray)
     t.end()
 })
