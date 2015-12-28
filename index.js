@@ -10,7 +10,7 @@
 
 return function deepmerge(target, src) {
     var array = Array.isArray(src);
-    var dst = array && [] || {};
+    var dst = array ? [] : {};
 
     if (array) {
         target = target || [];
@@ -20,10 +20,8 @@ return function deepmerge(target, src) {
                 dst[i] = e;
             } else if (typeof e === 'object') {
                 dst[i] = deepmerge(target[i], e);
-            } else {
-                if (target.indexOf(e) === -1) {
-                    dst.push(e);
-                }
+            } else if (target.indexOf(e) === -1) {
+                dst.push(e);
             }
         });
     } else {
