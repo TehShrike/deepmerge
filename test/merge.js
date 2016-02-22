@@ -176,7 +176,6 @@ test('should work on another simple array', function(t) {
 })
 
 test('should work on array properties', function (t) {
-    debugger;
     var src = {
         key1: ['one', 'three'],
         key2: ['four']
