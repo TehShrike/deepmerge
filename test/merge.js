@@ -106,6 +106,29 @@ test('should add nested object in target', function(t) {
     t.end()
 })
 
+test('should add cloned nested object in target', function(t) {
+    var src = {
+        "b": {
+            "c": 'foo'
+        }
+    }
+
+    var target = {
+        "a": {}
+    }
+
+    var expected = {
+        "a": {},
+        "b": {
+            "c": 'foo'
+        }
+    }
+    var combined = merge(target, src)
+    src.b.c = 'bar'
+    t.equal(combined.b.c, 'foo')
+    t.end()
+})
+
 test('should replace object with simple key in target', function (t) {
     var src = { key1: 'value1' }
     var target = {
@@ -153,6 +176,7 @@ test('should work on another simple array', function(t) {
 })
 
 test('should work on array properties', function (t) {
+    debugger;
     var src = {
         key1: ['one', 'three'],
         key2: ['four']

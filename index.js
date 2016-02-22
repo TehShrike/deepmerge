@@ -38,7 +38,12 @@ return function deepmerge(target, src) {
             }
             else {
                 if (!target[key]) {
-                    dst[key] = src[key];
+                    if (typeof src[key] === 'object') {
+                        var empty = Array.isArray(src[key]) ? [] : {};
+                        dst[key] = deepmerge(empty, src[key]);
+                    } else {
+                        dst[key] = src[key];
+                    }
                 } else {
                     dst[key] = deepmerge(target[key], src[key]);
                 }
