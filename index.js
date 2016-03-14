@@ -8,6 +8,11 @@
     }
 }(this, function () {
 
+function isPlainObject(val) {
+    return val && typeof val === 'object' &&
+        Object.prototype.toString.call(val) !== '[object RegExp]';
+}
+
 return function deepmerge(target, src) {
     var array = Array.isArray(src);
     var dst = array && [] || {};
@@ -27,13 +32,13 @@ return function deepmerge(target, src) {
             }
         });
     } else {
-        if (target && typeof target === 'object') {
+        if (isPlainObject(target)) {
             Object.keys(target).forEach(function (key) {
                 dst[key] = target[key];
             })
         }
         Object.keys(src).forEach(function (key) {
-            if (typeof src[key] !== 'object' || !src[key]) {
+            if (!isPlainObject(src[key])) {
                 dst[key] = src[key];
             }
             else {
