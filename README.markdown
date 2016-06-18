@@ -32,18 +32,29 @@ methods
 
 var merge = require('deepmerge')
 
-merge(x, y)
+merge(target, source[, options])
 -----------
 
-Merge two objects `x` and `y` deeply, returning a new merged object with the
-elements from both `x` and `y`.
+Merge two objects `target` and `source` deeply, returning a new merged object with the
+elements from both `target` and `source`.
 
-If an element at the same key is present for both `x` and `y`, the value from
-`y` will appear in the result.
+If an element at the same key is present for both `target` and `source`, the value from
+`source` will appear in the result.
 
-The merge is immutable, so neither `x` nor `y` will be modified.
+The merge is immutable, so neither `target` nor `source` will be modified.
 
 The merge will also merge arrays and array values.
+
+options
+=======
+
+`options` is an optional parameter.
+
+```js
+options: {
+  array: 'both' // to specify the behavior of array merging, possible values (both, target, source)
+}
+```
 
 install
 =======
