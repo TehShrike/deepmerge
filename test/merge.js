@@ -140,6 +140,26 @@ test('should replace simple key with simple key', function (t) {
     t.end()
 })
 
+test('should replace null with simple key', function (t) {
+    var src = 'value1'
+    var target = null
+
+    var expected = 'value1'
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace undefined with simple key', function (t) {
+    var src = 'value1'
+    var target = undefined
+
+    var expected = 'value1'
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
 test('should work on simple array', function (t) {
     var src = ['one', 'three']
     var target = ['one', 'two']

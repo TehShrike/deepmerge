@@ -27,7 +27,7 @@ return function deepmerge(target, src) {
             }
         });
     } else {
-        if (Object.keys(target).length == 0 && Object.keys(src).length == 0) {
+        if (src && !Object.prototype.isPrototypeOf(src) && !Object.prototype.isPrototypeOf(target)) {
             dst = src;
         }
         else if (target && typeof target === 'object') {
@@ -35,18 +35,20 @@ return function deepmerge(target, src) {
                 dst[key] = target[key];
             })
         }
-        Object.keys(src).forEach(function (key) {
-            if (typeof src[key] !== 'object' || !src[key]) {
-                dst[key] = src[key];
-            }
-            else {
-                if (!target[key]) {
+        if (src) {
+            Object.keys(src).forEach(function (key) {
+                if (typeof src[key] !== 'object' || !src[key]) {
                     dst[key] = src[key];
-                } else {
-                    dst[key] = deepmerge(target[key], src[key]);
                 }
-            }
-        });
+                else {
+                    if (!target[key]) {
+                        dst[key] = src[key];
+                    } else {
+                        dst[key] = deepmerge(target[key], src[key]);
+                    }
+                }
+            });
+        }
     }
 
     return dst;
