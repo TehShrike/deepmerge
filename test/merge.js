@@ -129,6 +129,17 @@ test('should replace object with simple key in target', function (t) {
     t.end()
 })
 
+test('should replace simple key with simple key', function (t) {
+    var src = 'value1'
+    var target = 'value2'
+
+    var expected = 'value1'
+
+    t.deepEqual(target, 'value2')
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
 test('should work on simple array', function (t) {
     var src = ['one', 'three']
     var target = ['one', 'two']

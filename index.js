@@ -27,7 +27,10 @@ return function deepmerge(target, src) {
             }
         });
     } else {
-        if (target && typeof target === 'object') {
+        if (Object.keys(target).length == 0 && Object.keys(src).length == 0) {
+            dst = src;
+        }
+        else if (target && typeof target === 'object') {
             Object.keys(target).forEach(function (key) {
                 dst[key] = target[key];
             })
