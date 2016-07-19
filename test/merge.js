@@ -130,6 +130,39 @@ test('should replace object with simple key in target', function (t) {
 })
 
 test('should replace simple key with simple key', function (t) {
+    var src = 1
+    var target = 2
+
+    var expected = 1
+
+    t.deepEqual(target, 2)
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace simple key with string', function (t) {
+    var src = "value1"
+    var target = 2
+
+    var expected = "value1"
+
+    t.deepEqual(target, 2)
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace string with simple key', function (t) {
+    var src = 1
+    var target = "value2"
+
+    var expected = 1
+
+    t.deepEqual(target, "value2")
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace string with string', function (t) {
     var src = 'value1'
     var target = 'value2'
 
@@ -139,6 +172,68 @@ test('should replace simple key with simple key', function (t) {
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
+
+test('should replace date with date', function (t) {
+    var date1 = new Date(1996,1,1)
+    var date2 = new Date(2016,1,1)
+    var src = date1
+    var target = date2
+
+    var expected = date1
+
+    t.deepEqual(target, date2)
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace date with string', function (t) {
+    var date = new Date(2016,1,1)
+    var src = 'value1'
+    var target = date
+
+    var expected = 'value1'
+
+    t.deepEqual(target, date)
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace string with date', function (t) {
+    var date = new Date(2016,1,1)
+    var src = date
+    var target = 'value2'
+
+    var expected = date
+
+    t.deepEqual(target, 'value2')
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace date with simple key', function (t) {
+    var date = new Date(2016,1,1)
+    var src = 1
+    var target = date
+
+    var expected = 1
+
+    t.deepEqual(target, date)
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace simple key with date', function (t) {
+    var date = new Date(2016,1,1)
+    var src = date
+    var target = 2
+
+    var expected = date
+
+    t.deepEqual(target, 2)
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
 
 test('should replace null with simple key', function (t) {
     var src = 'value1'

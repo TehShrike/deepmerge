@@ -27,7 +27,8 @@ return function deepmerge(target, src) {
             }
         });
     } else {
-        if (src && !Object.prototype.isPrototypeOf(src) && !Object.prototype.isPrototypeOf(target)) {
+        if (src && (!Object.prototype.isPrototypeOf(src) || Object.keys(src).length == 0)
+                && (!Object.prototype.isPrototypeOf(target) || Object.keys(target).length == 0)) {
             dst = src;
         }
         else if (target && typeof target === 'object') {
