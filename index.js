@@ -27,23 +27,29 @@ return function deepmerge(target, src) {
             }
         });
     } else {
-        if (target && typeof target === 'object') {
+        if (src && (!Object.prototype.isPrototypeOf(src) || Object.keys(src).length == 0)
+                && (!Object.prototype.isPrototypeOf(target) || Object.keys(target).length == 0)) {
+            dst = src;
+        }
+        else if (target && typeof target === 'object') {
             Object.keys(target).forEach(function (key) {
                 dst[key] = target[key];
             })
         }
-        Object.keys(src).forEach(function (key) {
-            if (typeof src[key] !== 'object' || !src[key]) {
-                dst[key] = src[key];
-            }
-            else {
-                if (!target[key]) {
+        if (src) {
+            Object.keys(src).forEach(function (key) {
+                if (typeof src[key] !== 'object' || !src[key]) {
                     dst[key] = src[key];
-                } else {
-                    dst[key] = deepmerge(target[key], src[key]);
                 }
-            }
-        });
+                else {
+                    if (!target[key]) {
+                        dst[key] = src[key];
+                    } else {
+                        dst[key] = deepmerge(target[key], src[key]);
+                    }
+                }
+            });
+        }
     }
 
     return dst;
