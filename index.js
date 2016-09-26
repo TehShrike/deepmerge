@@ -13,7 +13,7 @@ return function deepmerge(target, src) {
     var dst = array && [] || {};
 
     if (array) {
-        target = target || [];
+        target = target instanceof Array ? target :  [];
         dst = dst.concat(target);
         src.forEach(function(e, i) {
             if (typeof dst[i] === 'undefined') {
