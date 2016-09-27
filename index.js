@@ -16,42 +16,38 @@ function isMergeableObject(val) {
         && Object.prototype.toString.call(val) !== '[object Date]'
 }
 
-return function deepmerge(target, src) {
-    var array = Array.isArray(src);
-    var dst = array ? [] : {};
+return function deepmerge(target, source) {
+    var array = Array.isArray(source);
+    var destination = array ? [] : {};
 
     if (array) {
         target = target || [];
-        dst = dst.concat(target);
-        src.forEach(function(e, i) {
-            if (typeof dst[i] === 'undefined') {
-                dst[i] = e;
+        destination = destination.concat(target);
+        source.forEach(function(e, i) {
+            if (typeof destination[i] === 'undefined') {
+                destination[i] = e;
             } else if (isMergeableObject(e)) {
-                dst[i] = deepmerge(target[i], e);
+                destination[i] = deepmerge(target[i], e);
             } else if (target.indexOf(e) === -1) {
-                dst.push(e);
+                destination.push(e);
             }
         });
     } else {
         if (isMergeableObject(target)) {
             Object.keys(target).forEach(function (key) {
-                dst[key] = target[key];
+                destination[key] = target[key];
             })
         }
-        Object.keys(src).forEach(function (key) {
-            if (!isMergeableObject(src[key])) {
-                dst[key] = src[key];
+        Object.keys(source).forEach(function (key) {
+            if (!isMergeableObject(source[key]) || !target[key]) {
+                destination[key] = source[key];
             } else {
-                if (!target[key]) {
-                    dst[key] = src[key];
-                } else {
-                    dst[key] = deepmerge(target[key], src[key]);
-                }
+                destination[key] = deepmerge(target[key], source[key]);
             }
         });
     }
 
-    return dst;
+    return destination;
 }
 
 }));
