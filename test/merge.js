@@ -251,3 +251,14 @@ test('should treat dates like primitives', function(t) {
     t.equal(actual.key.valueOf(), tuesday.valueOf())
     t.end()
 })
+
+test('should work on array with null in it', function(t) {
+    var target = []
+
+    var src = [null]
+
+    var expected = [null]
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
