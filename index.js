@@ -16,38 +16,50 @@ function isMergeableObject(val) {
         && Object.prototype.toString.call(val) !== '[object Date]'
 }
 
-return function deepmerge(target, source) {
+function defaultArrayMerge(target, source, optionsArgument) {
+    var destination = target.slice()
+    source.forEach(function(e, i) {
+        if (typeof destination[i] === 'undefined') {
+            destination[i] = e
+        } else if (isMergeableObject(e)) {
+            destination[i] = deepmerge(target[i], e, optionsArgument)
+        } else if (target.indexOf(e) === -1) {
+            destination.push(e)
+        }
+    })
+    return destination
+}
+
+function mergeObject(target, source, optionsArgument) {
+    var destination = {}
+    if (isMergeableObject(target)) {
+        Object.keys(target).forEach(function (key) {
+            destination[key] = target[key]
+        })
+    }
+    Object.keys(source).forEach(function (key) {
+        if (!isMergeableObject(source[key]) || !target[key]) {
+            destination[key] = source[key]
+        } else {
+            destination[key] = deepmerge(target[key], source[key], optionsArgument)
+        }
+    })
+    return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
     var array = Array.isArray(source);
-    var destination = array ? [] : {};
+    var options = optionsArgument || { arrayMerge: defaultArrayMerge }
+    var arrayMerge = options.arrayMerge || defaultArrayMerge
 
     if (array) {
         target = target || [];
-        destination = destination.concat(target);
-        source.forEach(function(e, i) {
-            if (typeof destination[i] === 'undefined') {
-                destination[i] = e;
-            } else if (isMergeableObject(e)) {
-                destination[i] = deepmerge(target[i], e);
-            } else if (target.indexOf(e) === -1) {
-                destination.push(e);
-            }
-        });
+        return arrayMerge(target, source, optionsArgument)
     } else {
-        if (isMergeableObject(target)) {
-            Object.keys(target).forEach(function (key) {
-                destination[key] = target[key];
-            })
-        }
-        Object.keys(source).forEach(function (key) {
-            if (!isMergeableObject(source[key]) || !target[key]) {
-                destination[key] = source[key];
-            } else {
-                destination[key] = deepmerge(target[key], source[key]);
-            }
-        });
+        return mergeObject(target, source, optionsArgument)
     }
-
-    return destination;
 }
+
+return deepmerge
 
 }));
