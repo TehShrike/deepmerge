@@ -8,9 +8,13 @@
     }
 }(this, function () {
 
-function isPlainObject(val) {
-    return val && typeof val === 'object' &&
-        Object.prototype.toString.call(val) !== '[object RegExp]';
+function isMergeableObject(val) {
+    var nonNullObject = val && typeof val === 'object'
+
+
+    return nonNullObject
+        && Object.prototype.toString.call(val) !== '[object RegExp]'
+        && Object.prototype.toString.call(val) !== '[object Date]'
 }
 
 return function deepmerge(target, src) {
@@ -32,16 +36,15 @@ return function deepmerge(target, src) {
             }
         });
     } else {
-        if (isPlainObject(target)) {
+        if (isMergeableObject(target)) {
             Object.keys(target).forEach(function (key) {
                 dst[key] = target[key];
             })
         }
         Object.keys(src).forEach(function (key) {
-            if (!isPlainObject(src[key])) {
+            if (!isMergeableObject(src[key])) {
                 dst[key] = src[key];
-            }
-            else {
+            } else {
                 if (!target[key]) {
                     dst[key] = src[key];
                 } else {

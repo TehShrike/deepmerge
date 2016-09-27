@@ -230,3 +230,24 @@ test('should treat regular expressions like primitive values', function (t) {
     t.deepEqual(merge(target, src).key1.test('efg'), true)
     t.end()
 })
+
+test('should treat dates like primitives', function(t) {
+    var monday = new Date('2016-09-27T01:08:12.761Z')
+    var tuesday = new Date('2016-09-28T01:18:12.761Z')
+
+    var target = {
+        key: monday
+    }
+    var source = {
+        key: tuesday
+    }
+
+    var expected = {
+        key: tuesday
+    }
+    var actual = merge(target, source)
+
+    t.deepEqual(actual, expected)
+    t.equal(actual.key.valueOf(), tuesday.valueOf())
+    t.end()
+})
