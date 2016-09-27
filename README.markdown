@@ -6,31 +6,30 @@ Merge the enumerable attributes of two objects deeply.
 example
 =======
 
-```js
-var util = require('util')
-var merge = require('deepmerge')
+<!--js
+var merge = require('./')
+-->
 
+```js
 var x = { foo: { bar: 3 },
   array: [ { does: 'work', too: [ 1, 2, 3 ] } ] }
 var y = { foo: { baz: 4 },
   quux: 5,
   array: [ { does: 'work', too: [ 4, 5, 6 ] }, { really: 'yes' } ] }
 
-console.log(util.inspect(merge(x, y), false, null))
-```
-
-output:
-
-```js
-{ foo: { bar: 3, baz: 4 },
+var expected = { foo: { bar: 3, baz: 4 },
   array: [ { does: 'work', too: [ 1, 2, 3, 4, 5, 6 ] }, { really: 'yes' } ],
   quux: 5 }
+
+merge(x, y) // => expected
 ```
 
 methods
 =======
 
+```
 var merge = require('deepmerge')
+```
 
 merge(x, y)
 -----------
@@ -50,14 +49,8 @@ install
 
 With [npm](http://npmjs.org) do:
 
-```
+```sh
 npm install deepmerge
-```
-
-For the browser, you can install with [bower](http://bower.io/):
-
-```
-bower install deepmerge
 ```
 
 test
@@ -65,6 +58,11 @@ test
 
 With [npm](http://npmjs.org) do:
 
-```
+```sh
 npm test
 ```
+
+license
+=======
+
+MIT
