@@ -1,3 +1,7 @@
+# [1.0.2](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.0.2)
+
+- Updating the readme: dropping bower, testing that the example works [7102fc](https://github.com/KyleAMathews/deepmerge/commit/7102fcc4ddec11e2d33205866f9f18df14e5aeb5)
+
 # [1.0.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.0.1)
 
 - `null`, dates, and regular expressions are now properly merged in arrays [Issue 18](https://github.com/KyleAMathews/deepmerge/pull/18), plus commit [ef1c6b](https://github.com/KyleAMathews/deepmerge/commit/ef1c6bac8350ba12a24966f0bc7da02560827586)
