@@ -31,7 +31,7 @@ methods
 var merge = require('deepmerge')
 ```
 
-merge(x, y)
+merge(x, y, [options])
 -----------
 
 Merge two objects `x` and `y` deeply, returning a new merged object with the
@@ -42,7 +42,14 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 The merge is immutable, so neither `x` nor `y` will be modified.
 
-The merge will also merge arrays and array values.
+The merge will also merge arrays and array values by default.  However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
+
+```js
+function concatMerge(destinationArray, sourceArray, mergeOptions) {
+	return destinationArray.concat(sourceArray)
+}
+merge([1, 2, 3], [1, 2, 3], { arrayMerge: concatMerge }) // => [1, 2, 3, 1, 2, 3]
+```
 
 install
 =======
