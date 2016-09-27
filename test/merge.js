@@ -262,3 +262,41 @@ test('should work on array with null in it', function(t) {
     t.deepEqual(merge(target, src), expected)
     t.end()
 })
+
+test('null should be equal to null in an array', function(t) {
+    var target = [null, 'dude']
+    var source = [null, 'lol']
+
+    var expected = [null, 'dude', 'lol']
+    var actual = merge(target, source)
+
+    t.deepEqual(actual, expected)
+    t.end()
+})
+
+test('dates in an array should be compared correctly', function(t) {
+    var monday = new Date('2016-09-27T01:08:12.761Z')
+
+    var target = [monday, 'dude']
+    var source = [monday, 'lol']
+
+    var expected = [monday, 'dude', 'lol']
+    var actual = merge(target, source)
+
+    t.deepEqual(actual, expected)
+    t.end()
+})
+
+test('dates should copy correctly in an array', function(t) {
+    var monday = new Date('2016-09-27T01:08:12.761Z')
+    var tuesday = new Date('2016-09-28T01:18:12.761Z')
+
+    var target = [monday, 'dude']
+    var source = [tuesday, 'lol']
+
+    var expected = [monday, 'dude', tuesday, 'lol']
+    var actual = merge(target, source)
+
+    t.deepEqual(actual, expected)
+    t.end()
+})

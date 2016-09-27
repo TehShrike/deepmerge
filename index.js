@@ -11,7 +11,6 @@
 function isMergeableObject(val) {
     var nonNullObject = val && typeof val === 'object'
 
-
     return nonNullObject
         && Object.prototype.toString.call(val) !== '[object RegExp]'
         && Object.prototype.toString.call(val) !== '[object Date]'
@@ -27,7 +26,7 @@ return function deepmerge(target, src) {
         src.forEach(function(e, i) {
             if (typeof dst[i] === 'undefined') {
                 dst[i] = e;
-            } else if (typeof e === 'object' && e !== null) {
+            } else if (isMergeableObject(e)) {
                 dst[i] = deepmerge(target[i], e);
             } else {
                 if (target.indexOf(e) === -1) {
