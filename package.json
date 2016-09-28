@@ -19,7 +19,7 @@
   "dependencies": {},
   "devDependencies": {
     "jsmd": "0.3.1",
-    "tap": "~0.4.8"
+    "tap": "~7.1.2"
   },
   "license": "MIT"
 }
