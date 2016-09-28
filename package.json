@@ -10,7 +10,7 @@
   },
   "main": "index",
   "engines": {
-    "node": ">=0.4.0"
+    "node": ">=0.10.0"
   },
   "scripts": {
     "test": "tap test/*.js && jsmd README.markdown"
