@@ -1,3 +1,7 @@
+# [1.1.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.1.0)
+
+- allow consumers to specify their own array merging algorithm: [Pull request 37](https://github.com/KyleAMathews/deepmerge/pull/37)
+
 # [1.0.3](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.0.3)
 
 - adding bower.json back: [Issue 38](https://github.com/KyleAMathews/deepmerge/pull/38)
