@@ -263,6 +263,21 @@ test('should work on array with null in it', function(t) {
     t.end()
 })
 
+test('should overwrite values when property is initialised but undefined', function(t) {
+    var target1 = { value: [] }
+    var target2 = { value: null }
+    var target3 = { value: 2 }
+
+    var src = { value: undefined }
+
+    var expected = { value: undefined }
+
+    t.deepEqual(merge(target1, src), expected)
+    t.deepEqual(merge(target2, src), expected)
+    t.deepEqual(merge(target3, src), expected)
+    t.end()
+})
+
 test('null should be equal to null in an array', function(t) {
     var target = [null, 'dude']
     var source = [null, 'lol']
