@@ -31,15 +31,23 @@ function defaultArrayMerge(target, source, optionsArgument) {
 }
 
 function mergeObject(target, source, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.hasOwnProperty('clone') 
+        ? optionsArgument.clone : false
     var destination = {}
     if (isMergeableObject(target)) {
         Object.keys(target).forEach(function (key) {
-            destination[key] = target[key]
+            var val = target[key]
+            if (clone && typeof val === 'object') 
+                val = deepmerge({}, val) 
+            destination[key] = val
         })
     }
     Object.keys(source).forEach(function (key) {
         if (!isMergeableObject(source[key]) || !target[key]) {
-            destination[key] = source[key]
+            var val = source[key]
+            if (clone && typeof val === 'object') 
+                val = deepmerge({}, val) 
+            destination[key] = val
         } else {
             destination[key] = deepmerge(target[key], source[key], optionsArgument)
         }
