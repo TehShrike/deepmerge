@@ -106,6 +106,61 @@ test('should add nested object in target', function(t) {
     t.end()
 })
 
+test('should clone source and target', function(t) {
+    var src = {
+        "b": {
+            "c": "foo"
+        }
+    }
+
+    var target = {
+        "a": {
+            "d": "bar"
+        }
+    }
+
+    var merged = merge(target, src,{clone:true})
+     
+    merged.b.c = "foo-modified"
+    merged.a.d = "bar-modifies"
+    t.equal(src.b.c, "foo") 
+    t.equal(target.a.d, "bar") 
+
+    t.end()
+})
+
+test('should not clone source and target', function(t) {
+    var src = {
+        "b": {
+            "c": "foo"
+        }
+    }
+
+    var target = {
+        "a": {
+            "d": "bar"
+        }
+    }
+
+    var expected = {
+        "a": {
+            "d": "bar"
+        },
+        "b": {
+            "c": "_foo"
+        }
+    }
+    
+    var merged = merge(target, src)
+    
+    merged.b.c = "foo-modified"
+    merged.a.d = "bar-modified"
+    t.equal(src.b.c, "foo-modified") 
+    t.equal(target.a.d, "bar-modified") 
+
+    t.end()
+})
+
 test('should replace object with simple key in target', function (t) {
     var src = { key1: 'value1' }
     var target = {

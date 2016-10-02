@@ -42,6 +42,8 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 The merge is immutable, so neither `x` nor `y` will be modified.
 
+#### option: arrayMerge
+
 The merge will also merge arrays and array values by default.  However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
 
 ```js
@@ -51,6 +53,9 @@ function concatMerge(destinationArray, sourceArray, mergeOptions) {
 merge([1, 2, 3], [1, 2, 3], { arrayMerge: concatMerge }) // => [1, 2, 3, 1, 2, 3]
 ```
 
+#### option: clone
+
+If `clone` option is `true` then both `x` and `y` would be clonned before merge. Default value for `clone` is `false`. 
 install
 =======
 
