@@ -146,6 +146,40 @@ test('should replace objects with arrays', function(t) {
     t.end()
 })
 
+test('should replace dates with arrays', function(t) {
+    var target = [
+        { key1: new Date()}
+    ]
+
+    var src = [
+        { key1: [ "subkey" ]}
+    ]
+
+    var expected = [
+        { key1: [ "subkey" ]}
+    ]
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
+test('should replace null with arrays', function(t) {
+    var target = {
+        key1: null
+    }
+
+    var src = {
+        key1: [ "subkey" ]
+    }
+
+    var expected = {
+        key1: [ "subkey" ]
+    }
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
 test('should work on simple array', function (t) {
     var src = ['one', 'three']
     var target = ['one', 'two']
