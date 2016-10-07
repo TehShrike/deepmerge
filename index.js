@@ -53,8 +53,7 @@ function deepmerge(target, source, optionsArgument) {
     var arrayMerge = options.arrayMerge || defaultArrayMerge
 
     if (array) {
-        target = target || [];
-        return arrayMerge(target, source, optionsArgument)
+        return Array.isArray(target) ? arrayMerge(target, source, optionsArgument) : source.slice()
     } else {
         return mergeObject(target, source, optionsArgument)
     }
