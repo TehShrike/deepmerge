@@ -272,9 +272,15 @@ test('should overwrite values when property is initialised but undefined', funct
 
     var expected = { value: undefined }
 
-    t.deepEqual(merge(target1, src), expected)
-    t.deepEqual(merge(target2, src), expected)
-    t.deepEqual(merge(target3, src), expected)
+    function hasUndefinedProperty(o) {
+        t.ok(o.hasOwnProperty('value'))
+        t.type(o.value, 'undefined')
+    }
+
+    hasUndefinedProperty(merge(target1, src))
+    hasUndefinedProperty(merge(target2, src))
+    hasUndefinedProperty(merge(target3, src))
+
     t.end()
 })
 
