@@ -18,12 +18,17 @@ function isMergeableObject(val) {
 
 function defaultArrayMerge(target, source, optionsArgument) {
     var destination = target.slice()
+    var clone = optionsArgument && optionsArgument.clone === true
     source.forEach(function(e, i) {
         if (typeof destination[i] === 'undefined') {
             destination[i] = e
         } else if (isMergeableObject(e)) {
             destination[i] = deepmerge(target[i], e, optionsArgument)
         } else if (target.indexOf(e) === -1) {
+            if (clone && isMergeableObject(e)) {
+                var emptyTarget = Array.isArray(e) ? [] : {}  
+                e = deepmerge(emptyTarget, e)
+            }
             destination.push(e)
         }
     })
@@ -31,22 +36,25 @@ function defaultArrayMerge(target, source, optionsArgument) {
 }
 
 function mergeObject(target, source, optionsArgument) {
-    var clone = optionsArgument && optionsArgument.hasOwnProperty('clone') 
-        ? optionsArgument.clone : false
+    var clone = optionsArgument && optionsArgument.clone === true
     var destination = {}
     if (isMergeableObject(target)) {
         Object.keys(target).forEach(function (key) {
             var val = target[key]
-            if (clone && typeof val === 'object') 
-                val = deepmerge({}, val) 
+            if (clone && isMergeableObject(val)) {
+                var emptyTarget = Array.isArray(val) ? [] : {}  
+                val = deepmerge(emptyTarget, val) 
+            }
             destination[key] = val
         })
     }
     Object.keys(source).forEach(function (key) {
         if (!isMergeableObject(source[key]) || !target[key]) {
             var val = source[key]
-            if (clone && typeof val === 'object') 
-                val = deepmerge({}, val) 
+            if (clone && isMergeableObject(val)) {
+                var emptyTarget = Array.isArray(val) ? [] : {}  
+                val = deepmerge(emptyTarget, val) 
+            }
             destination[key] = val
         } else {
             destination[key] = deepmerge(target[key], source[key], optionsArgument)
