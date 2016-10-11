@@ -119,12 +119,21 @@ test('should clone source and target', function(t) {
         }
     }
 
-    var merged = merge(target, src,{clone:true})
-     
-    merged.b.c = "foo-modified"
-    merged.a.d = "bar-modifies"
-    t.equal(src.b.c, "foo") 
-    t.equal(target.a.d, "bar") 
+    var expected = {
+        "a": {
+            "d": "bar"
+        },
+        "b": {
+            "c": "foo"
+        }
+    }
+
+    var merged = merge(target, src, {clone: true})
+    
+    t.deepEqual(merged, expected)
+    
+    t.notEqual(merged.a, target.a) 
+    t.notEqual(merged.b, src.b) 
 
     t.end()
 })
@@ -147,16 +156,13 @@ test('should not clone source and target', function(t) {
             "d": "bar"
         },
         "b": {
-            "c": "_foo"
+            "c": "foo"
         }
     }
     
     var merged = merge(target, src)
-    
-    merged.b.c = "foo-modified"
-    merged.a.d = "bar-modified"
-    t.equal(src.b.c, "foo-modified") 
-    t.equal(target.a.d, "bar-modified") 
+    t.equal(merged.a, target.a) 
+    t.equal(merged.b, src.b) 
 
     t.end()
 })
@@ -231,6 +237,33 @@ test('should work on array properties', function (t) {
     t.end()
 })
 
+test('should work on array properties with clone option', function (t) {
+    var src = {
+        key1: ['one', 'three'],
+        key2: ['four']
+    }
+    var target = {
+        key1: ['one', 'two']
+    }
+
+    var expected = {
+        key1: ['one', 'two', 'three'],
+        key2: ['four']
+    }
+
+    t.deepEqual(target, {
+        key1: ['one', 'two']
+    })
+    var merged = merge(target, src, {clone: true})
+    t.deepEqual(merged, expected)
+    t.ok(Array.isArray(merge(target, src).key1))
+    t.ok(Array.isArray(merge(target, src).key2))
+    t.notEqual(merged.key1, src.key1) 
+    t.notEqual(merged.key1, target.key1) 
+    t.notEqual(merged.key2, src.key2) 
+    t.end()
+})
+
 test('should work on array of objects', function (t) {
     var src = [
         { key1: ['one', 'three'], key2: ['one'] },
@@ -254,6 +287,37 @@ test('should work on array of objects', function (t) {
     t.ok(Array.isArray(merge(target, src)), 'result should be an array')
     t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
 
+    t.end()
+})
+
+test('should work on array of objects with clone option', function (t) {
+    var src = [
+        { key1: ['one', 'three'], key2: ['one'] },
+        { key3: ['five'] }
+    ]
+    var target = [
+        { key1: ['one', 'two'] },
+        { key3: ['four'] }
+    ]
+
+    var expected = [
+        { key1: ['one', 'two', 'three'], key2: ['one'] },
+        { key3: ['four', 'five'] }
+    ]
+
+    t.deepEqual(target, [
+        { key1: ['one', 'two'] },
+        { key3: ['four'] }
+    ])
+    var merged = merge(target, src, {clone: true}) 
+    t.deepEqual(merged, expected)
+    t.ok(Array.isArray(merge(target, src)), 'result should be an array')
+    t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
+    t.notEqual(merged[0].key1, src[0].key1)
+    t.notEqual(merged[0].key1, target[0].key1)
+    t.notEqual(merged[0].key2, src[0].key2)
+    t.notEqual(merged[1].key3, src[1].key3)
+    t.notEqual(merged[1].key3, target[1].key3)
     t.end()
 })
 
@@ -286,6 +350,18 @@ test('should treat regular expressions like primitive values', function (t) {
     t.end()
 })
 
+test('should treat regular expressions like primitive values with clone option',
+    function (t) {
+        var target = { key1: /abc/ }
+        var src = { key1: /efg/ }
+        var expected = { key1: /efg/ }
+    
+        t.deepEqual(merge(target, src, {clone: true}), expected)
+        t.deepEqual(merge(target, src, {clone: true}).key1.test('efg'), true)
+        t.end()
+    }
+)
+
 test('should treat dates like primitives', function(t) {
     var monday = new Date('2016-09-27T01:08:12.761Z')
     var tuesday = new Date('2016-09-28T01:18:12.761Z')
@@ -301,6 +377,27 @@ test('should treat dates like primitives', function(t) {
         key: tuesday
     }
     var actual = merge(target, source)
+
+    t.deepEqual(actual, expected)
+    t.equal(actual.key.valueOf(), tuesday.valueOf())
+    t.end()
+})
+
+test('should treat dates like primitives with clone option', function(t) {
+    var monday = new Date('2016-09-27T01:08:12.761Z')
+    var tuesday = new Date('2016-09-28T01:18:12.761Z')
+
+    var target = {
+        key: monday
+    }
+    var source = {
+        key: tuesday
+    }
+
+    var expected = {
+        key: tuesday
+    }
+    var actual = merge(target, source, {clone: true})
 
     t.deepEqual(actual, expected)
     t.equal(actual.key.valueOf(), tuesday.valueOf())
