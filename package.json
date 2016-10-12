@@ -10,7 +10,7 @@
     "clone",
     "recursive"
   ],
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/KyleAMathews/deepmerge",
   "repository": {
     "type": "git",
