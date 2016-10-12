@@ -16,18 +16,24 @@ function isMergeableObject(val) {
         && Object.prototype.toString.call(val) !== '[object Date]'
 }
 
+function emptyTarget(val) {
+    return Array.isArray(val) ? [] : {}
+}
+
 function defaultArrayMerge(target, source, optionsArgument) {
     var destination = target.slice()
     var clone = optionsArgument && optionsArgument.clone === true
     source.forEach(function(e, i) {
         if (typeof destination[i] === 'undefined') {
+            if (clone && isMergeableObject(e)) {
+                e = deepmerge(emptyTarget(e), e)
+            }
             destination[i] = e
         } else if (isMergeableObject(e)) {
             destination[i] = deepmerge(target[i], e, optionsArgument)
         } else if (target.indexOf(e) === -1) {
             if (clone && isMergeableObject(e)) {
-                var emptyTarget = Array.isArray(e) ? [] : {}  
-                e = deepmerge(emptyTarget, e)
+                e = deepmerge(emptyTarget(e), e)
             }
             destination.push(e)
         }
@@ -42,8 +48,7 @@ function mergeObject(target, source, optionsArgument) {
         Object.keys(target).forEach(function (key) {
             var val = target[key]
             if (clone && isMergeableObject(val)) {
-                var emptyTarget = Array.isArray(val) ? [] : {}  
-                val = deepmerge(emptyTarget, val) 
+                val = deepmerge(emptyTarget(val), val)
             }
             destination[key] = val
         })
@@ -52,8 +57,7 @@ function mergeObject(target, source, optionsArgument) {
         if (!isMergeableObject(source[key]) || !target[key]) {
             var val = source[key]
             if (clone && isMergeableObject(val)) {
-                var emptyTarget = Array.isArray(val) ? [] : {}  
-                val = deepmerge(emptyTarget, val) 
+                val = deepmerge(emptyTarget(val), val)
             }
             destination[key] = val
         } else {
