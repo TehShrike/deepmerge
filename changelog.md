@@ -1,3 +1,7 @@
+# [1.1.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.1.0)
+
+- fix an issue where an error was thrown when merging an array onto a non-array: [Pull request 46](https://github.com/KyleAMathews/deepmerge/pull/46)
+
 # [1.1.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.1.0)
 
 - allow consumers to specify their own array merging algorithm: [Pull request 37](https://github.com/KyleAMathews/deepmerge/pull/37)
