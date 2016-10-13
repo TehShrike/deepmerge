@@ -22,7 +22,7 @@ function emptyTarget(val) {
 
 function cloneIfNecessary(value, optionsArgument) {
     var clone = optionsArgument && optionsArgument.clone === true
-    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value) : value
+    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
 }
 
 function defaultArrayMerge(target, source, optionsArgument) {
@@ -62,7 +62,7 @@ function deepmerge(target, source, optionsArgument) {
     var arrayMerge = options.arrayMerge || defaultArrayMerge
 
     if (array) {
-        return Array.isArray(target) ? arrayMerge(target, source, optionsArgument) : source.slice()
+        return Array.isArray(target) ? arrayMerge(target, source, optionsArgument) : cloneIfNecessary(source, optionsArgument)
     } else {
         return mergeObject(target, source, optionsArgument)
     }
