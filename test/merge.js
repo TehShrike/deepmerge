@@ -477,6 +477,18 @@ test('should clone array\'s element if it is object', function(t) {
     t.equal(output[0].key, 'yup')
     t.end()
 })
+
+test('should clone an array property when there is no target array', function(t) {
+    const someObject = {}
+    var target = {}
+    var source = { ary: [someObject]}
+    var output = merge(target, source, { clone: true })
+
+    t.deepEqual(output, { ary: [{}] })
+    t.notEqual(output.ary[0], someObject)
+    t.end()
+})
+
 test('should overwrite values when property is initialised but undefined', function(t) {
     var target1 = { value: [] }
     var target2 = { value: null }
