@@ -2,6 +2,7 @@
 
 - fix: an error that would be thrown when an array would be merged onto a truthy non-array value: pull request [46](https://github.com/KyleAMathews/deepmerge/pull/46)
 - feature: the ability to clone: Issue [28](https://github.com/KyleAMathews/deepmerge/issues/28), pull requests [44](https://github.com/KyleAMathews/deepmerge/pull/44) and [48](https://github.com/KyleAMathews/deepmerge/pull/48)
+- maintenance: added tests + travis to `.npmignore`: pull request [47](https://github.com/KyleAMathews/deepmerge/pull/47)
 
 # [1.1.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.1.1)
 
