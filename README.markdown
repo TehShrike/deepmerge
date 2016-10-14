@@ -40,9 +40,11 @@ elements from both `x` and `y`.
 If an element at the same key is present for both `x` and `y`, the value from
 `y` will appear in the result.
 
-The merge is immutable, so neither `x` nor `y` will be modified.
+Merging creates a new object, so that neither `x` or `y` are be modified.  However, child objects on `x` or `y` are copied over - if you to copy all values, you must pass `true` to the clone option.
 
-#### option: arrayMerge
+### options
+
+#### arrayMerge
 
 The merge will also merge arrays and array values by default.  However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
 
@@ -53,9 +55,10 @@ function concatMerge(destinationArray, sourceArray, mergeOptions) {
 merge([1, 2, 3], [1, 2, 3], { arrayMerge: concatMerge }) // => [1, 2, 3, 1, 2, 3]
 ```
 
-#### option: clone
+### clone
 
-If `clone` option is `true` then both `x` and `y` would be clonned before merge. Default value for `clone` is `false`. 
+Defaults to `false`.  If `clone` is `true` then both `x` and `y` are recursively cloned as part of the merge.
+
 install
 =======
 
