@@ -42,6 +42,21 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 Merging creates a new object, so that neither `x` or `y` are be modified.  However, child objects on `x` or `y` are copied over - if you to copy all values, you must pass `true` to the clone option.
 
+merge.all(arrayOfObjects, [options])
+-----------
+
+Merges two or more objects into a single result object.
+
+```js
+var x = { foo: { bar: 3 } }
+var y = { foo: { baz: 4 } }
+var z = { bar: 'yay!' }
+
+var expected = { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
+
+merge.all([x, y, z]) // => expected
+```
+
 ### options
 
 #### arrayMerge
