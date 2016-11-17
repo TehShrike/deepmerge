@@ -65,9 +65,9 @@ The merge will also merge arrays and array values by default.  However, there ar
 
 ```js
 function concatMerge(destinationArray, sourceArray, options) {
-	// destinationArray = [1, 2, 3]
-	// sourceArray = [3, 2, 1]
-	// options = { arrayMerge: concatMerge }
+	destinationArray // => [1, 2, 3]
+	sourceArray // => [3, 2, 1]
+	options // => { arrayMerge: concatMerge }
 	return destinationArray.concat(sourceArray)
 }
 merge([1, 2, 3], [3, 2, 1], { arrayMerge: concatMerge }) // => [1, 2, 3, 3, 2, 1]
