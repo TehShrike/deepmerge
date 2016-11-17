@@ -64,13 +64,16 @@ merge.all([x, y, z]) // => expected
 The merge will also merge arrays and array values by default.  However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
 
 ```js
-function concatMerge(destinationArray, sourceArray, mergeOptions) {
+function concatMerge(destinationArray, sourceArray, options) {
+	// destinationArray = [1, 2, 3]
+	// sourceArray = [3, 2, 1]
+	// options = { arrayMerge: concatMerge }
 	return destinationArray.concat(sourceArray)
 }
-merge([1, 2, 3], [1, 2, 3], { arrayMerge: concatMerge }) // => [1, 2, 3, 1, 2, 3]
+merge([1, 2, 3], [3, 2, 1], { arrayMerge: concatMerge }) // => [1, 2, 3, 3, 2, 1]
 ```
 
-### clone
+#### clone
 
 Defaults to `false`.  If `clone` is `true` then both `x` and `y` are recursively cloned as part of the merge.
 
