@@ -1,3 +1,16 @@
+# [1.3.2](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.3.2)
+
+- documentation: note the minified/gzipped file sizes [56](https://github.com/KyleAMathews/deepmerge/pull/56)
+- documentation: make data structures more readable in merge example: pull request [57](https://github.com/KyleAMathews/deepmerge/pull/57)
+
+# [1.3.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.3.1)
+
+- documentation: clarify and test some array merging documentation: pull request [51](https://github.com/KyleAMathews/deepmerge/pull/51)
+
+# [1.3.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.3.0)
+
+- feature: `merge.all`, a merge function that merges any number of objects: pull request [50](https://github.com/KyleAMathews/deepmerge/pull/50)
+
 # [1.2.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.2.0)
 
 - fix: an error that would be thrown when an array would be merged onto a truthy non-array value: pull request [46](https://github.com/KyleAMathews/deepmerge/pull/46)
