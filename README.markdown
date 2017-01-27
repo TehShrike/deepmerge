@@ -11,15 +11,38 @@ var merge = require('./')
 -->
 
 ```js
-var x = { foo: { bar: 3 },
-  array: [ { does: 'work', too: [ 1, 2, 3 ] } ] }
-var y = { foo: { baz: 4 },
-  quux: 5,
-  array: [ { does: 'work', too: [ 4, 5, 6 ] }, { really: 'yes' } ] }
+var x = {
+    foo: { bar: 3 },
+    array: [{
+        does: 'work',
+        too: [ 1, 2, 3 ]
+    }]
+}
 
-var expected = { foo: { bar: 3, baz: 4 },
-  array: [ { does: 'work', too: [ 1, 2, 3, 4, 5, 6 ] }, { really: 'yes' } ],
-  quux: 5 }
+var y = {
+    foo: { baz: 4 },
+    quux: 5,
+    array: [{
+        does: 'work',
+        too: [ 4, 5, 6 ]
+    }, {
+        really: 'yes'
+    }]
+}
+
+var expected = {
+    foo: {
+        bar: 3,
+        baz: 4
+    },
+    array: [{
+        does: 'work',
+        too: [ 1, 2, 3, 4, 5, 6 ]
+    }, {
+        really: 'yes'
+    }],
+    quux: 5
+}
 
 merge(x, y) // => expected
 ```
