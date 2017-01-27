@@ -1,6 +1,8 @@
 deepmerge
 =========
 
+> ~550B gzipped, ~1.0kB minified
+
 Merge the enumerable attributes of two objects deeply.
 
 example
