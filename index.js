@@ -1,20 +1,4 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);
-    } else if (typeof exports === 'object') {
-        module.exports = factory();
-    } else {
-        root.deepmerge = factory();
-    }
-}(this, function () {
-
-function isMergeableObject(val) {
-    var nonNullObject = val && typeof val === 'object'
-
-    return nonNullObject
-        && Object.prototype.toString.call(val) !== '[object RegExp]'
-        && Object.prototype.toString.call(val) !== '[object Date]'
-}
+var isMergeableObject = require('is-mergeable-object')
 
 function emptyTarget(val) {
     return Array.isArray(val) ? [] : {}
@@ -42,11 +26,11 @@ function defaultArrayMerge(target, source, optionsArgument) {
 function mergeObject(target, source, optionsArgument) {
     var destination = {}
     if (isMergeableObject(target)) {
-        Object.keys(target).forEach(function (key) {
+        Object.keys(target).forEach(function(key) {
             destination[key] = cloneIfNecessary(target[key], optionsArgument)
         })
     }
-    Object.keys(source).forEach(function (key) {
+    Object.keys(source).forEach(function(key) {
         if (!isMergeableObject(source[key]) || !target[key]) {
             destination[key] = cloneIfNecessary(source[key], optionsArgument)
         } else {
@@ -57,7 +41,7 @@ function mergeObject(target, source, optionsArgument) {
 }
 
 function deepmerge(target, source, optionsArgument) {
-    var array = Array.isArray(source);
+    var array = Array.isArray(source)
     var options = optionsArgument || { arrayMerge: defaultArrayMerge }
     var arrayMerge = options.arrayMerge || defaultArrayMerge
 
@@ -79,6 +63,4 @@ deepmerge.all = function deepmergeAll(array, optionsArgument) {
     })
 }
 
-return deepmerge
-
-}));
+module.exports = deepmerge
