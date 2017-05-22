@@ -3,7 +3,7 @@ var test = require('tap').test
 
 test('add keys in target that do not exist at the root', function (t) {
     var src = { key1: 'value1', key2: 'value2' }
-    target = {}
+    var target = {}
 
     var res = merge(target, src)
 
@@ -151,15 +151,6 @@ test('should not clone source and target', function(t) {
         }
     }
 
-    var expected = {
-        "a": {
-            "d": "bar"
-        },
-        "b": {
-            "c": "foo"
-        }
-    }
-
     var merged = merge(target, src)
     t.equal(merged.a, target.a)
     t.equal(merged.b, src.b)
@@ -297,11 +288,6 @@ test('should work on array properties with clone option', function (t) {
         key1: ['one', 'two']
     }
 
-    var expected = {
-        key1: ['one', 'two', 'three'],
-        key2: ['four']
-    }
-
     t.deepEqual(target, {
         key1: ['one', 'two']
     })
@@ -403,7 +389,6 @@ test('should treat regular expressions like primitive values and should not'
     function (t) {
         var target = { key1: /abc/ }
         var src = { key1: /efg/ }
-        var expected = { key1: /efg/ }
 
         var output = merge(target, src, {clone: true})
 
@@ -445,9 +430,6 @@ test('should treat dates like primitives and should not clone even with clone'
         key: tuesday
     }
 
-    var expected = {
-        key: tuesday
-    }
     var actual = merge(target, source, {clone: true})
 
     t.equal(actual.key, tuesday)
@@ -469,7 +451,6 @@ test('should clone array\'s element if it is object', function(t) {
     var a = { key: 'yup' }
     var target = []
     var source = [a]
-    var expected = [{key: 'yup'}]
 
     var output = merge(target, source, {clone: true})
 
@@ -495,8 +476,6 @@ test('should overwrite values when property is initialised but undefined', funct
     var target3 = { value: 2 }
 
     var src = { value: undefined }
-
-    var expected = { value: undefined }
 
     function hasUndefinedProperty(o) {
         t.ok(o.hasOwnProperty('value'))
