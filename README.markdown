@@ -111,7 +111,7 @@ With [npm](http://npmjs.org) do:
 npm install deepmerge
 ```
 
-Just want to download the file without using any package managers/bundlers?  Click [here](https://unpkg.com/deepmerge).
+Just want to download the file without using any package managers/bundlers?  [Download the UMD version from unpkg.com](https://unpkg.com/deepmerge/dist/umd.js).
 
 test
 ====
