@@ -1,7 +1,7 @@
 deepmerge
 =========
 
-> ~550B gzipped, ~1.0kB minified
+> ~540B gzipped, ~1.1kB minified
 
 Merge the enumerable attributes of two objects deeply.
 
@@ -110,6 +110,8 @@ With [npm](http://npmjs.org) do:
 ```sh
 npm install deepmerge
 ```
+
+Just want to download the file without using any package managers/bundlers?  Click [here](https://unpkg.com/deepmerge).
 
 test
 ====
