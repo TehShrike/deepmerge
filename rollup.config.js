@@ -1,7 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
-const pkg = require('./package.json')
+var pkg = require('./package.json')
 
 export default {
 	entry: 'index.js',
