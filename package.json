@@ -29,7 +29,7 @@
     "test": "tap test/*.js && jsmd README.markdown"
   },
   "dependencies": {
-    "is-mergeable-object": "~1.0.0"
+    "is-mergeable-object": "~1.0.3"
   },
   "devDependencies": {
     "jsmd": "0.3.1",
