@@ -1,3 +1,7 @@
+# [1.4.3](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.4.3)
+
+- bower support: inline is-mergeable-object in a new CommonJS build, so that people using both bower and CommonJS can bundle the library [0b34e6](https://github.com/KyleAMathews/deepmerge/commit/0b34e6e95f989f2fc8091d25f0d291c08f3d2d24)
+
 # [1.4.2](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.4.2)
 
 - performance: bump is-mergeable-object dependency version for a slight performance improvement [5906c7](https://github.com/KyleAMathews/deepmerge/commit/5906c765d691d48e83d76efbb0d4b9ca150dc12c)
