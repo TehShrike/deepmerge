@@ -18,20 +18,16 @@
   },
   "main": "dist/umd.js",
   "module": "dist/es.js",
-  "browser": "index.js",
+  "browser": "dist/cjs.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "build": "npm run build:umd && npm run build:es",
-    "build:umd": "rollup -c --format umd --output dist/umd.js",
-    "build:es": "rollup -c --format es --output dist/es.js",
-    "test": "tap test/*.js && jsmd README.markdown"
-  },
-  "dependencies": {
-    "is-mergeable-object": "~1.0.3"
+    "build": "rollup -c",
+    "test": "npm run build && tap test/*.js && jsmd README.markdown"
   },
   "devDependencies": {
+    "is-mergeable-object": "~1.0.3",
     "jsmd": "0.3.1",
     "rollup": "0.41.6",
     "rollup-plugin-commonjs": "8.0.2",

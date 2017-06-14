@@ -1,6 +1,8 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
+const pkg = require('./package.json')
+
 export default {
 	entry: 'index.js',
 	moduleName: 'deepmerge',
@@ -8,5 +10,9 @@ export default {
 		commonjs(),
 		resolve()
 	],
-	dest: 'bundle.js'
+	targets: [
+		{ dest: pkg.main, format: 'umd' },
+		{ dest: pkg.module, format: 'es' },
+		{ dest: pkg.browser, format: 'cjs' },
+	]
 }
