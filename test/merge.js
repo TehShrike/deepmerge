@@ -198,6 +198,17 @@ test('should replace objects with arrays', function(t) {
     t.end()
 })
 
+test('should replace arrays with objects', function(t) {
+    var target = { key1: [ "subkey" ] }
+
+    var src = { key1: { subkey: 'one' } }
+
+    var expected = { key1: { subkey: 'one' } }
+
+    t.deepEqual(merge(target, src), expected)
+    t.end()
+})
+
 test('should replace dates with arrays', function(t) {
     var target = [
         { key1: new Date()}
