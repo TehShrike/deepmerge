@@ -1,3 +1,7 @@
+# [1.5.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.5.1)
+
+- bower support: officially dropping bower support.  If you use bower, please depend on the [unpkg distribution](https://unpkg.com/deepmerge/dist/umd.js).  See [#63](https://github.com/KyleAMathews/deepmerge/issues/63)
+
 # [1.5.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.5.0)
 
 - bug fix: merging objects into arrays was allowed, and doesn't make any sense. [#65](https://github.com/KyleAMathews/deepmerge/issues/65) published as a feature release instead of a patch because it is a decent behavior change.
