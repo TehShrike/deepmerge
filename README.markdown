@@ -102,7 +102,8 @@ To prevent arrays from being merged:
 
 ```js
 const dontMerge = (destination, source) => source
-const output = merge(destination, source, { arrayMerge: dontMerge })
+const output = merge({ coolThing: [1,2,3] }, { coolThing: ['a', 'b', 'c'] }, { arrayMerge: dontMerge })
+output // => { coolThing: ['a', 'b', 'c'] }
 ```
 
 #### clone
