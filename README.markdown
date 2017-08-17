@@ -98,6 +98,13 @@ function concatMerge(destinationArray, sourceArray, options) {
 merge([1, 2, 3], [3, 2, 1], { arrayMerge: concatMerge }) // => [1, 2, 3, 3, 2, 1]
 ```
 
+To prevent arrays from being merged:
+
+```js
+const dontMerge = (destination, source) => source
+const output = deepMerge(destination, source, { arrayMerge: dontMerge })
+```
+
 #### clone
 
 Defaults to `false`.  If `clone` is `true` then both `x` and `y` are recursively cloned as part of the merge.
