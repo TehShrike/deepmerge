@@ -102,7 +102,7 @@ To prevent arrays from being merged:
 
 ```js
 const dontMerge = (destination, source) => source
-const output = deepMerge(destination, source, { arrayMerge: dontMerge })
+const output = merge(destination, source, { arrayMerge: dontMerge })
 ```
 
 #### clone
