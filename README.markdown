@@ -5,6 +5,11 @@ deepmerge
 
 Merge the enumerable attributes of two objects deeply.
 
+the future
+----------
+
+Should we publish a version 2?  [Give your opinion.](https://github.com/KyleAMathews/deepmerge/issues/72)
+
 example
 =======
 
