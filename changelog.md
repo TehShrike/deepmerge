@@ -1,3 +1,7 @@
+# [1.5.2](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.5.2)
+
+- fix: no longer attempts to merge React elements [#76](https://github.com/KyleAMathews/deepmerge/issues/76)
+
 # [1.5.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.5.1)
 
 - bower support: officially dropping bower support.  If you use bower, please depend on the [unpkg distribution](https://unpkg.com/deepmerge/dist/umd.js).  See [#63](https://github.com/KyleAMathews/deepmerge/issues/63)
