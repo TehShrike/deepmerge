@@ -68,7 +68,7 @@ elements from both `x` and `y`.
 If an element at the same key is present for both `x` and `y`, the value from
 `y` will appear in the result.
 
-Merging creates a new object, so that neither `x` or `y` are be modified.  However, child objects on `x` or `y` are copied over - if you want to copy all values, you must pass `true` to the clone option.
+Merging creates a new object, so that neither `x` or `y` are be modified.
 
 merge.all(arrayOfObjects, [options])
 -----------
