@@ -51,8 +51,8 @@ function deepmerge(target, source, optionsArgument) {
 }
 
 deepmerge.all = function deepmergeAll(array, optionsArgument) {
-	if (!Array.isArray(array) || array.length < 1) {
-		throw new Error('first argument should be an array with at least one element')
+	if (!Array.isArray(array)) {
+		throw new Error('first argument should be an array')
 	}
 
 	return array.reduce(function(prev, next) {

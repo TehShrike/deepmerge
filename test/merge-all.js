@@ -6,8 +6,8 @@ test('throw error if first argument is not an array', function(t) {
 	t.end()
 })
 
-test('throw error if first argument is an array with no elements', function(t) {
-	t.throws(merge.all.bind(null, []), Error)
+test('return an empty object if first argument is an array with no elements', function(t) {
+	t.deepEqual(merge.all([]), {})
 	t.end()
 })
 
