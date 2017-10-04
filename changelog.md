@@ -1,3 +1,11 @@
+# [2.0.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.0.0)
+
+- breaking: the array merge algorithm has changed from a complicated thing to `target.concat(source).map(element => cloneUnlessOtherwiseSpecified(element, optionsArgument))`
+- breaking: The `clone` option now defaults to `true`
+- feature: `merge.all` now accepts an array of any size, even 0 or 1 elements
+
+See [pull request 77](https://github.com/KyleAMathews/deepmerge/pull/77).
+
 # [1.5.2](https://github.com/KyleAMathews/deepmerge/releases/tag/v1.5.2)
 
 - fix: no longer attempts to merge React elements [#76](https://github.com/KyleAMathews/deepmerge/issues/76)
