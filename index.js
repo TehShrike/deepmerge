@@ -14,7 +14,9 @@ function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
 }
 
 function defaultArrayMerge(target, source, optionsArgument) {
-	return target.concat(source).map(element => cloneUnlessOtherwiseSpecified(element, optionsArgument))
+	return target.concat(source).map(function(element) {
+		return cloneUnlessOtherwiseSpecified(element, optionsArgument)
+	})
 }
 
 function mergeObject(target, source, optionsArgument) {
