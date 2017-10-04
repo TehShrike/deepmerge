@@ -18,7 +18,6 @@
   },
   "main": "dist/umd.js",
   "module": "dist/es.js",
-  "browser": "dist/cjs.js",
   "engines": {
     "node": ">=0.10.0"
   },
