@@ -5,11 +5,6 @@ deepmerge
 
 Merge the enumerable attributes of two objects deeply.
 
-the future
-----------
-
-Should we publish a version 2?  [Give your opinion.](https://github.com/KyleAMathews/deepmerge/issues/72)
-
 example
 =======
 
@@ -78,7 +73,7 @@ Merging creates a new object, so that neither `x` or `y` are be modified.  Howev
 merge.all(arrayOfObjects, [options])
 -----------
 
-Merges two or more objects into a single result object.
+Merges any number of objects into a single result object.
 
 ```js
 var x = { foo: { bar: 3 } }
@@ -136,7 +131,11 @@ function oldArrayMerge(target, source, optionsArgument) {
 
 #### clone
 
-Defaults to `false`.  If `clone` is `true` then both `x` and `y` are recursively cloned as part of the merge.
+*Deprecated.*
+
+Defaults to `true`.
+
+If `clone` is `false` then child objects will be copied directly instead of being cloned.  This was the default behavior before version 2.x.
 
 install
 =======
