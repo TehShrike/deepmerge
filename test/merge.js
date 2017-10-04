@@ -182,17 +182,11 @@ test('should replace object with simple key in target', function(t) {
 })
 
 test('should replace objects with arrays', function(t) {
-	var target = [
-		{ key1: { subkey: 'one' } },
-	]
+	var target = { key1: { subkey: 'one' } }
 
-	var src = [
-		{ key1: [ 'subkey' ] },
-	]
+	var src = { key1: [ 'subkey' ] }
 
-	var expected = [
-		{ key1: [ 'subkey' ] },
-	]
+	var expected = { key1: [ 'subkey' ] }
 
 	t.deepEqual(merge(target, src), expected)
 	t.end()
@@ -210,17 +204,11 @@ test('should replace arrays with objects', function(t) {
 })
 
 test('should replace dates with arrays', function(t) {
-	var target = [
-		{ key1: new Date() },
-	]
+	var target = { key1: new Date() }
 
-	var src = [
-		{ key1: [ "subkey" ] },
-	]
+	var src = { key1: [ "subkey" ] }
 
-	var expected = [
-		{ key1: [ "subkey" ] },
-	]
+	var expected = { key1: [ "subkey" ] }
 
 	t.deepEqual(merge(target, src), expected)
 	t.end()
@@ -247,9 +235,8 @@ test('should work on simple array', function(t) {
 	var src = [ 'one', 'three' ]
 	var target = [ 'one', 'two' ]
 
-	var expected = [ 'one', 'two', 'three' ]
+	var expected = [ 'one', 'two', 'one', 'three' ]
 
-	t.deepEqual(target, [ 'one', 'two' ])
 	t.deepEqual(merge(target, src), expected)
 	t.ok(Array.isArray(merge(target, src)))
 	t.end()
@@ -276,13 +263,9 @@ test('should work on array properties', function(t) {
 	}
 
 	var expected = {
-		key1: [ 'one', 'two', 'three' ],
+		key1: [ 'one', 'two', 'one', 'three' ],
 		key2: [ 'four' ],
 	}
-
-	t.deepEqual(target, {
-		key1: [ 'one', 'two' ],
-	})
 
 	t.deepEqual(merge(target, src), expected)
 	t.ok(Array.isArray(merge(target, src).key1))
@@ -320,14 +303,12 @@ test('should work on array of objects', function(t) {
 	]
 
 	var expected = [
-		{ key1: [ 'one', 'two', 'three' ], key2: [ 'one' ] },
-		{ key3: [ 'four', 'five' ] },
-	]
-
-	t.deepEqual(target, [
 		{ key1: [ 'one', 'two' ] },
 		{ key3: [ 'four' ] },
-	])
+		{ key1: [ 'one', 'three' ], key2: [ 'one' ] },
+		{ key3: [ 'five' ] },
+	]
+
 	t.deepEqual(merge(target, src), expected)
 	t.ok(Array.isArray(merge(target, src)), 'result should be an array')
 	t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
@@ -346,14 +327,12 @@ test('should work on array of objects with clone option', function(t) {
 	]
 
 	var expected = [
-		{ key1: [ 'one', 'two', 'three' ], key2: [ 'one' ] },
-		{ key3: [ 'four', 'five' ] },
-	]
-
-	t.deepEqual(target, [
 		{ key1: [ 'one', 'two' ] },
 		{ key3: [ 'four' ] },
-	])
+		{ key1: [ 'one', 'three' ], key2: [ 'one' ] },
+		{ key3: [ 'five' ] },
+	]
+
 	var merged = merge(target, src, { clone: true })
 	t.deepEqual(merged, expected)
 	t.ok(Array.isArray(merge(target, src)), 'result should be an array')
@@ -363,25 +342,6 @@ test('should work on array of objects with clone option', function(t) {
 	t.notEqual(merged[0].key2, src[0].key2)
 	t.notEqual(merged[1].key3, src[1].key3)
 	t.notEqual(merged[1].key3, target[1].key3)
-	t.end()
-})
-
-test('should work on arrays of nested objects', function(t) {
-	var target = [
-		{ key1: { subkey: 'one' } },
-	]
-
-	var src = [
-		{ key1: { subkey: 'two' } },
-		{ key2: { subkey: 'three' } },
-	]
-
-	var expected = [
-		{ key1: { subkey: 'two' } },
-		{ key2: { subkey: 'three' } },
-	]
-
-	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
@@ -496,30 +456,6 @@ test('should overwrite values when property is initialised but undefined', funct
 	hasUndefinedProperty(merge(target2, src))
 	hasUndefinedProperty(merge(target3, src))
 
-	t.end()
-})
-
-test('null should be equal to null in an array', function(t) {
-	var target = [ null, 'dude' ]
-	var source = [ null, 'lol' ]
-
-	var expected = [ null, 'dude', 'lol' ]
-	var actual = merge(target, source)
-
-	t.deepEqual(actual, expected)
-	t.end()
-})
-
-test('dates in an array should be compared correctly', function(t) {
-	var monday = new Date('2016-09-27T01:08:12.761Z')
-
-	var target = [ monday, 'dude' ]
-	var source = [ monday, 'lol' ]
-
-	var expected = [ monday, 'dude', 'lol' ]
-	var actual = merge(target, source)
-
-	t.deepEqual(actual, expected)
 	t.end()
 })
 

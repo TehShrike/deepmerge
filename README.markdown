@@ -19,36 +19,39 @@ var merge = require('./')
 
 ```js
 var x = {
-    foo: { bar: 3 },
-    array: [{
-        does: 'work',
-        too: [ 1, 2, 3 ]
-    }]
+	foo: { bar: 3 },
+	array: [{
+		does: 'work',
+		too: [ 1, 2, 3 ]
+	}]
 }
 
 var y = {
-    foo: { baz: 4 },
-    quux: 5,
-    array: [{
-        does: 'work',
-        too: [ 4, 5, 6 ]
-    }, {
-        really: 'yes'
-    }]
+	foo: { baz: 4 },
+	quux: 5,
+	array: [{
+		does: 'work',
+		too: [ 4, 5, 6 ]
+	}, {
+		really: 'yes'
+	}]
 }
 
 var expected = {
-    foo: {
-        bar: 3,
-        baz: 4
-    },
-    array: [{
-        does: 'work',
-        too: [ 1, 2, 3, 4, 5, 6 ]
-    }, {
-        really: 'yes'
-    }],
-    quux: 5
+	foo: {
+		bar: 3,
+		baz: 4
+	},
+	array: [{
+		does: 'work',
+		too: [ 1, 2, 3 ]
+	}, {
+		does: 'work',
+		too: [ 4, 5, 6 ]
+	}, {
+		really: 'yes'
+	}],
+	quux: 5
 }
 
 merge(x, y) // => expected
@@ -91,16 +94,18 @@ merge.all([x, y, z]) // => expected
 
 #### arrayMerge
 
-The merge will also merge arrays and array values by default.  However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
+The merge will also concatenate arrays and merge array values by default.
+
+However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
 
 ```js
-function concatMerge(destinationArray, sourceArray, options) {
+function overwriteMerge(destinationArray, sourceArray, options) {
 	destinationArray // => [1, 2, 3]
 	sourceArray // => [3, 2, 1]
-	options // => { arrayMerge: concatMerge }
-	return destinationArray.concat(sourceArray)
+	options // => { arrayMerge: overwriteMerge }
+	return sourceArray
 }
-merge([1, 2, 3], [3, 2, 1], { arrayMerge: concatMerge }) // => [1, 2, 3, 3, 2, 1]
+merge([1, 2, 3], [3, 2, 1], { arrayMerge: overwriteMerge }) // => [3, 2, 1]
 ```
 
 To prevent arrays from being merged:
@@ -109,6 +114,24 @@ To prevent arrays from being merged:
 const dontMerge = (destination, source) => source
 const output = merge({ coolThing: [1,2,3] }, { coolThing: ['a', 'b', 'c'] }, { arrayMerge: dontMerge })
 output // => { coolThing: ['a', 'b', 'c'] }
+```
+
+To use the old (pre-version-2.0.0) array merging algorithm, pass in this function:
+
+```js
+function oldArrayMerge(target, source, optionsArgument) {
+	var destination = target.slice()
+	source.forEach(function(e, i) {
+		if (typeof destination[i] === 'undefined') {
+			destination[i] = cloneIfNecessary(e, optionsArgument)
+		} else if (isMergeableObject(e)) {
+			destination[i] = deepmerge(target[i], e, optionsArgument)
+		} else if (target.indexOf(e) === -1) {
+			destination.push(cloneIfNecessary(e, optionsArgument))
+		}
+	})
+	return destination
+}
 ```
 
 #### clone

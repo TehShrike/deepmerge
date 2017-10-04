@@ -14,17 +14,7 @@ function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
 }
 
 function defaultArrayMerge(target, source, optionsArgument) {
-	var destination = target.slice()
-	source.forEach(function(e, i) {
-		if (typeof destination[i] === 'undefined') {
-			destination[i] = cloneUnlessOtherwiseSpecified(e, optionsArgument)
-		} else if (isMergeableObject(e)) {
-			destination[i] = deepmerge(target[i], e, optionsArgument)
-		} else if (target.indexOf(e) === -1) {
-			destination.push(cloneUnlessOtherwiseSpecified(e, optionsArgument))
-		}
-	})
-	return destination
+	return target.concat(source).map(element => cloneUnlessOtherwiseSpecified(element, optionsArgument))
 }
 
 function mergeObject(target, source, optionsArgument) {

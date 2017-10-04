@@ -3,11 +3,11 @@ var test = require('tap').test
 
 test('custom merge array', function(t) {
 	var mergeFunctionCalled = false
-	function concatMerge(target, source, options) {
+	function overwriteMerge(target, source, options) {
 		mergeFunctionCalled = true
-		t.equal(options.arrayMerge, concatMerge)
+		t.equal(options.arrayMerge, overwriteMerge)
 
-		return target.concat(source)
+		return source
 	}
 	const destination = {
 		someArray: [ 1, 2 ],
@@ -17,9 +17,9 @@ test('custom merge array', function(t) {
 		someArray: [ 1, 2, 3 ],
 	}
 
-	const actual = merge(destination, source, { arrayMerge: concatMerge })
+	const actual = merge(destination, source, { arrayMerge: overwriteMerge })
 	const expected = {
-		someArray: [ 1, 2, 1, 2, 3 ],
+		someArray: [ 1, 2, 3 ],
 		someObject: { what: 'yes' },
 	}
 
@@ -29,11 +29,11 @@ test('custom merge array', function(t) {
 })
 
 test('merge top-level arrays', function(t) {
-	function concatMerge(a, b) {
-		return a.concat(b)
+	function overwriteMerge(a, b) {
+		return b
 	}
-	var actual = merge([ 1, 2 ], [ 1, 2 ], { arrayMerge: concatMerge })
-	var expected = [ 1, 2, 1, 2 ]
+	var actual = merge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
+	var expected = [ 1, 2 ]
 
 	t.deepEqual(actual, expected)
 	t.end()
