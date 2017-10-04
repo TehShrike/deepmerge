@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "test": "npm run build && tap test/*.js && jsmd README.markdown"
+    "test": "npm run build && tap test/*.js && jsmd readme.md"
   },
   "devDependencies": {
     "is-mergeable-object": "1.1.0",
