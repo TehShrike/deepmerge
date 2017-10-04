@@ -6,8 +6,15 @@ test('throw error if first argument is not an array', function(t) {
 	t.end()
 })
 
-test('throw error if first argument is an array with least than two elements', function(t) {
-	t.throws(merge.all.bind(null, [{ example: true }]), Error)
+test('throw error if first argument is an array with no elements', function(t) {
+	t.throws(merge.all.bind(null, []), Error)
+	t.end()
+})
+
+test('Work just fine if first argument is an array with least than two elements', function(t) {
+	var actual = merge.all([{ example: true }])
+	var expected = { example: true }
+	t.deepEqual(actual, expected)
 	t.end()
 })
 

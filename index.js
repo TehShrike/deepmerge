@@ -51,14 +51,13 @@ function deepmerge(target, source, optionsArgument) {
 }
 
 deepmerge.all = function deepmergeAll(array, optionsArgument) {
-	if (!Array.isArray(array) || array.length < 2) {
-		throw new Error('first argument should be an array with at least two elements')
+	if (!Array.isArray(array) || array.length < 1) {
+		throw new Error('first argument should be an array with at least one element')
 	}
 
-	// we are sure there are at least 2 values, so it is safe to have no initial value
 	return array.reduce(function(prev, next) {
 		return deepmerge(prev, next, optionsArgument)
-	})
+	}, {})
 }
 
 module.exports = deepmerge
