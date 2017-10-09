@@ -95,12 +95,13 @@ However, there are nigh-infinite valid ways to merge arrays, and you may want to
 
 ```js
 function overwriteMerge(destinationArray, sourceArray, options) {
-	destinationArray // => [1, 2, 3]
-	sourceArray // => [3, 2, 1]
-	options // => { arrayMerge: overwriteMerge }
 	return sourceArray
 }
-merge([1, 2, 3], [3, 2, 1], { arrayMerge: overwriteMerge }) // => [3, 2, 1]
+merge(
+	[1, 2, 3],
+	[3, 2, 1],
+	{ arrayMerge: overwriteMerge }
+) // => [3, 2, 1]
 ```
 
 To prevent arrays from being merged:
