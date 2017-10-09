@@ -8,11 +8,10 @@ export default {
 	name: 'deepmerge',
 	plugins: [
 		commonjs(),
-		resolve()
+		resolve(),
 	],
 	output: [
 		{ file: pkg.main, format: 'umd' },
 		{ file: pkg.module, format: 'es' },
-		{ file: pkg.browser, format: 'cjs' },
-	]
+	],
 }
