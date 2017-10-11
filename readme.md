@@ -5,6 +5,8 @@ deepmerge
 
 Merge the enumerable attributes of two objects deeply.
 
+[***Check out the changes from version 1.x to 2.0.0***](https://github.com/KyleAMathews/deepmerge/blob/master/changelog.md#200)
+
 example
 =======
 
