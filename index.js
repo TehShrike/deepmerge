@@ -13,7 +13,7 @@ function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
 }
 
 function defaultArrayMerge(target, source, optionsArgument) {
-	return target.concat(source).map(function(element) {
+	return target.concat(source).map(function (element) {
 		return cloneUnlessOtherwiseSpecified(element, optionsArgument)
 	})
 }
@@ -21,17 +21,20 @@ function defaultArrayMerge(target, source, optionsArgument) {
 function mergeObject(target, source, optionsArgument) {
 	var destination = {}
 	if (isMergeableObject(target)) {
-		Object.keys(target).forEach(function(key) {
+		Object.keys(target).forEach(function (key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument)
 		})
 	}
-	Object.keys(source).forEach(function(key) {
-		if (!isMergeableObject(source[key]) || !target[key]) {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument)
-		} else {
-			destination[key] = deepmerge(target[key], source[key], optionsArgument)
-		}
-	})
+	if (source !== null && source !== undefined) {
+		Object.keys(source).forEach(function (key) {
+			if (!isMergeableObject(source[key]) || !target[key]) {
+				destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument)
+			} else {
+				destination[key] = deepmerge(target[key], source[key], optionsArgument)
+			}
+		})
+	}
+
 	return destination
 }
 
@@ -56,7 +59,7 @@ deepmerge.all = function deepmergeAll(array, optionsArgument) {
 		throw new Error('first argument should be an array')
 	}
 
-	return array.reduce(function(prev, next) {
+	return array.reduce(function (prev, next) {
 		return deepmerge(prev, next, optionsArgument)
 	}, {})
 }
