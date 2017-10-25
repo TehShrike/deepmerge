@@ -33,10 +33,11 @@ function mergeObject(target, source, optionsArgument) {
 	return destination
 }
 
-function deepmerge(target, source, optionsArgument = {}) {
+function deepmerge(target, source, optionsArgument) {
 	var sourceIsArray = Array.isArray(source)
 	var targetIsArray = Array.isArray(target)
 	var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
+	optionsArgument = optionsArgument || {}
 	var options = {
 		arrayMerge: optionsArgument.arrayMerge || defaultArrayMerge,
 		objectMerge: optionsArgument.objectMerge || mergeObject,
