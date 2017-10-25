@@ -5,9 +5,7 @@ function emptyTarget(val) {
 }
 
 function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
-	var clone = !optionsArgument || optionsArgument.clone !== false
-
-	return (clone && isMergeableObject(value))
+	return (optionsArgument.clone && isMergeableObject(value))
 		? deepmerge(emptyTarget(value), value, optionsArgument)
 		: value
 }
@@ -35,19 +33,23 @@ function mergeObject(target, source, optionsArgument) {
 	return destination
 }
 
-function deepmerge(target, source, optionsArgument) {
+function deepmerge(target, source, optionsArgument = {}) {
 	var sourceIsArray = Array.isArray(source)
 	var targetIsArray = Array.isArray(target)
-	var options = optionsArgument || { arrayMerge: defaultArrayMerge }
-	var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
+  var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
+  var options = {
+    arrayMerge: optionsArgument.arrayMerge || defaultArrayMerge,
+    objectMerge: optionsArgument.objectMerge || mergeObject,
+    nativeObjectMerge: mergeObject, // For 3rd party to be able to use native library functionalty if needed
+    clone: "clone" in optionsArgument ? optionsArgument.clone : true
+  }
 
 	if (!sourceAndTargetTypesMatch) {
-		return cloneUnlessOtherwiseSpecified(source, optionsArgument)
+		return cloneUnlessOtherwiseSpecified(source, options)
 	} else if (sourceIsArray) {
-		var arrayMerge = options.arrayMerge || defaultArrayMerge
-		return arrayMerge(target, source, optionsArgument)
+		return options.arrayMerge(target, source, options)
 	} else {
-		return mergeObject(target, source, optionsArgument)
+		return options.objectMerge(target, source, options)
 	}
 }
 
