@@ -36,13 +36,13 @@ function mergeObject(target, source, optionsArgument) {
 function deepmerge(target, source, optionsArgument = {}) {
 	var sourceIsArray = Array.isArray(source)
 	var targetIsArray = Array.isArray(target)
-  var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
-  var options = {
-    arrayMerge: optionsArgument.arrayMerge || defaultArrayMerge,
-    objectMerge: optionsArgument.objectMerge || mergeObject,
-    nativeObjectMerge: mergeObject, // For 3rd party to be able to use native library functionalty if needed
-    clone: "clone" in optionsArgument ? optionsArgument.clone : true
-  }
+	var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
+	var options = {
+		arrayMerge: optionsArgument.arrayMerge || defaultArrayMerge,
+		objectMerge: optionsArgument.objectMerge || mergeObject,
+		nativeObjectMerge: mergeObject, // For 3rd party to be able to use native library functionalty if needed
+		clone: "clone" in optionsArgument ? optionsArgument.clone : true
+	}
 
 	if (!sourceAndTargetTypesMatch) {
 		return cloneUnlessOtherwiseSpecified(source, options)
