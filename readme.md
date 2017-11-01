@@ -124,16 +124,17 @@ const emptyTarget = value => Array.isArray(value) ? [] : {}
 const clone = (value, options) => merge(emptyTarget(value), value, options)
 
 function oldArrayMerge(target, source, optionsArgument) {
-	const shouldClone = !optionsArgument || optionsArgument.clone !== false
 	const destination = target.slice()
 
 	source.forEach(function(e, i) {
 		if (typeof destination[i] === 'undefined') {
+			const cloneRequested = !optionsArgument || optionsArgument.clone !== false
+			const shouldClone = cloneRequested && isMergeableObject(e)
 			destination[i] = shouldClone ? clone(e, optionsArgument) : e
 		} else if (isMergeableObject(e)) {
 			destination[i] = merge(target[i], e, optionsArgument)
 		} else if (target.indexOf(e) === -1) {
-			destination.push(shouldClone ? clone(e, optionsArgument) : e)
+			destination.push(e)
 		}
 	})
 	return destination
@@ -141,9 +142,9 @@ function oldArrayMerge(target, source, optionsArgument) {
 
 merge(
 	[{ a: true }],
-	[{ b: true}, {c: true}],
+	[{ b: true}, 'ah yup'],
 	{ arrayMerge: oldArrayMerge }
-) // => [{ a: true, b: true }, { c: true }]
+) // => [{ a: true, b: true }, 'ah yup']
 ```
 
 #### clone
