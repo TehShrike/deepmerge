@@ -119,19 +119,31 @@ output // => { coolThing: ['a', 'b', 'c'] }
 To use the old (pre-version-2.0.0) array merging algorithm, pass in this function:
 
 ```js
+const isMergeableObject = require('is-mergeable-object')
+const emptyTarget = value => Array.isArray(value) ? [] : {}
+const clone = (value, options) => merge(emptyTarget(value), value, options)
+
 function oldArrayMerge(target, source, optionsArgument) {
-	var destination = target.slice()
+	const shouldClone = !optionsArgument || optionsArgument.clone !== false
+	const destination = target.slice()
+
 	source.forEach(function(e, i) {
 		if (typeof destination[i] === 'undefined') {
-			destination[i] = cloneIfNecessary(e, optionsArgument)
+			destination[i] = shouldClone ? clone(e, optionsArgument) : e
 		} else if (isMergeableObject(e)) {
-			destination[i] = deepmerge(target[i], e, optionsArgument)
+			destination[i] = merge(target[i], e, optionsArgument)
 		} else if (target.indexOf(e) === -1) {
-			destination.push(cloneIfNecessary(e, optionsArgument))
+			destination.push(shouldClone ? clone(e, optionsArgument) : e)
 		}
 	})
 	return destination
 }
+
+merge(
+	[{ a: true }],
+	[{ b: true}, {c: true}],
+	{ arrayMerge: oldArrayMerge }
+) // => [{ a: true, b: true }, { c: true }]
 ```
 
 #### clone
