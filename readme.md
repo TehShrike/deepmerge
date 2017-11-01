@@ -142,7 +142,7 @@ function oldArrayMerge(target, source, optionsArgument) {
 
 merge(
 	[{ a: true }],
-	[{ b: true}, 'ah yup'],
+	[{ b: true }, 'ah yup'],
 	{ arrayMerge: oldArrayMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
