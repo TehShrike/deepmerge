@@ -1,3 +1,7 @@
+# [2.0.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.0.1)
+
+- documentation: fix the old array merge algorithm in the readme.  [#84](https://github.com/KyleAMathews/deepmerge/pull/84)
+
 # [2.0.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.0.0)
 
 - breaking: the array merge algorithm has changed from a complicated thing to `target.concat(source).map(element => cloneUnlessOtherwiseSpecified(element, optionsArgument))`
