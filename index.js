@@ -15,7 +15,7 @@ function cloneUnlessOtherwiseSpecified(value, optionsArgument, key) {
 function _isMergeableObject(value, optionsArgument, key) {
 	let ret;
 	if (optionsArgument && optionsArgument.isMergeableObject) {
-		ret = optionsArgument.isMergeableObject(value, optionsArgument, key)
+		ret = optionsArgument.isMergeableObject(value, isMergeableObject, optionsArgument, key)
 	}
 	if (ret === null || typeof ret === 'undefined') {
 		ret = isMergeableObject(value)
