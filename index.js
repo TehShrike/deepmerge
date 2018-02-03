@@ -14,7 +14,7 @@ function cloneUnlessOtherwiseSpecified(value, optionsArgument, key) {
 
 function _isMergeableObject(value, optionsArgument, key) {
 	let ret;
-	if (optionsArgument.isMergeableObject) {
+	if (optionsArgument && optionsArgument.isMergeableObject) {
 		ret = optionsArgument.isMergeableObject(value, optionsArgument, key)
 	}
 	if (ret === null || typeof ret === 'undefined') {
@@ -24,14 +24,14 @@ function _isMergeableObject(value, optionsArgument, key) {
 }
 
 function defaultArrayMerge(target, source, optionsArgument) {
-	return target.concat(source).map(function(element) {
-		return cloneUnlessOtherwiseSpecified(element, optionsArgument)
+	return target.concat(source).map(function(element, index) {
+		return cloneUnlessOtherwiseSpecified(element, optionsArgument, index)
 	})
 }
 
 function mergeObject(target, source, optionsArgument) {
 	var destination = {}
-	if (_isMergeableObject(target, optionsArgument, key)) {
+	if (_isMergeableObject(target, optionsArgument)) {
 		Object.keys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument, key)
 		})
