@@ -4,30 +4,41 @@ function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}
 }
 
-function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
+function cloneUnlessOtherwiseSpecified(value, optionsArgument, key) {
 	var clone = !optionsArgument || optionsArgument.clone !== false
 
-	return (clone && isMergeableObject(value))
+	return (clone && _isMergeableObject(value, optionsArgument, key))
 		? deepmerge(emptyTarget(value), value, optionsArgument)
 		: value
 }
 
+function _isMergeableObject(value, optionsArgument, key) {
+	let ret;
+	if (optionsArgument && optionsArgument.isMergeableObject) {
+		ret = optionsArgument.isMergeableObject(value, isMergeableObject, optionsArgument, key)
+	}
+	if (ret === null || typeof ret === 'undefined') {
+		ret = isMergeableObject(value)
+	}
+	return ret
+}
+
 function defaultArrayMerge(target, source, optionsArgument) {
-	return target.concat(source).map(function(element) {
-		return cloneUnlessOtherwiseSpecified(element, optionsArgument)
+	return target.concat(source).map(function(element, index) {
+		return cloneUnlessOtherwiseSpecified(element, optionsArgument, index)
 	})
 }
 
 function mergeObject(target, source, optionsArgument) {
 	var destination = {}
-	if (isMergeableObject(target)) {
+	if (_isMergeableObject(target, optionsArgument)) {
 		Object.keys(target).forEach(function(key) {
-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument)
+			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument, key)
 		})
 	}
 	Object.keys(source).forEach(function(key) {
-		if (!isMergeableObject(source[key]) || !target[key]) {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument)
+		if (!_isMergeableObject(source[key], optionsArgument, key) || !target[key]) {
+			destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument, key)
 		} else {
 			destination[key] = deepmerge(target[key], source[key], optionsArgument)
 		}
