@@ -5,9 +5,7 @@ function emptyTarget(val) {
 }
 
 function cloneUnlessOtherwiseSpecified(value, options) {
-	var clone = !options || options.clone !== false
-
-	return (clone && options.isMergeableObject(value))
+	return (options.clone !== false && options.isMergeableObject(value))
 		? deepmerge(emptyTarget(value), value, options)
 		: value
 }
@@ -47,8 +45,7 @@ function deepmerge(target, source, options) {
 	if (!sourceAndTargetTypesMatch) {
 		return cloneUnlessOtherwiseSpecified(source, options)
 	} else if (sourceIsArray) {
-		var arrayMerge = options.arrayMerge || defaultArrayMerge
-		return arrayMerge(target, source, options)
+		return options.arrayMerge(target, source, options)
 	} else {
 		return mergeObject(target, source, options)
 	}

@@ -1,7 +1,7 @@
 deepmerge
 =========
 
-> ~554B gzipped, ~1.10KiB minified
+> UMD bundle is 567B minified+gzipped
 
 Merge the enumerable attributes of two objects deeply.
 
@@ -97,6 +97,8 @@ The merge will also concatenate arrays and merge array values by default.
 
 However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
 
+The options object will include the default `isMergeableObject` implementation if the top-level consumer didn't pass a custom function in.
+
 ```js
 function overwriteMerge(destinationArray, sourceArray, options) {
 	return sourceArray
@@ -119,20 +121,19 @@ output // => { coolThing: ['a', 'b', 'c'] }
 To use the old (pre-version-2.0.0) array merging algorithm, pass in this function:
 
 ```js
-const isMergeableObject = require('is-mergeable-object')
 const emptyTarget = value => Array.isArray(value) ? [] : {}
 const clone = (value, options) => merge(emptyTarget(value), value, options)
 
-function oldArrayMerge(target, source, optionsArgument) {
+function oldArrayMerge(target, source, options) {
 	const destination = target.slice()
 
 	source.forEach(function(e, i) {
 		if (typeof destination[i] === 'undefined') {
-			const cloneRequested = !optionsArgument || optionsArgument.clone !== false
-			const shouldClone = cloneRequested && isMergeableObject(e)
-			destination[i] = shouldClone ? clone(e, optionsArgument) : e
-		} else if (isMergeableObject(e)) {
-			destination[i] = merge(target[i], e, optionsArgument)
+			const cloneRequested = options.clone !== false
+			const shouldClone = cloneRequested && options.isMergeableObject(e)
+			destination[i] = shouldClone ? clone(e, options) : e
+		} else if (options.isMergeableObject(e)) {
+			destination[i] = merge(target[i], e, options)
 		} else if (target.indexOf(e) === -1) {
 			destination.push(e)
 		}
@@ -145,6 +146,50 @@ merge(
 	[{ b: true }, 'ah yup'],
 	{ arrayMerge: oldArrayMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
+```
+
+#### isMergeableObject
+
+By default, deepmerge clones every property from almost every kind of object.
+
+You may not want this, if your objects are of special types, and you want to copy the whole object instead of just copying its properties.
+
+You can accomplish this by passing in a function for the `isMergeableObject` option.
+
+If you only want to clone properties of plain objects, and ignore all "special" kinds of instantiated objects, you probably want to drop in [`is-plain-object`](https://github.com/jonschlinkert/is-plain-object).
+
+```js
+const isPlainObject = require('is-plain-object')
+
+function SuperSpecial() {
+	this.special = 'oh yeah man totally'
+}
+
+const instantiatedSpecialObject = new SuperSpecial()
+
+const target = {
+	someProperty: {
+		cool: 'oh for sure'
+	}
+}
+
+const source = {
+	someProperty: instantiatedSpecialObject
+}
+
+const defaultOutput = merge(target, source)
+
+defaultOutput.someProperty.cool // => 'oh for sure'
+defaultOutput.someProperty.special // => 'oh yeah man totally'
+defaultOutput.someProperty instanceof SuperSpecial // => false
+
+const customMergeOutput = merge(target, source, {
+	isMergeableObject: isPlainObject
+})
+
+customMergeOutput.someProperty.cool // => undefined
+customMergeOutput.someProperty.special // => 'oh yeah man totally'
+customMergeOutput.someProperty instanceof SuperSpecial // => true
 ```
 
 #### clone
