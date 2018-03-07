@@ -15,7 +15,7 @@ If you have `require('deepmerge')` (as opposed to `import merge from 'deepmerge'
 
 If you see `Error: merge is not a function`, add this alias to your Webpack config:
 
-```js
+```
 alias: {
 	deepmerge$: path.resolve(__dirname, 'node_modules/deepmerge/dist/umd.js'),
 }
