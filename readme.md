@@ -9,6 +9,18 @@ Merge the enumerable attributes of two objects deeply.
 
 For the old array element-merging algorithm, see [the `arrayMerge` option below](#arraymerge).
 
+## Webpack bug
+
+If you have `require('deepmerge')` (as opposed to `import merge from 'deepmerge'`) anywhere in your codebase, Webpack 3 and 4 have a bug that [breaks bundling](https://github.com/webpack/webpack/issues/6584).
+
+If you see `Error: merge is not a function`, add this alias to your Webpack config:
+
+```js
+alias: {
+	deepmerge$: path.resolve(__dirname, 'node_modules/deepmerge/dist/umd.js'),
+}
+```
+
 example
 =======
 
