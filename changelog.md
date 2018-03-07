@@ -1,3 +1,8 @@
+# [2.1.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.1.0)
+
+- feature: Support a custom `isMergeableObject` function [#96](https://github.com/KyleAMathews/deepmerge/pull/96)
+- documentation: note a Webpack bug that some users might need to work around [#100](https://github.com/KyleAMathews/deepmerge/pull/100)
+
 # [2.0.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.0.1)
 
 - documentation: fix the old array merge algorithm in the readme.  [#84](https://github.com/KyleAMathews/deepmerge/pull/84)
