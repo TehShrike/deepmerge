@@ -68,11 +68,17 @@ var expected = {
 merge(x, y) // => expected
 ```
 
-methods
+api
 =======
 
+CommonJS:
 ```
 var merge = require('deepmerge')
+```
+
+ES Modules:
+```
+import merge from 'deepmerge'
 ```
 
 merge(x, y, [options])
