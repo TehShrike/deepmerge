@@ -90,7 +90,7 @@ elements from both `x` and `y`.
 If an element at the same key is present for both `x` and `y`, the value from
 `y` will appear in the result.
 
-Merging creates a new object, so that neither `x` or `y` are be modified.
+Merging creates a new object, so that neither `x` or `y` is modified.
 
 merge.all(arrayOfObjects, [options])
 -----------
