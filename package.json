@@ -27,7 +27,6 @@
     "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c"
   },
   "devDependencies": {
-    "is-mergeable-object": "1.1.0",
     "is-plain-object": "^2.0.4",
     "jsmd": "0.3.1",
     "rollup": "0.49.3",
@@ -35,6 +34,9 @@
     "rollup-plugin-node-resolve": "3.0.0",
     "tap": "~7.1.2",
     "uglify-js": "^3.3.12"
+  },
+  "dependencies": {
+    "is-mergeable-object": "^1.1.0"
   },
   "license": "MIT"
 }
