@@ -1,5 +1,4 @@
-deepmerge
-===========
+# deepmerge
 
 Merges the enumerable attributes of two or more objects deeply.
 
@@ -7,12 +6,14 @@ Merges the enumerable attributes of two or more objects deeply.
 
 
 ### Migration from 1.x to 2.0.0
+
 [***Check out the changes from version 1.x to 2.0.0***](https://github.com/KyleAMathews/deepmerge/blob/master/changelog.md#200)
 
 For the legacy array element-merging algorithm, see [the `arrayMerge` option below](#arraymerge).
 
 
 ### Webpack bug
+
 If you have `require('deepmerge')` (as opposed to `import merge from 'deepmerge'`) anywhere in your codebase, Webpack 3 and 4 have a bug that [breaks bundling](https://github.com/webpack/webpack/issues/6584).
 
 If you see `Error: merge is not a function`, add this alias to your Webpack config:
@@ -24,8 +25,7 @@ alias: {
 ```
 
 
-Getting Started
------------
+## Getting Started
 
 ### Example Usage
 <!--js
@@ -97,12 +97,10 @@ import merge from 'deepmerge'
 ```
 
 
-API
-===========
+# API
 
 
-merge(x, y, [options])
------------
+## `merge(x, y, [options])`
 
 Merge two objects `x` and `y` deeply, returning a new merged object with the
 elements from both `x` and `y`.
@@ -113,8 +111,7 @@ If an element at the same key is present for both `x` and `y`, the value from
 Merging creates a new object, so that neither `x` or `y` is modified.
 
 
-merge.all(arrayOfObjects, [options])
------------
+## `merge.all(arrayOfObjects, [options])`
 
 Merges any number of objects into a single result object.
 
@@ -129,10 +126,9 @@ merge.all([x, y, z]) // => expected
 ```
 
 
-Options
------------
+## Options
 
-### arrayMerge
+### `arrayMerge`
 deepmerge, by default, concatenates arrays and merges array values. 
 
 There are however nigh-infinite valid ways to merge arrays, and you may want to supply your own method. You can do this by passing an `arrayMerge` function as an option.
@@ -195,7 +191,7 @@ merge(
 ```
 
 
-### isMergeableObject
+### `isMergeableObject`
 
 By default, deepmerge clones every property from almost every kind of object.
 
@@ -240,7 +236,7 @@ customMergeOutput.someProperty instanceof SuperSpecial // => true
 ```
 
 
-### clone
+### `clone`
 
 *Deprecated.*
 
@@ -249,8 +245,7 @@ Defaults to `true`.
 If `clone` is `false` then child objects will be copied directly instead of being cloned.  This was the default behavior before version 2.x.
 
 
-Testing
-====
+# Testing
 
 With [npm](http://npmjs.org) do:
 
@@ -259,7 +254,6 @@ npm test
 ```
 
 
-License
-=======
+# License
 
 MIT
