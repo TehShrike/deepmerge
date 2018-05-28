@@ -1,3 +1,10 @@
+# [2.1.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.1.1)
+
+- documentation: Rename "methods" to "api", note ESM syntax [#103](https://github.com/KyleAMathews/deepmerge/pull/103)
+- documentation: Fix grammar [#107](https://github.com/KyleAMathews/deepmerge/pull/107)
+- documentation: Restructure headers for clarity + some wording tweaks [108](https://github.com/KyleAMathews/deepmerge/pull/108) + [109](https://github.com/KyleAMathews/deepmerge/pull/109)
+
+
 # [2.1.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.1.0)
 
 - feature: Support a custom `isMergeableObject` function [#96](https://github.com/KyleAMathews/deepmerge/pull/96)
