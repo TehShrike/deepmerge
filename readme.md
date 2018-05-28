@@ -1,16 +1,18 @@
 deepmerge
-=========
+===========
+
+Merges the enumerable attributes of two or more objects deeply.
 
 > UMD bundle is 567B minified+gzipped
 
-Merge the enumerable attributes of two objects deeply.
 
+### Migration from 1.x to 2.0.0
 [***Check out the changes from version 1.x to 2.0.0***](https://github.com/KyleAMathews/deepmerge/blob/master/changelog.md#200)
 
-For the old array element-merging algorithm, see [the `arrayMerge` option below](#arraymerge).
+For the legacy array element-merging algorithm, see [the `arrayMerge` option below](#arraymerge).
 
-## Webpack bug
 
+### Webpack bug
 If you have `require('deepmerge')` (as opposed to `import merge from 'deepmerge'`) anywhere in your codebase, Webpack 3 and 4 have a bug that [breaks bundling](https://github.com/webpack/webpack/issues/6584).
 
 If you see `Error: merge is not a function`, add this alias to your Webpack config:
@@ -21,9 +23,11 @@ alias: {
 }
 ```
 
-example
-=======
 
+Getting Started
+-----------
+
+### Example Usage
 <!--js
 var merge = require('./')
 -->
@@ -68,8 +72,19 @@ var expected = {
 merge(x, y) // => expected
 ```
 
-api
-=======
+
+### Installation
+
+With [npm](http://npmjs.org) do:
+
+```sh
+npm install deepmerge
+```
+
+deepmerge can be used directly in the browser without the use of package managers/bundlers as well:  [UMD version from unpkg.com](https://unpkg.com/deepmerge/dist/umd.js).
+
+
+### Includes
 
 CommonJS:
 ```
@@ -81,6 +96,11 @@ ES Modules:
 import merge from 'deepmerge'
 ```
 
+
+API
+===========
+
+
 merge(x, y, [options])
 -----------
 
@@ -91,6 +111,7 @@ If an element at the same key is present for both `x` and `y`, the value from
 `y` will appear in the result.
 
 Merging creates a new object, so that neither `x` or `y` is modified.
+
 
 merge.all(arrayOfObjects, [options])
 -----------
@@ -107,20 +128,24 @@ var expected = { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
 merge.all([x, y, z]) // => expected
 ```
 
-### options
 
-#### arrayMerge
+Options
+-----------
 
-The merge will also concatenate arrays and merge array values by default.
+### arrayMerge
+deepmerge, by default, concatenates arrays and merges array values. 
 
-However, there are nigh-infinite valid ways to merge arrays, and you may want to supply your own.  You can do this by passing an `arrayMerge` function as an option.
+There are however nigh-infinite valid ways to merge arrays, and you may want to supply your own method. You can do this by passing an `arrayMerge` function as an option.
 
 The options object will include the default `isMergeableObject` implementation if the top-level consumer didn't pass a custom function in.
 
+
+#### Examples
+
+Example of overwriting merge when merging arrays:
+
 ```js
-function overwriteMerge(destinationArray, sourceArray, options) {
-	return sourceArray
-}
+const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
 merge(
 	[1, 2, 3],
 	[3, 2, 1],
@@ -128,21 +153,24 @@ merge(
 ) // => [3, 2, 1]
 ```
 
-To prevent arrays from being merged:
+Example of preventing arrays inside of objects from being merged:
 
 ```js
 const dontMerge = (destination, source) => source
-const output = merge({ coolThing: [1,2,3] }, { coolThing: ['a', 'b', 'c'] }, { arrayMerge: dontMerge })
-output // => { coolThing: ['a', 'b', 'c'] }
+merge(
+	{ coolThing: [1, 2, 3] },
+	{ coolThing: ['a', 'b', 'c'] },
+	{ arrayMerge: dontMerge }
+) // => { coolThing: ['a', 'b', 'c'] }
 ```
 
-To use the old (pre-version-2.0.0) array merging algorithm, pass in this function:
+To use the legacy (pre-version-2.0.0) array merging algorithm, use the following:
 
 ```js
 const emptyTarget = value => Array.isArray(value) ? [] : {}
 const clone = (value, options) => merge(emptyTarget(value), value, options)
 
-function oldArrayMerge(target, source, options) {
+function legacyArrayMerge(target, source, options) {
 	const destination = target.slice()
 
 	source.forEach(function(e, i) {
@@ -162,11 +190,12 @@ function oldArrayMerge(target, source, options) {
 merge(
 	[{ a: true }],
 	[{ b: true }, 'ah yup'],
-	{ arrayMerge: oldArrayMerge }
+	{ arrayMerge: legacyArrayMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
 
-#### isMergeableObject
+
+### isMergeableObject
 
 By default, deepmerge clones every property from almost every kind of object.
 
@@ -210,7 +239,8 @@ customMergeOutput.someProperty.special // => 'oh yeah man totally'
 customMergeOutput.someProperty instanceof SuperSpecial // => true
 ```
 
-#### clone
+
+### clone
 
 *Deprecated.*
 
@@ -218,18 +248,8 @@ Defaults to `true`.
 
 If `clone` is `false` then child objects will be copied directly instead of being cloned.  This was the default behavior before version 2.x.
 
-install
-=======
 
-With [npm](http://npmjs.org) do:
-
-```sh
-npm install deepmerge
-```
-
-Just want to download the file without using any package managers/bundlers?  [Download the UMD version from unpkg.com](https://unpkg.com/deepmerge/dist/umd.js).
-
-test
+Testing
 ====
 
 With [npm](http://npmjs.org) do:
@@ -238,7 +258,8 @@ With [npm](http://npmjs.org) do:
 npm test
 ```
 
-license
+
+License
 =======
 
 MIT
