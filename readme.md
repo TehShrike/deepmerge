@@ -110,6 +110,8 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 Merging creates a new object, so that neither `x` or `y` is modified.
 
+**Note:** by default, arrays are concatenated rather than replacing the array values of `x` with `y`. If you want to replace the values then see `overwriteMerge` documentation in the options section below.
+
 
 ## `merge.all(arrayOfObjects, [options])`
 
@@ -128,37 +130,35 @@ merge.all([x, y, z]) // => expected
 
 ## Options
 
-### `arrayMerge`
-deepmerge, by default, concatenates arrays and merges array values. 
+### `arrayMerge: overwriteMerge`
 
-There are however nigh-infinite valid ways to merge arrays, and you may want to supply your own method. You can do this by passing an `arrayMerge` function as an option.
-
-The options object will include the default `isMergeableObject` implementation if the top-level consumer didn't pass a custom function in.
-
-
-#### Examples
-
-Example of overwriting merge when merging arrays:
+If you want to overwrite the existing array values rather than concatenating them, such as overwriting defaults then use `overwriteMerge`
 
 ```js
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
+
 merge(
-	[1, 2, 3],
-	[3, 2, 1],
+	[{ a: false }],
+	[{ a: true }, { b: true }, 'ah yup'],
 	{ arrayMerge: overwriteMerge }
-) // => [3, 2, 1]
+) // => [{ a: true, b: true }, 'ah yup']
 ```
 
-Example of preventing arrays inside of objects from being merged:
+### `arrayMerge: dontMerge`
+
+If you want to prevent arrays inside of objects from being merged, then use `dontMerge`
 
 ```js
 const dontMerge = (destination, source) => source
+
 merge(
 	{ coolThing: [1, 2, 3] },
 	{ coolThing: ['a', 'b', 'c'] },
 	{ arrayMerge: dontMerge }
 ) // => { coolThing: ['a', 'b', 'c'] }
 ```
+
+### `arrayMerge: legacyArrayMerge`
 
 To use the legacy (pre-version-2.0.0) array merging algorithm, use the following:
 
@@ -190,6 +190,15 @@ merge(
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
 
+### `arrayMerge: customFunction`
+
+If you want to supply your own custom method then pass it as an option to `arrayMerge`
+
+```js
+const customFunction = ...
+
+merge(x, y, { arrayMerge: customFunction })
+```
 
 ### `isMergeableObject`
 
