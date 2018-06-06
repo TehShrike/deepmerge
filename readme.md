@@ -110,7 +110,7 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 Merging creates a new object, so that neither `x` or `y` is modified.
 
-**Note:** by default, arrays are concatenated rather than replacing the array values of `x` with `y`. If you want to replace the values then see `overwriteMerge` documentation in the options section below.
+**Note:** by default, arrays are concatenated rather than replacing the array values of `x` with `y`. If you want to change how this works then see `arrayMerge` section below.
 
 
 ## `merge.all(arrayOfObjects, [options])`
