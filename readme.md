@@ -132,16 +132,16 @@ merge.all([x, y, z]) // => expected
 
 ### `arrayMerge: overwriteMerge`
 
-If you want to overwrite the existing array values rather than concatenating them, such as overwriting defaults then use `overwriteMerge`
+This is useful if you want to overwrite the existing array values completely rather than concatenating them.
 
 ```js
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
 
 merge(
-	[{ a: false }],
-	[{ a: true }, { b: true }, 'ah yup'],
+	[1, 2, 3],
+	[3, 2, 1],
 	{ arrayMerge: overwriteMerge }
-) // => [{ a: true, b: true }, 'ah yup']
+) // => [3, 2, 1]
 ```
 
 ### `arrayMerge: dontMerge`
@@ -159,6 +159,8 @@ merge(
 ```
 
 ### `arrayMerge: legacyArrayMerge`
+
+If you want to combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names then use `legacyArrayMerge`
 
 To use the legacy (pre-version-2.0.0) array merging algorithm, use the following:
 
