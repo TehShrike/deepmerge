@@ -110,8 +110,7 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 Merging creates a new object, so that neither `x` or `y` is modified.
 
-**Note:** by default, arrays are concatenated rather than replacing the array values of `x` with `y`. If you want to change how this works then see `arrayMerge` section below.
-
+**Note:** By default, arrays are merged by concatenating them.
 
 ## `merge.all(arrayOfObjects, [options])`
 
@@ -130,9 +129,13 @@ merge.all([x, y, z]) // => expected
 
 ## Options
 
-### `arrayMerge: overwriteMerge`
+### arrayMerge
 
-This is useful if you want to overwrite the existing array values completely rather than concatenating them.
+There are multiple ways to merge two arrays, below are a few examples but you can also create your own custom function.
+
+#### Overwrite Merge
+
+Overwrites the existing array values completely rather than concatenating them
 
 ```js
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
@@ -144,23 +147,9 @@ merge(
 ) // => [3, 2, 1]
 ```
 
-### `arrayMerge: dontMerge`
+#### Legacy Array Merge
 
-If you want to prevent arrays inside of objects from being merged, then use `dontMerge`
-
-```js
-const dontMerge = (destination, source) => source
-
-merge(
-	{ coolThing: [1, 2, 3] },
-	{ coolThing: ['a', 'b', 'c'] },
-	{ arrayMerge: dontMerge }
-) // => { coolThing: ['a', 'b', 'c'] }
-```
-
-### `arrayMerge: legacyArrayMerge`
-
-If you want to combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names then use `legacyArrayMerge`
+Combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names
 
 To use the legacy (pre-version-2.0.0) array merging algorithm, use the following:
 
@@ -190,16 +179,6 @@ merge(
 	[{ b: true }, 'ah yup'],
 	{ arrayMerge: legacyArrayMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
-```
-
-### `arrayMerge: customFunction`
-
-If you want to supply your own custom method then pass it as an option to `arrayMerge`
-
-```js
-const customFunction = ...
-
-merge(x, y, { arrayMerge: customFunction })
 ```
 
 ### `isMergeableObject`
