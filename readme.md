@@ -129,11 +129,11 @@ merge.all([x, y, z]) // => expected
 
 ## Options
 
-### arrayMerge
+### `arrayMerge`
 
 There are multiple ways to merge two arrays, below are a few examples but you can also create your own custom function.
 
-#### Overwrite Merge
+#### Overwrite Array
 
 Overwrites the existing array values completely rather than concatenating them
 
@@ -147,7 +147,7 @@ merge(
 ) // => [3, 2, 1]
 ```
 
-#### Legacy Array Merge
+#### Combine Array
 
 Combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names
 
@@ -157,7 +157,7 @@ To use the legacy (pre-version-2.0.0) array merging algorithm, use the following
 const emptyTarget = value => Array.isArray(value) ? [] : {}
 const clone = (value, options) => merge(emptyTarget(value), value, options)
 
-function legacyArrayMerge(target, source, options) {
+function combineMerge(target, source, options) {
 	const destination = target.slice()
 
 	source.forEach(function(e, i) {
@@ -177,7 +177,7 @@ function legacyArrayMerge(target, source, options) {
 merge(
 	[{ a: true }],
 	[{ b: true }, 'ah yup'],
-	{ arrayMerge: legacyArrayMerge }
+	{ arrayMerge: combineMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
 
