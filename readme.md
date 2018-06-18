@@ -110,6 +110,7 @@ If an element at the same key is present for both `x` and `y`, the value from
 
 Merging creates a new object, so that neither `x` or `y` is modified.
 
+**Note:** By default, arrays are merged by concatenating them.
 
 ## `merge.all(arrayOfObjects, [options])`
 
@@ -129,19 +130,16 @@ merge.all([x, y, z]) // => expected
 ## Options
 
 ### `arrayMerge`
-deepmerge, by default, concatenates arrays and merges array values. 
 
-There are however nigh-infinite valid ways to merge arrays, and you may want to supply your own method. You can do this by passing an `arrayMerge` function as an option.
+There are multiple ways to merge two arrays, below are a few examples but you can also create your own custom function.
 
-The options object will include the default `isMergeableObject` implementation if the top-level consumer didn't pass a custom function in.
+#### Overwrite Array
 
-
-#### Examples
-
-Example of overwriting merge when merging arrays:
+Overwrites the existing array values completely rather than concatenating them
 
 ```js
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
+
 merge(
 	[1, 2, 3],
 	[3, 2, 1],
@@ -149,16 +147,9 @@ merge(
 ) // => [3, 2, 1]
 ```
 
-Example of preventing arrays inside of objects from being merged:
+#### Combine Array
 
-```js
-const dontMerge = (destination, source) => source
-merge(
-	{ coolThing: [1, 2, 3] },
-	{ coolThing: ['a', 'b', 'c'] },
-	{ arrayMerge: dontMerge }
-) // => { coolThing: ['a', 'b', 'c'] }
-```
+Combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names
 
 To use the legacy (pre-version-2.0.0) array merging algorithm, use the following:
 
@@ -166,7 +157,7 @@ To use the legacy (pre-version-2.0.0) array merging algorithm, use the following
 const emptyTarget = value => Array.isArray(value) ? [] : {}
 const clone = (value, options) => merge(emptyTarget(value), value, options)
 
-function legacyArrayMerge(target, source, options) {
+function combineMerge(target, source, options) {
 	const destination = target.slice()
 
 	source.forEach(function(e, i) {
@@ -186,10 +177,9 @@ function legacyArrayMerge(target, source, options) {
 merge(
 	[{ a: true }],
 	[{ b: true }, 'ah yup'],
-	{ arrayMerge: legacyArrayMerge }
+	{ arrayMerge: combineMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
-
 
 ### `isMergeableObject`
 
