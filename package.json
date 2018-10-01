@@ -23,8 +23,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "test": "npm run build && tap test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "node ./node_modules/typescript/lib/tsc.js --noEmit test/typescript.ts",
+    "test": "npm run build && tap test/*.js && jsmd readme.md && tsc --noEmit test/typescript.ts",
     "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c"
   },
   "devDependencies": {
@@ -35,7 +34,7 @@
     "rollup-plugin-commonjs": "8.2.1",
     "rollup-plugin-node-resolve": "3.0.0",
     "tap": "~7.1.2",
-    "typescript": ">=2.2.2",
+    "typescript": ">=2.0.0",
     "uglify-js": "^3.3.12"
   },
   "license": "MIT"
