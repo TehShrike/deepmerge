@@ -34,7 +34,7 @@
     "rollup-plugin-commonjs": "8.2.1",
     "rollup-plugin-node-resolve": "3.0.0",
     "tap": "~7.1.2",
-    "typescript": ">=2.0.0",
+    "typescript": "2.0.0",
     "uglify-js": "^3.3.12"
   },
   "license": "MIT"
