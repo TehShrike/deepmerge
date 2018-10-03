@@ -47,4 +47,4 @@ const options2: merge.Options = {
 
 merged1 = merge(x, y, options1);
 merged2 = merge(x, z, options2);
-merged3 = merge([x, y, z], options1);
+merged3 = merge.all([x, y, z], options1);
