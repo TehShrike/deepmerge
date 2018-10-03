@@ -1,4 +1,8 @@
-# # [2.2.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.2.0)
+# [2.2.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.2.1)
+
+- bug: typescript export type was wrong [#121](https://github.com/KyleAMathews/deepmerge/pull/121)
+
+# [2.2.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.2.0)
 
 - feature: added TypeScript typings [#119](https://github.com/KyleAMathews/deepmerge/pull/119)
 
