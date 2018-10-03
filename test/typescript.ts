@@ -1,4 +1,4 @@
-import merge from '../';
+import * as merge from '../';
 
 const x = {
 	foo: 'abc',
