@@ -27,7 +27,7 @@ merged2.baz;
 const options1: merge.Options = {
 	clone: true,
 	isMergeableObject (obj) {
-		return true;
+		return false;
 	},
 };
 
@@ -41,7 +41,7 @@ const options2: merge.Options = {
 	},
 	clone: true,
 	isMergeableObject (obj) {
-		return true;
+		return false;
 	},
 };
 
