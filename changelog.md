@@ -1,3 +1,7 @@
+# # [2.2.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.2.0)
+
+- feature: added TypeScript typings [#119](https://github.com/KyleAMathews/deepmerge/pull/119)
+
 # [2.1.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.1.1)
 
 - documentation: Rename "methods" to "api", note ESM syntax [#103](https://github.com/KyleAMathews/deepmerge/pull/103)
