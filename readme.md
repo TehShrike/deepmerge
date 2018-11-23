@@ -189,7 +189,7 @@ You may not want this, if your objects are of special types, and you want to cop
 
 You can accomplish this by passing in a function for the `isMergeableObject` option.
 
-If you only want to clone properties of plain objects, and ignore all "special" kinds of instantiated objects, you probably want to drop in [`is-plain-object`](https://github.com/jonschlinkert/is-plain-object).
+If you only want to clone properties of plain objects, and ignore all "special" kinds of instantiated objects, you probably want to drop in [`is-plain-object`](https://github.com/jonschlinkert/is-plain-object). Keep in mind that arrays in that case also will be handled as "special" kinds. In such case you would be required to check additionally.
 
 ```js
 const isPlainObject = require('is-plain-object')
@@ -217,7 +217,7 @@ defaultOutput.someProperty.special // => 'oh yeah man totally'
 defaultOutput.someProperty instanceof SuperSpecial // => false
 
 const customMergeOutput = merge(target, source, {
-	isMergeableObject: isPlainObject
+	isMergeableObject: isPlainObject // or (value) => isPlainObject(value) || Array.isArray(value)
 })
 
 customMergeOutput.someProperty.cool // => undefined
