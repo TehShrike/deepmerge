@@ -62,3 +62,4 @@ deepmerge.all = function deepmergeAll(array, options) {
 }
 
 module.exports = deepmerge
+module.exports.default = deepmerge // require('deepmerge').default will fix bundle problems with Webpack
