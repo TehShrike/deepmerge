@@ -80,7 +80,7 @@ var merge = require('deepmerge')
 
 ES Modules:
 ```
-import * from 'deepmerge'
+import * as deepmerge from 'deepmerge'
 ```
 
 (support for `import merge from 'deepmerge'` was removed because of a [Webpack bug](https://github.com/webpack/webpack/issues/6584)).
