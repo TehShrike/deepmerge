@@ -1,3 +1,7 @@
+# [3.0.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v3.0.0)
+
+- drop ES module build [#123](https://github.com/KyleAMathews/deepmerge/issues/123)
+
 # [2.2.1](https://github.com/KyleAMathews/deepmerge/releases/tag/v2.2.1)
 
 - bug: typescript export type was wrong [#121](https://github.com/KyleAMathews/deepmerge/pull/121)

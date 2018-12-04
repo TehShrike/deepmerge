@@ -5,24 +5,11 @@ Merges the enumerable attributes of two or more objects deeply.
 > UMD bundle is 567B minified+gzipped
 
 
-### Migration from 1.x to 2.0.0
+### Migration from 1.x to 2+
 
 [***Check out the changes from version 1.x to 2.0.0***](https://github.com/KyleAMathews/deepmerge/blob/master/changelog.md#200)
 
 For the legacy array element-merging algorithm, see [the `arrayMerge` option below](#arraymerge).
-
-
-### Webpack bug
-
-If you have `require('deepmerge')` (as opposed to `import merge from 'deepmerge'`) anywhere in your codebase, Webpack 3 and 4 have a bug that [breaks bundling](https://github.com/webpack/webpack/issues/6584).
-
-If you see `Error: merge is not a function`, add this alias to your Webpack config:
-
-```
-alias: {
-	deepmerge$: path.resolve(__dirname, 'node_modules/deepmerge/dist/umd.js'),
-}
-```
 
 
 ## Getting Started
@@ -93,8 +80,10 @@ var merge = require('deepmerge')
 
 ES Modules:
 ```
-import merge from 'deepmerge'
+import * as deepmerge from 'deepmerge'
 ```
+
+(support for `import merge from 'deepmerge'` was removed because of a [Webpack bug](https://github.com/webpack/webpack/issues/6584)).
 
 
 # API
