@@ -11,4 +11,4 @@ declare namespace deepmerge {
 	export function all (objects: object[], options?: Options): object;
 }
 
-export = deepmerge;
+export default deepmerge;
