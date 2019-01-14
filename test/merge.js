@@ -472,3 +472,58 @@ test('dates should copy correctly in an array', function(t) {
 	t.deepEqual(actual, expected)
 	t.end()
 })
+
+test('should handle custom merge functions', function(t) {
+	var target = {
+		letters: ['a', 'b'],
+		people: {
+			first: 'Alex',
+			second: 'Bert',
+		}
+	}
+
+	var source = {
+		letters: ['c'],
+		people: {
+			first: 'Smith',
+			second: 'Bertson',
+			third: 'Car'
+		}
+	};
+
+	var mergeFunctions = {
+		people: function(s, t) {
+			var destination = {};
+			var allKeys = Object.keys(t).concat(Object.keys(s))
+
+			allKeys.forEach(function(key) {
+				if (s[key] && t[key]) {
+					destination[key] = t[key] + '-' + s[key]
+				} else if (s[key]) {
+					destination[key] = s[key]
+				} else {
+					destination[key] = t[key]
+				}
+			})
+
+			return destination
+		}
+	}
+
+	var expected = {
+		letters: ['a', 'b', 'c'],
+		people: {
+			first: 'Alex-Smith',
+			second: 'Bert-Bertson',
+			third: 'Car'
+		}
+	}
+
+	var options = {
+		customMergeFunctions: mergeFunctions,
+	}
+
+	var actual = merge(target, source, options)
+	t.deepEqual(actual, expected)
+	t.end()
+})
