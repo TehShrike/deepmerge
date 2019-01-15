@@ -489,7 +489,7 @@ test('should handle custom merge functions', function(t) {
 			second: 'Bertson',
 			third: 'Car'
 		}
-	};
+	}
 
     const mergePeople = (target, source, options) => {
        const keys = new Set(Object.keys(target).concat(Object.keys(source)))
@@ -528,4 +528,89 @@ test('should handle custom merge functions', function(t) {
 	var actual = merge(target, source, options)
 	t.deepEqual(actual, expected)
 	t.end()
+})
+
+
+test('should handle custom merge functions', function(t) {
+	var target = {
+		letters: ['a', 'b'],
+		people: {
+			first: 'Alex',
+			second: 'Bert',
+		}
+	}
+
+	var source = {
+		letters: ['c'],
+		people: {
+			first: 'Smith',
+			second: 'Bertson',
+			third: 'Car'
+		}
+	}
+
+    const mergeLetters = (target, source, options) => {
+      return 'merged letters'
+    }
+
+
+    const options = {
+        customMerge: (key, options) => {
+          if (key === 'letters') {
+            return mergeLetters
+          }
+        }
+    }
+
+    const expected = {
+        letters: 'merged letters',
+        people: {
+            first: 'Smith',
+            second: 'Bertson',
+            third: 'Car'
+        }
+    }
+
+	var actual = merge(target, source, options)
+	t.deepEqual(actual, expected)
+	t.end()
+})
+
+test('should merge correctly if custom merge is not a valid function', function(t) {
+	var target = {
+		letters: ['a', 'b'],
+		people: {
+			first: 'Alex',
+			second: 'Bert',
+		}
+	}
+
+	var source = {
+		letters: ['c'],
+		people: {
+			first: 'Smith',
+			second: 'Bertson',
+			third: 'Car'
+		}
+	}
+
+    const options = {
+        customMerge: (key, options) => {
+            return  false
+        }
+    }
+
+    const expected = {
+        letters: ['a', 'b', 'c'],
+        people: {
+            first: 'Smith',
+            second: 'Bertson',
+            third: 'Car'
+        }
+    }
+
+	var actual = merge(target, source, options)
+	t.deepEqual(actual, expected)
+	t.end()
+
 })
