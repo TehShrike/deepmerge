@@ -492,7 +492,7 @@ test('should handle custom merge functions', function(t) {
 	};
 
     const mergePeople = (target, source, options) => {
-       const keys = new Set([...Object.keys(target), ...Object.keys(source)])
+       const keys = new Set(Object.keys(target).concat(Object.keys(source)))
 	   const destination = {}
        keys.forEach(key => {
            if (key in target && key in source) {
