@@ -26,8 +26,8 @@ function mergeObject(target, source, options) {
 	Object.keys(source).forEach(function(key) {
 		if (!options.isMergeableObject(source[key]) || !target[key]) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
-		} else if (Object.keys(options.customMergeFunctions).indexOf(key) > -1) {
-			destination[key] = options.customMergeFunctions[key](source[key], target[key])
+		} else if (options.customMerge) {
+			destination[key] = options.customMerge(key, options)(target[key], source[key], options)
 		} else {
 			destination[key] = deepmerge(target[key], source[key], options)
 		}
@@ -39,7 +39,6 @@ function deepmerge(target, source, options) {
 	options = options || {}
 	options.arrayMerge = options.arrayMerge || defaultArrayMerge
 	options.isMergeableObject = options.isMergeableObject || defaultIsMergeableObject
-	options.customMergeFunctions = options.customMergeFunctions || {}
 
 	var sourceIsArray = Array.isArray(source)
 	var targetIsArray = Array.isArray(target)

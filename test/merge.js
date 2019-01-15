@@ -491,24 +491,30 @@ test('should handle custom merge functions', function(t) {
 		}
 	};
 
-	var mergeFunctions = {
-		people: function(s, t) {
-			var destination = {};
-			var allKeys = Object.keys(t).concat(Object.keys(s))
+    const mergePeople = (target, source, options) => {
+       const keys = new Set([...Object.keys(target), ...Object.keys(source)])
+	   const destination = {}
+       keys.forEach(key => {
+           if (key in target && key in source) {
+               destination[key] = `${target[key]}-${source[key]}`
+           } else if (key in target) {
+               destination[key] = target[key]
+           } else {
+               destination[key] = source[key]
+           }
+	   })
+       return destination
+   }
 
-			allKeys.forEach(function(key) {
-				if (s[key] && t[key]) {
-					destination[key] = t[key] + '-' + s[key]
-				} else if (s[key]) {
-					destination[key] = s[key]
-				} else {
-					destination[key] = t[key]
-				}
-			})
+   const options = {
+       customMerge: (key, options) => {
+         if (key === 'people') {
+           return mergePeople
+		 }
 
-			return destination
-		}
-	}
+		 return merge
+       }
+   }
 
 	var expected = {
 		letters: ['a', 'b', 'c'],
@@ -517,10 +523,6 @@ test('should handle custom merge functions', function(t) {
 			second: 'Bert-Bertson',
 			third: 'Car'
 		}
-	}
-
-	var options = {
-		customMergeFunctions: mergeFunctions,
 	}
 
 	var actual = merge(target, source, options)
