@@ -1,3 +1,7 @@
+# [3.1.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v3.1.0)
+
+- typescript typing: make the `all` function generic [#129](https://github.com/TehShrike/deepmerge/pull/129)
+
 # [3.0.0](https://github.com/KyleAMathews/deepmerge/releases/tag/v3.0.0)
 
 - drop ES module build [#123](https://github.com/KyleAMathews/deepmerge/issues/123)
