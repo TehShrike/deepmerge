@@ -45,6 +45,16 @@ const options2: merge.Options = {
 	},
 };
 
+const options3: merge.Options = {
+    customMerge: (key) => {
+        if (key === 'foo') {
+          return (target, source) => target + source;
+        }
+    }
+}
+
 merged1 = merge(x, y, options1);
 merged2 = merge(x, z, options2);
 merged3 = merge.all([x, y, z], options1);
+
+const merged4 = merge(x, y, options3);
