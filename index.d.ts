@@ -8,7 +8,7 @@ declare namespace deepmerge {
 		isMergeableObject?(value: object): boolean;
 	}
 
-	export function all (objects: object[], options?: Options): object;
+	export function all<T>(objects: object | T[], options?: Options): T;
 }
 
 export = deepmerge;
