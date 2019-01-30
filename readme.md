@@ -214,6 +214,40 @@ customMergeOutput.someProperty.special // => 'oh yeah man totally'
 customMergeOutput.someProperty instanceof SuperSpecial // => true
 ```
 
+### `customMerge`
+Specifies a function which can be used to override the default merge behavior dependant on the key which is being merged.
+
+The function will be passed the key for each property, and should return the function which should be used to merge the values for that propertyo
+
+It may also return undefined, in which case the default behaviour will be used.
+
+```js
+const target = {
+    name: 'Alex',
+    pets: ['Cat', 'Parrot']
+}
+
+const source = {
+    name: 'Tony',
+    pets: ['Dog']
+}
+
+const mergeNames = (target, source) => `${target} and ${source}`
+
+const options = {
+    customMerge: (key) => {
+        if (key === 'name') {
+            return mergeNames
+        }
+    }
+}
+
+const result = merge(target, source, options)
+
+result.name // => 'Alex and Tony'
+result.pets // => ['Cat', 'Parrot', 'Dog']
+```
+
 
 ### `clone`
 
