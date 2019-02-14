@@ -222,17 +222,23 @@ The function will be passed the key for each property, and should return the fun
 It may also return undefined, in which case the default behaviour will be used.
 
 ```js
-const target = {
-    name: 'Alex',
+const alex = {
+    name: {
+        first: 'Alex',
+        last: 'Alexson'
+    },
     pets: ['Cat', 'Parrot']
 }
 
-const source = {
-    name: 'Tony',
+const tony = {
+    name: {
+        first: 'Tony',
+        last: 'Tonison'
+    },
     pets: ['Dog']
 }
 
-const mergeNames = (target, source) => `${target} and ${source}`
+const mergeNames = (nameA, nameB) => `${nameA.first} and ${nameB.first}`
 
 const options = {
     customMerge: (key) => {
@@ -242,7 +248,7 @@ const options = {
     }
 }
 
-const result = merge(target, source, options)
+const result = merge(alex, tony, options)
 
 result.name // => 'Alex and Tony'
 result.pets // => ['Cat', 'Parrot', 'Dog']
