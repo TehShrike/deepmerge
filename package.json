@@ -11,10 +11,10 @@
     "recursive"
   ],
   "version": "3.1.0",
-  "homepage": "https://github.com/KyleAMathews/deepmerge",
+  "homepage": "https://github.com/TehShrike/deepmerge",
   "repository": {
     "type": "git",
-    "url": "git://github.com/KyleAMathews/deepmerge.git"
+    "url": "git://github.com/TehShrike/deepmerge.git"
   },
   "main": "dist/umd.js",
   "engines": {
