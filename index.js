@@ -16,6 +16,14 @@ function defaultArrayMerge(target, source, options) {
 	})
 }
 
+function getMergeFunction(key, options) {
+	if (!options.customMerge) {
+		return deepmerge
+	}
+	var customMerge = options.customMerge(key)
+	return typeof customMerge === 'function' ? customMerge : deepmerge
+}
+
 function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
@@ -27,7 +35,7 @@ function mergeObject(target, source, options) {
 		if (!options.isMergeableObject(source[key]) || !target[key]) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		} else {
-			destination[key] = deepmerge(target[key], source[key], options)
+			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
 		}
 	})
 	return destination
