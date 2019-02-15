@@ -215,11 +215,12 @@ customMergeOutput.someProperty instanceof SuperSpecial // => true
 ```
 
 ### `customMerge`
-Specifies a function which can be used to override the default merge behavior dependant on the key which is being merged.
 
-The function will be passed the key for each property, and should return the function which should be used to merge the values for that propertyo
+Specifies a function which can be used to override the default merge behavior for a property, based on the property name.
 
-It may also return undefined, in which case the default behaviour will be used.
+The `customMerge` function will be passed the key for each property, and should return the function which should be used to merge the values for that property.
+
+It may also return undefined, in which case the default merge behaviour will be used.
 
 ```js
 const alex = {
