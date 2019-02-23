@@ -1,6 +1,17 @@
 var merge = require('../')
 var test = require('tap').test
 
+test('work with symbol keys', function(t) {
+	var src = { [Symbol.for('key1')]: 'value1' }
+	var target = {}
+
+	var res = merge(target, src)
+
+	t.deepEqual(target, {}, 'merge should be immutable')
+	t.equal(res[Symbol.for('key1')], src[Symbol.for('key1')])
+	t.end()
+})
+
 test('add keys in target that do not exist at the root', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
 	var target = {}

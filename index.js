@@ -27,11 +27,21 @@ function getMergeFunction(key, options) {
 function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
-		Object.keys(target).forEach(function(key) {
+		Object.getOwnPropertySymbols(target).forEach(function(key) {
+			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
+		})
+		Object.getOwnPropertyNames(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
-	Object.keys(source).forEach(function(key) {
+	Object.getOwnPropertySymbols(source).forEach(function(key) {
+		if (!options.isMergeableObject(source[key]) || !target[key]) {
+			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
+		} else {
+			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
+		}
+	})
+	Object.getOwnPropertyNames(source).forEach(function(key) {
 		if (!options.isMergeableObject(source[key]) || !target[key]) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		} else {
