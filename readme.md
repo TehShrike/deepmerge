@@ -73,18 +73,17 @@ deepmerge can be used directly in the browser without the use of package manager
 
 ### Includes
 
-CommonJS:
+CommonJS is recommended:
+
 ```
 var merge = require('deepmerge')
 ```
 
-ES Modules:
-```
-import * as deepmerge from 'deepmerge'
-```
+deepmerge doesn't expose an ES Module (true ESM support was removed because of a [Webpack bug](https://github.com/webpack/webpack/issues/6584)), but you can use the ES Module syntax if your bundler supports it and you really want to:
 
-(support for `import merge from 'deepmerge'` was removed because of a [Webpack bug](https://github.com/webpack/webpack/issues/6584)).
-
+```
+import * as merge from 'deepmerge'
+```
 
 # API
 
