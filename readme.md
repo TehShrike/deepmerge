@@ -71,20 +71,15 @@ npm install deepmerge
 deepmerge can be used directly in the browser without the use of package managers/bundlers as well:  [UMD version from unpkg.com](https://unpkg.com/deepmerge/dist/umd.js).
 
 
-### Includes
+### Include
 
-CommonJS:
-```
-var merge = require('deepmerge')
-```
+deepmerge exposes a CommonJS entry point:
 
-ES Modules:
 ```
-import * as deepmerge from 'deepmerge'
+const merge = require('deepmerge')
 ```
 
-(support for `import merge from 'deepmerge'` was removed because of a [Webpack bug](https://github.com/webpack/webpack/issues/6584)).
-
+The ESM entry point was dropped due to a [Webpack bug](https://github.com/webpack/webpack/issues/6584).
 
 # API
 
