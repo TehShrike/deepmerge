@@ -1,5 +1,4 @@
-declare function deepmerge<T>(x: Partial<T>, y: Partial<T>, options?: deepmerge.Options): T;
-declare function deepmerge<T1, T2>(x: Partial<T1>, y: Partial<T2>, options?: deepmerge.Options): T1 & T2;
+declare function deepmerge<T1, T2>(x: T1, y: T2, options?: deepmerge.Options): T1 & T2;
 
 declare namespace deepmerge {
 	export interface Options {
@@ -10,7 +9,7 @@ declare namespace deepmerge {
 	}
 
 	export function all (objects: object[], options?: Options): object;
-	export function all<T> (objects: Partial<T>[], options?: Options): T;
+	export function all<T> (objects: T[], options?: Options): T;
 }
 
 export = deepmerge;
