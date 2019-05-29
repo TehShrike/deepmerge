@@ -1,23 +1,26 @@
 import * as merge from '../';
 
-let x: {
-	foo: string,
-	bar: string,
+let x = {
+	foo: 'abc',
+	bar: 'def',
 }
 
-let y: {
-	foo: string,
-	baz: string,
-	wat: string,
+let y = {
+	foo: 'cba',
+	baz: 'fed',
+	wat: 42,
 }
 
 let z: {
 	bar: string,
 	baz: string,
 	qux?: string,
+} = {
+	bar: 'a',
+	baz: 'a'
 }
 
-let merged1: {foo: string, bar: string, baz: string, wat: string} = merge(x, y);
+let merged1: {foo: string, bar: string, baz: string, wat: number} = merge(x, y);
 let merged2: {foo: string, bar: string, baz: string, qux?: string} = merge(x, z);
 
 let mergedAll1: {t1: string} = merge.all([
