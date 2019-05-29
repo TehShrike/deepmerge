@@ -8,7 +8,10 @@ declare namespace deepmerge {
 		isMergeableObject?(value: object): boolean;
 	}
 
-	export function all (objects: object[], options?: Options): object;
+	export function all<T1, T2> (objects: [T1, T2], options?: Options): T1 & T2;
+	export function all<T1, T2, T3> (objects: [T1, T2, T3], options?: Options): T1 & T2 & T3;
+	export function all<T1, T2, T3, T4> (objects: [T1, T2, T3, T4], options?: Options): T1 & T2 & T3 & T4;
+	export function all<T1, T2, T3, T4, T5> (objects: [T1, T2, T3, T4, T5], options?: Options): T1 & T2 & T3 & T4 & T5;
 	export function all<T> (objects: T[], options?: Options): T;
 }
 
