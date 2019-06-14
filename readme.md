@@ -16,11 +16,11 @@ For the legacy array element-merging algorithm, see [the `arrayMerge` option bel
 
 ### Example Usage
 <!--js
-var merge = require('./')
+const merge = require('./')
 -->
 
 ```js
-var x = {
+const x = {
 	foo: { bar: 3 },
 	array: [{
 		does: 'work',
@@ -28,7 +28,7 @@ var x = {
 	}]
 }
 
-var y = {
+const y = {
 	foo: { baz: 4 },
 	quux: 5,
 	array: [{
@@ -39,7 +39,7 @@ var y = {
 	}]
 }
 
-var expected = {
+const expected = {
 	foo: {
 		bar: 3,
 		baz: 4
@@ -101,11 +101,11 @@ Merging creates a new object, so that neither `x` or `y` is modified.
 Merges any number of objects into a single result object.
 
 ```js
-var x = { foo: { bar: 3 } }
-var y = { foo: { baz: 4 } }
-var z = { bar: 'yay!' }
+const x = { foo: { bar: 3 } }
+const y = { foo: { baz: 4 } }
+const z = { bar: 'yay!' }
 
-var expected = { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
+const expected = { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
 
 merge.all([x, y, z]) // => expected
 ```
@@ -141,18 +141,18 @@ To use the legacy (pre-version-2.0.0) array merging algorithm, use the following
 const emptyTarget = value => Array.isArray(value) ? [] : {}
 const clone = (value, options) => merge(emptyTarget(value), value, options)
 
-function combineMerge(target, source, options) {
+const combineMerge = (target, source, options) => {
 	const destination = target.slice()
 
-	source.forEach(function(e, i) {
-		if (typeof destination[i] === 'undefined') {
+	source.forEach((item, index) => {
+		if (typeof destination[index] === 'undefined') {
 			const cloneRequested = options.clone !== false
-			const shouldClone = cloneRequested && options.isMergeableObject(e)
-			destination[i] = shouldClone ? clone(e, options) : e
-		} else if (options.isMergeableObject(e)) {
-			destination[i] = merge(target[i], e, options)
-		} else if (target.indexOf(e) === -1) {
-			destination.push(e)
+			const shouldClone = cloneRequested && options.isMergeableObject(item)
+			destination[index] = shouldClone ? clone(item, options) : item
+		} else if (options.isMergeableObject(item)) {
+			destination[index] = merge(target[index], item, options)
+		} else if (target.indexOf(item) === -1) {
+			destination.push(item)
 		}
 	})
 	return destination
