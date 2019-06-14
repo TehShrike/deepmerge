@@ -1,5 +1,5 @@
 var merge = require('../')
-var test = require('tap').test
+var test = require('tape')
 
 test('add keys in target that do not exist at the root', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
@@ -449,7 +449,7 @@ test('should overwrite values when property is initialised but undefined', funct
 
 	function hasUndefinedProperty(o) {
 		t.ok(o.hasOwnProperty('value'))
-		t.type(o.value, 'undefined')
+		t.equal(typeof o.value, 'undefined')
 	}
 
 	hasUndefinedProperty(merge(target1, src))

@@ -1,5 +1,5 @@
 var merge = require('../')
-var test = require('tap').test
+var test = require('tape')
 
 test('throw error if first argument is not an array', function(t) {
 	t.throws(merge.all.bind(null, { example: true }, { another: '2' }), Error)

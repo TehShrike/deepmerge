@@ -5,12 +5,15 @@ const pkg = require(`./package.json`)
 
 export default {
 	input: `index.js`,
-	name: `deepmerge`,
 	plugins: [
 		commonjs(),
 		resolve(),
 	],
 	output: [
-		{ file: pkg.main, format: `umd` },
+		{
+			name: 'deepmerge',
+			file: pkg.main,
+			format: `umd`
+		},
 	],
 }
