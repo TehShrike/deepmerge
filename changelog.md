@@ -1,3 +1,7 @@
+# [3.2.1](https://github.com/TehShrike/deepmerge/releases/tag/v3.2.1)
+
+- bumping dev dependency versions to try to shut up bogus security warnings from Github/npm [#149](https://github.com/TehShrike/deepmerge/pull/149)
+
 # [3.2.0](https://github.com/TehShrike/deepmerge/releases/tag/v3.2.0)
 
 - feature: added the [`customMerge`](https://github.com/TehShrike/deepmerge#custommerge) option [#133](https://github.com/TehShrike/deepmerge/pull/133)
