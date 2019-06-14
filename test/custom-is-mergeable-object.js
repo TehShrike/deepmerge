@@ -1,5 +1,5 @@
 var merge = require('../')
-var test = require('tap').test
+var test = require('tape')
 
 test('isMergeableObject function copying object over object', function(t) {
 	var src = { key: { isMergeable: false }, baz: 'yes' }

@@ -1,5 +1,5 @@
 var merge = require('../')
-var test = require('tap').test
+var test = require('tape')
 
 test('custom merge array', function(t) {
 	var mergeFunctionCalled = false
