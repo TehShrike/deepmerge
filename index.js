@@ -24,14 +24,20 @@ function getMergeFunction(key, options) {
 	return typeof customMerge === 'function' ? customMerge : deepmerge
 }
 
+function getKeys(target) {
+    return Object.getOwnPropertySymbols ?
+        Object.keys(target).concat(Object.getOwnPropertySymbols(target))
+        : Object.keys(target)
+}
+
 function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
-		Object.keys(target).forEach(function(key) {
+		getKeys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
-	Object.keys(source).forEach(function(key) {
+	getKeys(source).forEach(function(key) {
 		if (!options.isMergeableObject(source[key]) || !target[key]) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		} else {
