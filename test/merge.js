@@ -615,13 +615,25 @@ test('should merge correctly if custom merge is not a valid function', function(
 
 })
 
-test('add symbol keys in target that do not exist at the root', function(t) {
-    var mySymbol = Symbol();
+test('copy symbol keys in target that do not exist on the target', function(t) {
+	var mySymbol = Symbol();
 	var src = { [mySymbol]: 'value1' }
 	var target = {}
 
 	var res = merge(target, src)
 
+	t.equal(res[mySymbol], 'value1')
 	t.deepEqual(Object.getOwnPropertySymbols(res), Object.getOwnPropertySymbols(src))
+	t.end()
+})
+
+test('copy symbol keys in target that do exist on the target', function(t) {
+	var mySymbol = Symbol();
+	var src = { [mySymbol]: 'value1' }
+	var target = { [mySymbol]: 'wat'}
+
+	var res = merge(target, src)
+
+	t.equal(res[mySymbol], 'value1')
 	t.end()
 })
