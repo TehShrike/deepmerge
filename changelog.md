@@ -1,3 +1,7 @@
+# [3.3.0](https://github.com/TehShrike/deepmerge/releases/tag/v3.3.0)
+
+- Enumerable Symbol properties are now copied [#151](https://github.com/TehShrike/deepmerge/pull/151)
+
 # [3.2.1](https://github.com/TehShrike/deepmerge/releases/tag/v3.2.1)
 
 - bumping dev dependency versions to try to shut up bogus security warnings from Github/npm [#149](https://github.com/TehShrike/deepmerge/pull/149)
