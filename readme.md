@@ -1,8 +1,8 @@
 # deepmerge
 
-Merges the enumerable attributes of two or more objects deeply.
+Merges the enumerable properties of two or more objects deeply.
 
-> UMD bundle is 587B minified+gzipped
+> UMD bundle is 646B minified+gzipped
 
 
 ### Migration from 1.x to 2+
