@@ -101,13 +101,11 @@ Merging creates a new object, so that neither `x` or `y` is modified.
 Merges any number of objects into a single result object.
 
 ```js
-const x = { foo: { bar: 3 } }
-const y = { foo: { baz: 4 } }
-const z = { bar: 'yay!' }
+const foobar = { foo: { bar: 3 } }
+const foobaz = { foo: { baz: 4 } }
+const bar = { bar: 'yay!' }
 
-const expected = { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
-
-merge.all([x, y, z]) // => expected
+merge.all([ foobar, foobaz, bar ]) // => { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
 ```
 
 
