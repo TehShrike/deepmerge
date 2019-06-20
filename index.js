@@ -24,10 +24,16 @@ function getMergeFunction(key, options) {
 	return typeof customMerge === 'function' ? customMerge : deepmerge
 }
 
-function getKeys(target) {
+function getEnumerableOwnPropertySymbols(target) {
     return Object.getOwnPropertySymbols ?
-        Object.keys(target).concat(Object.getOwnPropertySymbols(target))
-        : Object.keys(target)
+        Object.getOwnPropertySymbols(target).filter(function(symbol) {
+            return target.propertyIsEnumerable(symbol)
+        })
+        : [];
+}
+
+function getKeys(target) {
+    return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
 }
 
 function mergeObject(target, source, options) {
