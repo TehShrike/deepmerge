@@ -4,14 +4,6 @@ Merges the enumerable properties of two or more objects deeply.
 
 > UMD bundle is 646B minified+gzipped
 
-
-### Migration from 1.x to 2+
-
-[***Check out the changes from version 1.x to 2.0.0***](https://github.com/KyleAMathews/deepmerge/blob/master/changelog.md#200)
-
-For the legacy array element-merging algorithm, see [the `arrayMerge` option below](#arraymerge).
-
-
 ## Getting Started
 
 ### Example Usage
