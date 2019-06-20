@@ -31,7 +31,7 @@ const y = {
 	}]
 }
 
-const expected = {
+const output = {
 	foo: {
 		bar: 3,
 		baz: 4
@@ -48,7 +48,7 @@ const expected = {
 	quux: 5
 }
 
-merge(x, y) // => expected
+merge(x, y) // => output
 ```
 
 
