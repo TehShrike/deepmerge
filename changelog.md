@@ -1,3 +1,7 @@
+# [4.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.0.0)
+
+- The `main` entry point in `package.json` is now a CommonJS module instead of a UMD module [#155](https://github.com/TehShrike/deepmerge/pull/155)
+
 # [3.3.0](https://github.com/TehShrike/deepmerge/releases/tag/v3.3.0)
 
 - Enumerable Symbol properties are now copied [#151](https://github.com/TehShrike/deepmerge/pull/151)
