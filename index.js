@@ -51,7 +51,7 @@ function mergeObject(target, source, options) {
 	getKeys(source).forEach(function(key) {
 		if (!propertyIsPlain(target, key)) {
 			return
-	}
+		}
 
 		if (!options.isMergeableObject(source[key]) || !target[key]) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
