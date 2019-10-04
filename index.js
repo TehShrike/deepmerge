@@ -37,8 +37,14 @@ function getKeys(target) {
 }
 
 function propertyIsPlain(target, key) {
-	return target[key] === undefined
-		|| (target.hasOwnProperty(key) && target.propertyIsEnumerable(key))
+	var keyInTarget
+	try {
+		keyInTarget = (key in target)
+	} catch (unused) {
+		keyInTarget = false
+	}
+
+	return !keyInTarget || (target.hasOwnProperty(key) && target.propertyIsEnumerable(key))
 }
 
 function mergeObject(target, source, options) {
