@@ -1,3 +1,7 @@
+# [4.1.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.0)
+
+- `cloneUnlessOtherwiseSpecified` is now exposed to the `arrayMerge` function [#165](https://github.com/TehShrike/deepmerge/pull/165)
+
 # [4.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.0.0)
 
 - The `main` entry point in `package.json` is now a CommonJS module instead of a UMD module [#155](https://github.com/TehShrike/deepmerge/pull/155)
