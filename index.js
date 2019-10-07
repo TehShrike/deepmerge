@@ -54,9 +54,10 @@ function mergeObject(target, source, options) {
 }
 
 function deepmerge(target, source, options) {
-	options = options || {}
-	options.arrayMerge = options.arrayMerge || defaultArrayMerge
-	options.isMergeableObject = options.isMergeableObject || defaultIsMergeableObject
+	options = Object.assign({}, { 
+		arrayMerge: defaultArrayMerge, 
+		isMergeableObject: defaultIsMergeableObject 
+	}, options);
 	// cloneUnlessOtherwiseSpecified is added to `options` so that custom arrayMerge()
 	// implementations can use it. The caller may not replace it.
 	options.cloneUnlessOtherwiseSpecified = cloneUnlessOtherwiseSpecified
