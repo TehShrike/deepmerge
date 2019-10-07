@@ -38,3 +38,33 @@ test('merge top-level arrays', function(t) {
 	t.deepEqual(actual, expected)
 	t.end()
 })
+
+test('cloner function is available for merge functions to use', function(t) {
+	var customMergeWasCalled = false
+	function cloneMerge(target, source, options) {
+		customMergeWasCalled = true
+		t.ok(options.cloneUnlessOtherwiseSpecified, 'cloner function is available')
+		return target.concat(source).map(function(element) {
+			return options.cloneUnlessOtherwiseSpecified(element, options)
+		})
+	}
+
+	var src = {
+		key1: [ 'one', 'three' ],
+		key2: [ 'four' ],
+	}
+	var target = {
+		key1: [ 'one', 'two' ],
+	}
+
+	var expected = {
+		key1: [ 'one', 'two', 'one', 'three' ],
+		key2: [ 'four' ],
+	}
+
+	t.deepEqual(merge(target, src, { arrayMerge: cloneMerge }), expected)
+	t.ok(customMergeWasCalled)
+	t.ok(Array.isArray(merge(target, src).key1))
+	t.ok(Array.isArray(merge(target, src).key2))
+	t.end()
+})
