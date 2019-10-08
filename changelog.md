@@ -1,3 +1,7 @@
+# [4.1.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.1)
+
+- The `options` argument is no longer mutated [#167](https://github.com/TehShrike/deepmerge/pull/167)
+
 # [4.1.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.0)
 
 - `cloneUnlessOtherwiseSpecified` is now exposed to the `arrayMerge` function [#165](https://github.com/TehShrike/deepmerge/pull/165)
