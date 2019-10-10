@@ -36,15 +36,10 @@ function getKeys(target) {
 	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
 }
 
-function propertyIsPlain(target, key) {
-	var keyInTarget
-	try {
-		keyInTarget = (key in target)
-	} catch (unused) {
-		keyInTarget = false
-	}
-
-	return !keyInTarget || (target.hasOwnProperty(key) && target.propertyIsEnumerable(key))
+// Protects from prototype poisoning. '__proto__' is one of few truthy non-enumerable
+// properties.
+function propertyIsUnsafe(target, key) {
+	return target && target[key] && !Object.propertyIsEnumerable.call(target, key)
 }
 
 function mergeObject(target, source, options) {
@@ -55,7 +50,7 @@ function mergeObject(target, source, options) {
 		})
 	}
 	getKeys(source).forEach(function(key) {
-		if (!propertyIsPlain(target, key)) {
+		if (propertyIsUnsafe(target, key)) {
 			return
 		}
 
