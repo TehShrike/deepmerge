@@ -36,10 +36,17 @@ function getKeys(target) {
 	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
 }
 
-// Protects from prototype poisoning. '__proto__' is one of few truthy non-enumerable
-// properties.
+// Protects from prototype poisoning and unexpected merging up the prototype chain.
 function propertyIsUnsafe(target, key) {
-	return target && target[key] && !Object.propertyIsEnumerable.call(target, key)
+	try {
+		return (key in target) // Properties are safe to merge if they don't exist in the target yet,
+			&& !(Object.hasOwnProperty.call(target, key) // unsafe if they exist up the prototype chain,
+				&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
+	} catch (unused) {
+		// Counterintuitively, it's safe to merge any property on a target that causes the `in` operator to throw.
+		// This happens when trying to copy an object in the source over a plain string in the target.
+		return false
+	}
 }
 
 function mergeObject(target, source, options) {
