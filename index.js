@@ -1,4 +1,7 @@
-var defaultIsMergeableObject = require('is-mergeable-object')
+var isPlainObj = require('is-plain-obj')
+function defaultIsMergeableObject(value) {
+	return Array.isArray(value) || isPlainObj(value)
+}
 
 function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}
