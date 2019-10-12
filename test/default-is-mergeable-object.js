@@ -1,28 +1,34 @@
 var merge = require('../')
 var test = require('tape')
 
-test('the default isMergeableObject function works as expected', function(t) {
-	var someReactElement = {
-		$$typeof: Symbol.for('react.element')
+test('plain objects are merged by default', function(t) {
+	const input = {
+		newObject: new Object(),
+		objectLiteral: { a: 123 }
 	}
-	var defaultIsMergeable = null
-	merge([], [], {
-		arrayMerge: function (a, b, options) {
-			defaultIsMergeable = options.isMergeableObject
-		}
-	})
+	const output = merge({}, input)
 
-	t.equal(typeof defaultIsMergeable, 'function')
+	t.deepEqual(output.newObject, input.newObject)
+	t.notEqual(output.newObject, input.newObject)
+	t.deepEqual(output.objectLiteral, input.objectLiteral)
+	t.notEqual(output.objectLiteral, input.objectLiteral)
 
-	t.equal(defaultIsMergeable(null), false, 'null is not mergeable')
-	t.equal(defaultIsMergeable(new RegExp('wat')), false, 'regex is not mergeable')
-	t.equal(defaultIsMergeable(undefined), false, 'undefined is not mergeable')
-	t.equal(defaultIsMergeable(new Date()), false, 'date is not mergeable')
-
-	t.equal(defaultIsMergeable({}), true, 'object is mergeable')
-	t.equal(defaultIsMergeable([]), true, 'array is mergeable')
-	t.equal(defaultIsMergeable(new Object()), true, 'object is mergeable')
-	t.equal(defaultIsMergeable(someReactElement), true, 'react element is mergeable')
 	t.end()
-
 })
+
+test('instantiated objects are copied by reference', function(t) {
+	const input = {
+		date: new Date(),
+		error: new Error(),
+		regex: /regex/
+	}
+	const output = merge({}, input)
+
+	t.equal(output.date, input.date)
+	t.equal(output.error, input.error)
+	t.equal(output.regex, input.regex)
+
+	t.end()
+})
+
+
