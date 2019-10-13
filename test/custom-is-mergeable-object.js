@@ -1,16 +1,16 @@
 var merge = require('../')
 var test = require('tape')
 
-test('isMergeableObject function copying object over object', function(t) {
+test('isMergeable function copying object over object', function(t) {
 	var src = { key: { isMergeable: false }, baz: 'yes' }
 	var target = { key: { foo: 'wat' }, baz: 'whatever' }
 
-	function isMergeableObject(object) {
+	function customIsMergeable(object) {
 		return object && typeof value === 'object' && object.isMergeable !== false
 	}
 
 	var res = merge(target, src, {
-		isMergeableObject: isMergeableObject
+		isMergeable: customIsMergeable
 	})
 
 	t.deepEqual(res, { key: { isMergeable: false }, baz: 'yes' })
@@ -18,16 +18,16 @@ test('isMergeableObject function copying object over object', function(t) {
 	t.end()
 })
 
-test('isMergeableObject function copying object over nothing', function(t) {
+test('isMergeable function copying object over nothing', function(t) {
 	var src = { key: { isMergeable: false, foo: 'bar' }, baz: 'yes' }
 	var target = { baz: 'whatever' }
 
-	function isMergeableObject(object) {
+	function customIsMergeable(object) {
 		return object && typeof value === 'object' && object.isMergeable !== false
 	}
 
 	var res = merge(target, src, {
-		isMergeableObject: isMergeableObject
+		isMergeable: customIsMergeable
 	})
 
 	t.deepEqual(res, { key: { isMergeable: false, foo: 'bar' }, baz: 'yes' })

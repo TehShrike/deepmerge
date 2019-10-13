@@ -1,5 +1,5 @@
 var isPlainObj = require('is-plain-obj')
-function defaultIsMergeableObject(value) {
+function defaultIsMergeable(value) {
 	return Array.isArray(value) || isPlainObj(value)
 }
 
@@ -8,7 +8,7 @@ function emptyTarget(val) {
 }
 
 function cloneUnlessOtherwiseSpecified(value, options) {
-	return (options.clone !== false && options.isMergeableObject(value))
+	return (options.clone !== false && options.isMergeable(value))
 		? deepmerge(emptyTarget(value), value, options)
 		: value
 }
@@ -41,13 +41,13 @@ function getKeys(target) {
 
 function mergeObject(target, source, options) {
 	var destination = {}
-	if (options.isMergeableObject(target)) {
+	if (options.isMergeable(target)) {
 		getKeys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
 	getKeys(source).forEach(function(key) {
-		if (!options.isMergeableObject(source[key]) || !target[key]) {
+		if (!options.isMergeable(source[key]) || !target[key]) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		} else {
 			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
@@ -59,7 +59,7 @@ function mergeObject(target, source, options) {
 function deepmerge(target, source, options) {
 	options = options || {}
 	options.arrayMerge = options.arrayMerge || defaultArrayMerge
-	options.isMergeableObject = options.isMergeableObject || defaultIsMergeableObject
+	options.isMergeable = options.isMergeable || options.isMergeableObject || defaultIsMergeable
 
 	var sourceIsArray = Array.isArray(source)
 	var targetIsArray = Array.isArray(target)

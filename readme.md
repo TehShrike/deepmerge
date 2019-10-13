@@ -137,9 +137,9 @@ const combineMerge = (target, source, options) => {
 	source.forEach((item, index) => {
 		if (typeof destination[index] === 'undefined') {
 			const cloneRequested = options.clone !== false
-			const shouldClone = cloneRequested && options.isMergeableObject(item)
+			const shouldClone = cloneRequested && options.isMergeable(item)
 			destination[index] = shouldClone ? clone(item, options) : item
-		} else if (options.isMergeableObject(item)) {
+		} else if (options.isMergeable(item)) {
 			destination[index] = merge(target[index], item, options)
 		} else if (target.indexOf(item) === -1) {
 			destination.push(item)
@@ -155,13 +155,15 @@ merge(
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
 
-### `isMergeableObject`
+### `isMergeable`
 
 By default, deepmerge clones properties of plain objects, and passes-by-reference all "special" kinds of instantiated objects.
 
 You may not want this, if your objects are of special types, and you want to copy its properties instead of just copying the whole object.
 
-You can accomplish this by passing in a function for the `isMergeableObject` option.
+You can accomplish this by passing in a function for the `isMergeable` option.
+
+For backwards compatibility, you can use the `isMergeableObject` option for the same functionality.
 
 To get the pre-version-5.0.0 behavior, you probably want to drop in [`is-mergeable-object`](https://github.com/TehShrike/is-mergeable-object)
 
@@ -193,7 +195,7 @@ defaultOutput.someProperty.special // => 'oh yeah man totally'
 defaultOutput.someProperty instanceof SuperSpecial // => true
 
 const customMergeOutput = merge(target, source, {
-	isMergeableObject: mergeEverything
+	isMergeable: mergeEverything
 })
 
 customMergeOutput.someProperty.cool // => 'oh for sure'
