@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/node": "^8.10.54",
     "is-mergeable-object": "1.1.0",
-    "is-plain-object": "^2.0.4",
+    "is-plain-obj": "^2.0.0",
     "jsmd": "^1.0.2",
     "rollup": "^1.23.1",
     "rollup-plugin-commonjs": "^10.1.0",
