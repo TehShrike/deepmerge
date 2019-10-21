@@ -1,3 +1,7 @@
+# [4.1.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.2)
+
+- Rolled back #167 since `Object.assign` breaks ES5 support.  [55067352](https://github.com/TehShrike/deepmerge/commit/55067352a92c65a6c44a5165f3387720aae1e192)
+
 # [4.1.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.1)
 
 - The `options` argument is no longer mutated [#167](https://github.com/TehShrike/deepmerge/pull/167)
