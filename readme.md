@@ -2,7 +2,7 @@
 
 Merges the enumerable properties of two or more objects deeply.
 
-> UMD bundle is 646B minified+gzipped
+> UMD bundle is 667B minified+gzipped
 
 ## Getting Started
 
@@ -107,9 +107,14 @@ merge.all([ foobar, foobaz, bar ]) // => { foo: { bar: 3, baz: 4 }, bar: 'yay!' 
 
 There are multiple ways to merge two arrays, below are a few examples but you can also create your own custom function.
 
-#### Overwrite Array
+Your `arrayMerge` function will be called with three arguments: a `target` array, the `source` array, and an `options` object with these properties:
 
-Overwrites the existing array values completely rather than concatenating them
+- `isMergeableObject(value)`
+- `cloneUnlessOtherwiseSpecified(value, options)`
+
+#### `arrayMerge` example: overwrite target array
+
+Overwrites the existing array values completely rather than concatenating them:
 
 ```js
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
@@ -121,24 +126,19 @@ merge(
 ) // => [3, 2, 1]
 ```
 
-#### Combine Array
+#### `arrayMerge` example: combine arrays
 
-Combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names
+Combines objects at the same index in the two arrays.
 
-To use the legacy (pre-version-2.0.0) array merging algorithm, use the following:
+This was the default array merging algorithm pre-version-2.0.0.
 
 ```js
-const emptyTarget = value => Array.isArray(value) ? [] : {}
-const clone = (value, options) => merge(emptyTarget(value), value, options)
-
 const combineMerge = (target, source, options) => {
 	const destination = target.slice()
 
 	source.forEach((item, index) => {
 		if (typeof destination[index] === 'undefined') {
-			const cloneRequested = options.clone !== false
-			const shouldClone = cloneRequested && options.isMergeable(item)
-			destination[index] = shouldClone ? clone(item, options) : item
+			destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
 		} else if (options.isMergeable(item)) {
 			destination[index] = merge(target[index], item, options)
 		} else if (target.indexOf(item) === -1) {

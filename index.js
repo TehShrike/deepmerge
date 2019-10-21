@@ -57,9 +57,12 @@ function mergeObject(target, source, options) {
 }
 
 function deepmerge(target, source, options) {
-	options = options || {}
-	options.arrayMerge = options.arrayMerge || defaultArrayMerge
-	options.isMergeable = options.isMergeable || options.isMergeableObject || defaultIsMergeable
+	options = Object.assign({
+		arrayMerge: defaultArrayMerge,
+		isMergeable: defaultIsMergeable
+	}, options, {
+		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
+	})
 
 	var sourceIsArray = Array.isArray(source)
 	var targetIsArray = Array.isArray(target)

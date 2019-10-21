@@ -1,3 +1,19 @@
+# [5.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v5.0.0)
+
+- Breaking for ES5 environments: `Object.assign` is now used to avoid mutating the `options` argument.   [#167](https://github.com/TehShrike/deepmerge/pull/167)
+
+# [4.1.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.2)
+
+- Rolled back #167 since `Object.assign` breaks ES5 support.  [55067352](https://github.com/TehShrike/deepmerge/commit/55067352a92c65a6c44a5165f3387720aae1e192)
+
+# [4.1.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.1)
+
+- The `options` argument is no longer mutated [#167](https://github.com/TehShrike/deepmerge/pull/167)
+
+# [4.1.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.0)
+
+- `cloneUnlessOtherwiseSpecified` is now exposed to the `arrayMerge` function [#165](https://github.com/TehShrike/deepmerge/pull/165)
+
 # [4.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.0.0)
 
 - The `main` entry point in `package.json` is now a CommonJS module instead of a UMD module [#155](https://github.com/TehShrike/deepmerge/pull/155)
