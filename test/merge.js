@@ -637,12 +637,3 @@ test('copy symbol keys in target that do exist on the target', function(t) {
 	t.equal(res[mySymbol], 'value1')
 	t.end()
 })
-
-test('should not mutate options', function(t) {
-	var options = {};
-
-	merge({}, {}, options);
-
-	t.deepEqual(options, {});
-	t.end();
-})
