@@ -1,6 +1,8 @@
 # [5.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v5.0.0)
 
 - Breaking for ES5 environments: `Object.assign` is now used to avoid mutating the `options` argument.   [#167](https://github.com/TehShrike/deepmerge/pull/167)
+- Breaking: by default, only [plain objects](https://github.com/sindresorhus/is-plain-obj/#is-plain-obj-) will have their properties merged, with all other values being copied to the target.  [#152](https://github.com/TehShrike/deepmerge/issues/152)
+- Breaking: the `isMergeableObject` option is renamed to `isMergeable` [#168](https://github.com/TehShrike/deepmerge/pull/168)
 
 # [4.1.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.2)
 

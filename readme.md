@@ -139,7 +139,7 @@ const combineMerge = (target, source, options) => {
 	source.forEach((item, index) => {
 		if (typeof destination[index] === 'undefined') {
 			destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
-		} else if (options.isMergeableObject(item)) {
+		} else if (options.isMergeable(item)) {
 			destination[index] = merge(target[index], item, options)
 		} else if (target.indexOf(item) === -1) {
 			destination.push(item)
@@ -155,18 +155,22 @@ merge(
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
 
-### `isMergeableObject`
+### `isMergeable`
 
-By default, deepmerge clones every property from almost every kind of object.
+By default, deepmerge clones properties of plain objects, and passes-by-reference all "special" kinds of instantiated objects.
 
-You may not want this, if your objects are of special types, and you want to copy the whole object instead of just copying its properties.
+You may not want this, if your objects are of special types, and you want to copy its properties instead of just copying the whole object.
 
-You can accomplish this by passing in a function for the `isMergeableObject` option.
+You can accomplish this by passing in a function for the `isMergeable` option.
 
-If you only want to clone properties of plain objects, and ignore all "special" kinds of instantiated objects, you probably want to drop in [`is-plain-object`](https://github.com/jonschlinkert/is-plain-object).
+For backwards compatibility, you can use the `isMergeableObject` option for the same functionality.
+
+To get the pre-version-5.0.0 behavior, you probably want to drop in [`is-mergeable-object`](https://github.com/TehShrike/is-mergeable-object)
 
 ```js
-const isPlainObject = require('is-plain-object')
+function mergeEverything(value) {
+	return value !== null && typeof value === 'object'
+}
 
 function SuperSpecial() {
 	this.special = 'oh yeah man totally'
@@ -186,17 +190,17 @@ const source = {
 
 const defaultOutput = merge(target, source)
 
-defaultOutput.someProperty.cool // => 'oh for sure'
+defaultOutput.someProperty.cool // => undefined
 defaultOutput.someProperty.special // => 'oh yeah man totally'
-defaultOutput.someProperty instanceof SuperSpecial // => false
+defaultOutput.someProperty instanceof SuperSpecial // => true
 
 const customMergeOutput = merge(target, source, {
-	isMergeableObject: isPlainObject
+	isMergeable: mergeEverything
 })
 
-customMergeOutput.someProperty.cool // => undefined
+customMergeOutput.someProperty.cool // => 'oh for sure'
 customMergeOutput.someProperty.special // => 'oh yeah man totally'
-customMergeOutput.someProperty instanceof SuperSpecial // => true
+customMergeOutput.someProperty instanceof SuperSpecial // => false
 ```
 
 ### `customMerge`
