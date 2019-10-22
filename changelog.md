@@ -4,6 +4,16 @@
 - Breaking: by default, only [plain objects](https://github.com/sindresorhus/is-plain-obj/#is-plain-obj-) will have their properties merged, with all other values being copied to the target.  [#152](https://github.com/TehShrike/deepmerge/issues/152)
 - Breaking: the `isMergeableObject` option is renamed to `isMergeable` [#168](https://github.com/TehShrike/deepmerge/pull/168)
 
+# [4.2.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.1)
+
+- Fix: falsey values can now be merged.  [#170](https://github.com/TehShrike/deepmerge/issues/170)
+
+# [4.2.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.0)
+
+- Properties are now only overwritten if they exist on the target object and are enumerable.  [#164](https://github.com/TehShrike/deepmerge/pull/164)
+
+Technically this could probably be a patch release since "which properties get overwritten" wasn't documented and accidentally overwriting a built-in function or some function up the property chain would almost certainly be undesirable, but it feels like a gray area, so here we are with a feature version bump.
+
 # [4.1.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.1.2)
 
 - Rolled back #167 since `Object.assign` breaks ES5 support.  [55067352](https://github.com/TehShrike/deepmerge/commit/55067352a92c65a6c44a5165f3387720aae1e192)

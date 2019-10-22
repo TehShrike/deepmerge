@@ -646,3 +646,33 @@ test('should not mutate options', function(t) {
 	t.deepEqual(options, {});
 	t.end();
 })
+
+test('Falsey properties should be mergeable', function(t) {
+	var uniqueValue = {}
+
+	var target = {
+		wat: false
+	}
+
+	var source = {
+		wat: false
+	}
+
+	var customMergeWasCalled = false
+
+	var result = merge(target, source, {
+		isMergeable: function() {
+			return true
+		},
+		customMerge: function() {
+			return function() {
+				customMergeWasCalled = true
+				return uniqueValue
+			}
+		}
+	})
+
+	t.equal(result.wat, uniqueValue)
+	t.ok(customMergeWasCalled, 'custom merge function was called')
+	t.end()
+})

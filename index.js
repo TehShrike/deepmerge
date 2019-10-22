@@ -39,6 +39,21 @@ function getKeys(target) {
 	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
 }
 
+function propertyIsOnObject(object, property) {
+	try {
+		return property in object
+	} catch(_) {
+		return false
+	}
+}
+
+// Protects from prototype poisoning and unexpected merging up the prototype chain.
+function propertyIsUnsafe(target, key) {
+	return propertyIsOnObject(target, key) // Properties are safe to merge if they don't exist in the target yet,
+		&& !(Object.hasOwnProperty.call(target, key) // unsafe if they exist up the prototype chain,
+			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
+}
+
 function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeable(target)) {
@@ -47,7 +62,11 @@ function mergeObject(target, source, options) {
 		})
 	}
 	getKeys(source).forEach(function(key) {
-		if (!options.isMergeable(source[key]) || !target[key]) {
+		if (propertyIsUnsafe(target, key)) {
+			return
+		}
+
+		if (!options.isMergeable(source[key]) || !propertyIsOnObject(target, key)) {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		} else {
 			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
