@@ -637,3 +637,33 @@ test('copy symbol keys in target that do exist on the target', function(t) {
 	t.equal(res[mySymbol], 'value1')
 	t.end()
 })
+
+test('Falsey properties should be mergeable', function(t) {
+	var uniqueValue = {}
+
+	var target = {
+		wat: false
+	}
+
+	var source = {
+		wat: false
+	}
+
+	var customMergeWasCalled = false
+
+	var result = merge(target, source, {
+		isMergeableObject: function() {
+			return true
+		},
+		customMerge: function() {
+			return function() {
+				customMergeWasCalled = true
+				return uniqueValue
+			}
+		}
+	})
+
+	t.equal(result.wat, uniqueValue)
+	t.ok(customMergeWasCalled, 'custom merge function was called')
+	t.end()
+})

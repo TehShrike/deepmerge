@@ -1,3 +1,7 @@
+# [4.2.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.1)
+
+- Fix: falsey values can now be merged.  [#170](https://github.com/TehShrike/deepmerge/issues/170)
+
 # [4.2.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.0)
 
 - Properties are now only overwritten if they exist on the target object and are enumerable.  [#164](https://github.com/TehShrike/deepmerge/pull/164)
