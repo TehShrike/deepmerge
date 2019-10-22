@@ -31,7 +31,7 @@ merged3.wat;
 
 const options1: merge.Options = {
 	clone: true,
-	isMergeableObject (obj) {
+	isMergeable (obj) {
 		return false;
 	},
 };
@@ -40,12 +40,12 @@ const options2: merge.Options = {
 	arrayMerge (target, source, options) {
 		target.length;
 		source.length;
-		options.isMergeableObject(target);
+		options.isMergeable(target);
 
 		return [];
 	},
 	clone: true,
-	isMergeableObject (obj) {
+	isMergeable (obj) {
 		return false;
 	},
 };
