@@ -13,39 +13,39 @@ const merge = require('./')
 
 ```js
 const x = {
-	foo: { bar: 3 },
-	array: [{
-		does: 'work',
-		too: [ 1, 2, 3 ]
-	}]
+    foo: { bar: 3 },
+    array: [{
+        does: 'work',
+        too: [ 1, 2, 3 ]
+    }]
 }
 
 const y = {
-	foo: { baz: 4 },
-	quux: 5,
-	array: [{
-		does: 'work',
-		too: [ 4, 5, 6 ]
-	}, {
-		really: 'yes'
-	}]
+    foo: { baz: 4 },
+    quux: 5,
+    array: [{
+        does: 'work',
+        too: [ 4, 5, 6 ]
+    }, {
+        really: 'yes'
+    }]
 }
 
 const output = {
-	foo: {
-		bar: 3,
-		baz: 4
-	},
-	array: [{
-		does: 'work',
-		too: [ 1, 2, 3 ]
-	}, {
-		does: 'work',
-		too: [ 4, 5, 6 ]
-	}, {
-		really: 'yes'
-	}],
-	quux: 5
+    foo: {
+        bar: 3,
+        baz: 4
+    },
+    array: [{
+        does: 'work',
+        too: [ 1, 2, 3 ]
+    }, {
+        does: 'work',
+        too: [ 4, 5, 6 ]
+    }, {
+        really: 'yes'
+    }],
+    quux: 5
 }
 
 merge(x, y) // => output
@@ -120,9 +120,9 @@ Overwrites the existing array values completely rather than concatenating them:
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
 
 merge(
-	[1, 2, 3],
-	[3, 2, 1],
-	{ arrayMerge: overwriteMerge }
+    [1, 2, 3],
+    [3, 2, 1],
+    { arrayMerge: overwriteMerge }
 ) // => [3, 2, 1]
 ```
 
@@ -134,24 +134,24 @@ This was the default array merging algorithm pre-version-2.0.0.
 
 ```js
 const combineMerge = (target, source, options) => {
-	const destination = target.slice()
+    const destination = target.slice()
 
-	source.forEach((item, index) => {
-		if (typeof destination[index] === 'undefined') {
-			destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
-		} else if (options.isMergeableObject(item)) {
-			destination[index] = merge(target[index], item, options)
-		} else if (target.indexOf(item) === -1) {
-			destination.push(item)
-		}
-	})
-	return destination
+    source.forEach((item, index) => {
+        if (typeof destination[index] === 'undefined') {
+            destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
+        } else if (options.isMergeableObject(item)) {
+            destination[index] = merge(target[index], item, options)
+        } else if (target.indexOf(item) === -1) {
+            destination.push(item)
+        }
+    })
+    return destination
 }
 
 merge(
-	[{ a: true }],
-	[{ b: true }, 'ah yup'],
-	{ arrayMerge: combineMerge }
+    [{ a: true }],
+    [{ b: true }, 'ah yup'],
+    { arrayMerge: combineMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
 ```
 
@@ -169,19 +169,19 @@ If you only want to clone properties of plain objects, and ignore all "special" 
 const isPlainObject = require('is-plain-object')
 
 function SuperSpecial() {
-	this.special = 'oh yeah man totally'
+    this.special = 'oh yeah man totally'
 }
 
 const instantiatedSpecialObject = new SuperSpecial()
 
 const target = {
-	someProperty: {
-		cool: 'oh for sure'
-	}
+    someProperty: {
+        cool: 'oh for sure'
+    }
 }
 
 const source = {
-	someProperty: instantiatedSpecialObject
+    someProperty: instantiatedSpecialObject
 }
 
 const defaultOutput = merge(target, source)
@@ -191,7 +191,7 @@ defaultOutput.someProperty.special // => 'oh yeah man totally'
 defaultOutput.someProperty instanceof SuperSpecial // => false
 
 const customMergeOutput = merge(target, source, {
-	isMergeableObject: isPlainObject
+    isMergeableObject: isPlainObject
 })
 
 customMergeOutput.someProperty.cool // => undefined
