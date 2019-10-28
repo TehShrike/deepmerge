@@ -209,29 +209,29 @@ It may also return undefined, in which case the default merge behaviour will be 
 
 ```js
 const alex = {
-    name: {
-        first: 'Alex',
-        last: 'Alexson'
-    },
-    pets: ['Cat', 'Parrot']
+	name: {
+		first: 'Alex',
+		last: 'Alexson'
+	},
+	pets: ['Cat', 'Parrot']
 }
 
 const tony = {
-    name: {
-        first: 'Tony',
-        last: 'Tonison'
-    },
-    pets: ['Dog']
+	name: {
+		first: 'Tony',
+		last: 'Tonison'
+	},
+	pets: ['Dog']
 }
 
 const mergeNames = (nameA, nameB) => `${nameA.first} and ${nameB.first}`
 
 const options = {
-    customMerge: (key) => {
-        if (key === 'name') {
-            return mergeNames
-        }
-    }
+	customMerge: (key) => {
+		if (key === 'name') {
+			return mergeNames
+		}
+	}
 }
 
 const result = merge(alex, tony, options)
