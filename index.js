@@ -63,10 +63,10 @@ function mergeObject(target, source, options) {
 			return
 		}
 
-		if (!options.isMergeableObject(source[key]) || !propertyIsOnObject(target, key)) {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
-		} else {
+		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
 			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
+		} else {
+			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		}
 	})
 	return destination
