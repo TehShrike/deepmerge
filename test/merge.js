@@ -669,18 +669,18 @@ test('Falsey properties should be mergeable', function(t) {
 })
 
 test('Does not override non-object properties with empty object', function(t) {
-    var target = {
-        bool: true
-    }
+	var target = {
+		bool: true
+	}
 
-    var source = {}
+	var source = {}
 
-    var result = merge(target, source, {
-        isMergeableObject: function() {
-            return true
-        }
-    })
+	var result = merge(target, source, {
+		isMergeableObject: function() {
+			return true
+		}
+	})
 
-    t.equal(result.bool, true)
-    t.end()
+	t.equal(result.bool, true)
+	t.end()
 })
