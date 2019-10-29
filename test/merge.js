@@ -681,6 +681,6 @@ test('Does not override non-object properties with empty object', function(t) {
         }
     })
 
-    t.equal(result, target)
+    t.equal(result.bool, true)
     t.end()
 })
