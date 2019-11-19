@@ -27,6 +27,7 @@ type PickNotObj<O> = Pick<O, NotObjKeys<O>>;
 
 /**
  * Merge Deep Recursively For O1 O2
+ * github gist about MergeDeep: https://gist.github.com/eczn/f037be1fa3650304c5c4b80c3b9e18a7
  */
 type MergeDeep<O1, O2> = SkinMerge<PickNotObj<O1>, PickNotObj<O2>> & {
     // k1 is not in ObjKeys<O2>
