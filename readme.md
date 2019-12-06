@@ -124,6 +124,13 @@ merge(
 	[3, 2, 1],
 	{ arrayMerge: overwriteMerge }
 ) // => [3, 2, 1]
+
+// use the built in version of this function
+// merge(
+// 	[1, 2, 3],
+// 	[3, 2, 1],
+// 	{ arrayMerge: merge.arrayMergeStrategies.overwriteMerge }
+// )
 ```
 
 #### `arrayMerge` example: combine arrays
@@ -153,6 +160,13 @@ merge(
 	[{ b: true }, 'ah yup'],
 	{ arrayMerge: combineMerge }
 ) // => [{ a: true, b: true }, 'ah yup']
+
+// use the built in version of this function
+// merge(
+// 	[1, 2, 3],
+// 	[3, 2, 1],
+// 	{ arrayMerge: merge.arrayMergeStrategies.combineMerge }
+// )
 ```
 
 ### `isMergeableObject`
