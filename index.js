@@ -26,7 +26,7 @@ const getMergeFunction = (key, options) => {
 const getEnumerableOwnPropertySymbols = target => {
 	return Object.getOwnPropertySymbols
 		? Object.getOwnPropertySymbols(target)
-			.filter(target.propertyIsEnumerable)
+			.filter(symbol => target.propertyIsEnumerable(symbol))
 		: []
 }
 
