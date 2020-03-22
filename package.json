@@ -8,14 +8,15 @@
     "copy",
     "clone",
     "recursive"
-  ],
+	],
   "version": "4.2.2",
   "homepage": "https://github.com/TehShrike/deepmerge",
   "repository": {
-    "type": "git",
+		"type": "git",
     "url": "git://github.com/TehShrike/deepmerge.git"
   },
   "main": "dist/cjs.js",
+	"typings": "types/index.d.ts",
   "engines": {
     "node": ">=0.10.0"
   },
