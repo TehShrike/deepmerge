@@ -2,10 +2,13 @@ declare function deepmerge<T>(x: Partial<T>, y: Partial<T>, options?: deepmerge.
 declare function deepmerge<T1, T2>(x: Partial<T1>, y: Partial<T2>, options?: deepmerge.Options): T1 & T2;
 
 declare namespace deepmerge {
+	export type CustomOptions = Required<Options> & {
+		cloneUnlessOtherwiseSpecified: (item: any, options: CustomOptions) => any
+	}
 	export interface Options {
-		arrayMerge?(target: any[], source: any[], options?: Options): any[];
+		arrayMerge?(target: any[], source: any[], options: CustomOptions): any[];
 		clone?: boolean;
-		customMerge?: (key: string, options?: Options) => ((x: any, y: any) => any) | undefined;
+		customMerge?: (key: string, options: CustomOptions) => ((x: any, y: any) => any) | undefined;
 		isMergeableObject?(value: object): boolean;
 	}
 
