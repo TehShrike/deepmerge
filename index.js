@@ -59,16 +59,15 @@ function mergeObject(target, source, options) {
 		})
 	}
 	getKeys(source).forEach(function(key) {
-			if (propertyIsUnsafe(target, key)) {
-				return
-			}
-
-			if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
-				destination[key] = getMergeFunction(key, options, target[key], source[key])(target[key], source[key], options);
-			} else
-				destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
+		if (propertyIsUnsafe(target, key)) {
+			return
 		}
-	);
+
+		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+			destination[key] = getMergeFunction(key, options, target[key], source[key])(target[key], source[key], options);
+		} else
+			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
+	});
 	return destination
 }
 
