@@ -16,11 +16,11 @@ function defaultArrayMerge(target, source, options) {
 	})
 }
 
-function getMergeFunction(key, options) {
+function getMergeFunction(key, options, target, source) {
 	if (!options.customMerge) {
 		return deepmerge
 	}
-	var customMerge = options.customMerge(key)
+	var customMerge = options.customMerge(key, target, source);
 	return typeof customMerge === 'function' ? customMerge : deepmerge
 }
 
@@ -59,16 +59,16 @@ function mergeObject(target, source, options) {
 		})
 	}
 	getKeys(source).forEach(function(key) {
-		if (propertyIsUnsafe(target, key)) {
-			return
-		}
+			if (propertyIsUnsafe(target, key)) {
+				return
+			}
 
-		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
-		} else {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
+			if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+				destination[key] = getMergeFunction(key, options, target[key], source[key])(target[key], source[key], options);
+			} else
+				destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
 		}
-	})
+	);
 	return destination
 }
 
