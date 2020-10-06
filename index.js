@@ -103,4 +103,8 @@ deepmerge.all = function deepmergeAll(array, options) {
 	}, {})
 }
 
+deepmerge.customMergeIgnoreEmptyValues = (key, target, source) => !target || target === ''
+	? () => source
+	: () => target;
+
 module.exports = deepmerge

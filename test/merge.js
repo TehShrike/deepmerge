@@ -673,7 +673,7 @@ test('customMerge without overwriting with null or empty string', function(t) {
 	var target = { very: { nested: { thing: 'derp' } } };
 
 	var res = merge(target, src, {
-		customMerge: (key, target, source) => !target || target === '' ? () => source : () => target,
+		customMerge: merge.customMergeIgnoreEmptyValues,
 	});
 
 	t.deepEqual(res, { someNewVariable: 'herp',very: {nested: { thing: 'derp'}} })
