@@ -25,6 +25,18 @@ test('modify target object if clone set to false', function(t) {
 	t.end()
 })
 
+test('merge.all mutates target object', function(t) {
+	var src = { key1: 'value1', key2: 'value2' }
+	var target = { key3: 'value3'}
+
+	var clonedRes = merge.all([target, src], {clone: true})
+	var notClonedRes = merge.all([target, src], {clone: false})
+
+	t.assert(clonedRes !== target, 'result should be cloned')
+	t.assert(notClonedRes === target, 'result should maintain first array entry reference')
+	t.end()
+})
+
 test('add keys in target that do not exist at the root', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
 	var target = {}
