@@ -5,7 +5,7 @@ function emptyTarget(val) {
 }
 
 function firstArrayEntry(arr) {
-	return arr[0] && arr[0].length ? arr[0] : []
+	return arr && arr.length ? arr[0] : []
 }
 
 function cloneUnlessOtherwiseSpecified(value, options) {
