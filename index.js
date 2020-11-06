@@ -57,11 +57,11 @@ function propertyIsUnsafe(target, key) {
 
 // Retrieves either a new object or the appropriate target object to mutate.
 function getDestinationObject(target, options) {
-	if (options && options.clone !== false) {
-		return {}
+	if (options && !!options.cloneWithTarget) {
+		return Array.isArray(target) ? firstArrayEntry(target) : target
 	}
 
-	return Array.isArray(target) ? firstArrayEntry(target) : target
+	return {}
 }
 
 function mergeObject(target, source, options) {

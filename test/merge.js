@@ -1,36 +1,36 @@
 var merge = require('../')
 var test = require('tape')
 
-test('result should retain target type information when not cloning', function(t) {
+test('result should retain target type information when cloneWithTarget set to true', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
 	class CustomType {}
 	var target = new CustomType()
 
-	var res = merge(target, src, {clone: false})
+	var res = merge(target, src, {cloneWithTarget: true})
 	t.not(src instanceof CustomType)
 	t.assert(target instanceof CustomType)
 	t.assert(res instanceof CustomType)
 	t.end()
 })
 
-test('modify target object if clone set to false', function(t) {
+test('modify target object if cloneWithTarget set to true', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
 	var target = { key3: 'value3'}
 
-	var clonedRes = merge(target, src, {clone: true})
-	var notClonedRes = merge(target, src, {clone: false})
+	var clonedRes = merge(target, src)
+	var notClonedRes = merge(target, src, {cloneWithTarget: true})
 
 	t.assert(clonedRes !== target, 'result should be cloned')
 	t.assert(notClonedRes === target, 'result should maintain target reference')
 	t.end()
 })
 
-test('merge.all mutates target object', function(t) {
+test('merge.all mutates target object when cloneWithTarget set to true', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
 	var target = { key3: 'value3'}
 
-	var clonedRes = merge.all([target, src], {clone: true})
-	var notClonedRes = merge.all([target, src], {clone: false})
+	var clonedRes = merge.all([target, src])
+	var notClonedRes = merge.all([target, src], {cloneWithTarget: true})
 
 	t.assert(clonedRes !== target, 'result should be cloned')
 	t.assert(notClonedRes === target, 'result should maintain first array entry reference')
