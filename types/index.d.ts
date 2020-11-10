@@ -8,7 +8,7 @@ type DeepMergeAll<
 	Ts extends readonly [any, ...any[]],
 	Options extends deepmerge.Options
 > = Ts extends readonly [infer T1, ...any[]]
-	? Ts extends readonly [any, infer T2, ...infer TRest]
+	? Ts extends readonly [T1, infer T2, ...infer TRest]
 		? TRest extends readonly never[]
 			? DeepMerge<T1, T2, Options>
 			: DeepMerge<T1, DeepMergeAll<[T2, ...TRest], Options>, Options>
@@ -23,52 +23,40 @@ type DeepMerge<T1, T2, Options extends deepmerge.Options> = IsSame<
 	T2
 > extends true
 	? T1 | T2
-	: IsObjectOrArray<T1> extends true
-	? IsObjectOrArray<T2> extends true
-		? DeepMergeNonPrimitive<T1, T2, Options>
-		: MergeLeafs<T1, T2>
-	: MergeLeafs<T1, T2>;
+	: And<IsObjectOrArray<T1>, IsObjectOrArray<T2>> extends true
+	? DeepMergeNonPrimitive<T1, T2, Options>
+	: Leaf<T1, T2>;
 
 /**
  * Deep merge 2 objects (they may be arrays).
  */
-type DeepMergeNonPrimitive<
-	T1,
-	T2,
-	Options extends deepmerge.Options
-> = ShouldMergeArrays<T1, T2> extends true
+type DeepMergeNonPrimitive<T1, T2, Options extends deepmerge.Options> = And<
+	IsArray<T1>,
+	IsArray<T2>
+> extends true
 	? DeepMergeArrays<T1, T2, Options>
-	: DeepMergeObjects<T1, T2, Options>;
-
-/**
- * Deep merge 2 non-array types.
- */
-type DeepMergeObjects<
-	T1,
-	T2,
-	Options extends deepmerge.Options
-> = ShouldMergeObjects<T1, T2> extends true
-	? DeepMergeObjectProps<T1, T2, Options>
-	: MergeLeafs<T1, T2>;
+	: And<IsObject<T1>, IsObject<T2>> extends true
+	? DeepMergeObjects<T1, T2, Options>
+	: Leaf<T1, T2>;
 
 /**
  * Deep merge 2 non-array objects.
  */
-type DeepMergeObjectProps<
+type DeepMergeObjects<
 	T1,
 	T2,
 	Options extends deepmerge.Options
 > = FlatternAlias<
 	// @see https://github.com/microsoft/TypeScript/issues/41448
 	{
-		-readonly [K in keyof T1]: DeepMergeProps<
+		-readonly [K in keyof T1]: DeepMergeObjectProps<
 			ValueOfKey<T1, K>,
 			ValueOfKey<T2, K>,
 			Options
 		>;
 	} &
 		{
-			-readonly [K in keyof T2]: DeepMergeProps<
+			-readonly [K in keyof T2]: DeepMergeObjectProps<
 				ValueOfKey<T1, K>,
 				ValueOfKey<T2, K>,
 				Options
@@ -80,32 +68,32 @@ type DeepMergeObjectProps<
  * Deep merge 2 types that are known to be properties of an object being deeply
  * merged.
  */
-type DeepMergeProps<T1, T2, Options extends deepmerge.Options> = GetOption<
-	Options,
-	"isMergeableObject"
-> extends undefined
+type DeepMergeObjectProps<T1, T2, Options extends deepmerge.Options> = Or<
+	IsUndefinedOrNever<T1>,
+	IsUndefinedOrNever<T2>
+> extends true
+	? Leaf<T1, T2>
+	: GetOption<Options, "isMergeableObject"> extends undefined
 	? GetOption<Options, "customMerge"> extends undefined
 		? DeepMerge<T1, T2, Options>
-		: DeepMergePropsCustom<T1, T2, Options>
-	: MergeMaybeLeafs<T1, T2, Options>;
+		: DeepMergeObjectPropsCustom<T1, T2, Options>
+	: MaybeLeaf<T1, T2>;
 
 /**
  * Deep merge 2 types that are known to be properties of an object being deeply
  * merged and where a "customMerge" function has been provided.
  */
-type DeepMergePropsCustom<
+type DeepMergeObjectPropsCustom<
 	T1,
 	T2,
 	Options extends deepmerge.Options
 > = ReturnType<NonNullable<GetOption<Options, "customMerge">>> extends undefined
 	? DeepMerge<T1, T2, Options>
 	: undefined extends ReturnType<NonNullable<GetOption<Options, "customMerge">>>
-	? IsArray<T1> extends true
-		? IsArray<T2> extends true
+	? Or<IsArray<T1>, IsArray<T2>> extends true
+		? And<IsArray<T1>, IsArray<T2>> extends true
 			? DeepMergeArrays<T1, T2, Options>
-			: MergeLeafs<T1, T2>
-		: IsArray<T2> extends true
-		? MergeLeafs<T1, T2>
+			: Leaf<T1, T2>
 		:
 				| DeepMerge<T1, T2, Options>
 				| ReturnType<
@@ -133,34 +121,25 @@ type DeepMergeArrays<
 	: never;
 
 /**
- * Get the leaf type of 2 types that can't be merged.
+ * Get the leaf type from 2 types that can't be merged.
  */
-type MergeLeafs<T1, T2> = Is<T2, never> extends true
+type Leaf<T1, T2> = IsNever<T2> extends true
 	? T1
-	: Is<T1, never> extends true
+	: IsNever<T1> extends true
 	? T2
-	: Is<T2, undefined> extends true
+	: IsUndefinedOrNever<T2> extends true
 	? T1
 	: T2;
 
 /**
- * Get the leaf type of 2 types that might not be able to be merged.
+ * Get the leaf type from 2 types that might not be able to be merged.
  */
-type MergeMaybeLeafs<T1, T2, Options extends deepmerge.Options> = Is<
-	T2,
-	never
+type MaybeLeaf<T1, T2> = Or<
+	Or<IsUndefinedOrNever<T1>, IsUndefinedOrNever<T2>>,
+	Not<And<IsObjectOrArray<T1>, IsObjectOrArray<T2>>>
 > extends true
-	? T1
-	: Is<T1, never> extends true
-	? T2
-	: Is<T2, undefined> extends true
-	? T1
-	: Is<T1, undefined> extends true
-	? T2
-	: Is<T1, object> extends false
-	? DeepMerge<T1, T2, Options>
-	: Is<T2, object> extends false
-	? DeepMerge<T1, T2, Options>
+	? Leaf<T1, T2>
+	// TODO: Handle case where return type of "isMergeableObject" is a typeguard. If it is we can do better than just "unknown".
 	: unknown;
 
 /**
@@ -182,6 +161,16 @@ type ValueOfKey<T, K> = K extends keyof T ? T[K] : never;
 type Is<T1, T2> = [T1] extends [T2] ? true : false;
 
 /**
+ * Safely test whether or not the given type is "never".
+ */
+type IsNever<T> = Is<T, never>;
+
+/**
+ * Is the given type undefined or never?
+ */
+type IsUndefinedOrNever<T> = Is<T, undefined>;
+
+/**
  * Returns whether or not the give two types are the same.
  */
 type IsSame<T1, T2> = Is<T1, T2> extends true ? Is<T2, T1> : false;
@@ -189,33 +178,37 @@ type IsSame<T1, T2> = Is<T1, T2> extends true ? Is<T2, T1> : false;
 /**
  * Returns whether or not the given type an object (arrays are objects).
  */
-type IsObjectOrArray<T> = Is<T, never> extends true ? false : Is<T, object>;
+type IsObjectOrArray<T> = And<Not<IsNever<T>>, T extends object ? true : false>;
 
 /**
  * Returns whether or not the given type a non-array object.
  */
-type IsObject<T> = IsArray<T> extends true
-	? false
-	: IsObjectOrArray<T>;
+type IsObject<T> = And<IsObjectOrArray<T>, Not<IsArray<T>>>;
 
 /**
  * Returns whether or not the given type an array.
  */
-type IsArray<T> = Is<T, ReadonlyArray<any>>;
+type IsArray<T> = And<
+	Not<IsNever<T>>,
+	T extends ReadonlyArray<any> ? true : false
+>;
 
 /**
- * Returns whether or not 2 types are both non-array objects that can be merged.
+ * And operator for types.
  */
-type ShouldMergeObjects<T1, T2> = IsObject<T1> extends true
-	? IsObject<T2>
-	: false;
+type And<T1 extends boolean, T2 extends boolean> = T1 extends false
+	? false
+	: T2;
 
 /**
- * Returns whether or not 2 types are both arrays that can be merged.
+ * Or operator for types.
  */
-type ShouldMergeArrays<T1, T2> = IsArray<T1> extends true
-	? IsArray<T2>
-	: false;
+type Or<T1 extends boolean, T2 extends boolean> = T1 extends true ? true : T2;
+
+/**
+ * Not operator for types.
+ */
+type Not<T extends boolean> = T extends true ? false : true;
 
 /**
  * A function that merges any 2 arrays.
