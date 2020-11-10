@@ -23,11 +23,12 @@
   "scripts": {
     "build": "rollup -c",
     "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
+    "test:typescript": "dtslint --expectOnly types",
     "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c"
   },
   "devDependencies": {
     "@types/node": "^8.10.54",
+    "dtslint": "^4.0.5",
     "is-mergeable-object": "1.1.0",
     "is-plain-object": "^2.0.4",
     "jsmd": "^1.0.2",
