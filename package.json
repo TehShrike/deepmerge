@@ -16,6 +16,7 @@
     "url": "git://github.com/TehShrike/deepmerge.git"
   },
   "main": "dist/cjs.js",
+  "types": "types",
   "engines": {
     "node": ">=0.10.0"
   },
