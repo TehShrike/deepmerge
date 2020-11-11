@@ -14,7 +14,14 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/TehShrike/deepmerge.git"
-  },
+	},
+	"files": [
+		"/dist",
+		"index.d.ts",
+    "changelog.md",
+    "license.txt",
+    "readme.md"
+  ],
   "main": "dist/cjs.js",
   "engines": {
     "node": ">=0.10.0"
