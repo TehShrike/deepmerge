@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
+    "size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
     "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
     "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
   },
@@ -41,9 +41,8 @@
     "jsmd": "^1.0.2",
     "rollup": "^2.33.1",
     "tape": "^5.0.1",
-    "ts-node": "7.0.1",
-    "typescript": "=2.2.2",
-    "uglify-js": "^3.6.1"
+    "terser": "^5.3.8",
+    "typescript": "=2.2.2"
   },
   "engines": {
     "node": ">=0.10.0"

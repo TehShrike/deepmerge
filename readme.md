@@ -2,7 +2,7 @@
 
 Merges the enumerable properties of two or more objects deeply.
 
-> UMD bundle is 723B minified+gzipped
+> UMD bundle is 716B minified+gzipped
 
 ## Getting Started
 
