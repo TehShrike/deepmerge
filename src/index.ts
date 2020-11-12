@@ -1,4 +1,5 @@
-var isPlainObj = require('is-plain-obj')
+import isPlainObj from 'is-plain-obj';
+
 function defaultIsMergeable(value) {
 	return Array.isArray(value) || isPlainObj(value)
 }
@@ -75,7 +76,7 @@ function mergeObject(target, source, options) {
 	return destination
 }
 
-function deepmerge(target, source, options) {
+export default function deepmerge(target, source, options) {
 	options = Object.assign({
 		arrayMerge: defaultArrayMerge,
 		isMergeable: defaultIsMergeable
@@ -96,7 +97,7 @@ function deepmerge(target, source, options) {
 	}
 }
 
-deepmerge.all = function deepmergeAll(array, options) {
+export function deepmergeAll(array, options) {
 	if (!Array.isArray(array)) {
 		throw new Error('first argument should be an array')
 	}
@@ -105,5 +106,3 @@ deepmerge.all = function deepmergeAll(array, options) {
 		return deepmerge(prev, next, options)
 	}, {})
 }
-
-module.exports = deepmerge

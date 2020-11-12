@@ -1,4 +1,4 @@
-var merge = require('../')
+var merge = require('../').default
 var test = require('tape')
 
 test('isMergeable function copying object over object', function(t) {

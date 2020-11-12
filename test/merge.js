@@ -1,4 +1,4 @@
-var merge = require('../')
+var merge = require('../').default
 var test = require('tape')
 
 test('add keys in target that do not exist at the root', function(t) {

@@ -1,18 +1,18 @@
-var merge = require('../')
+var mergeAll = require('../').deepmergeAll
 var test = require('tape')
 
 test('throw error if first argument is not an array', function(t) {
-	t.throws(merge.all.bind(null, { example: true }, { another: '2' }), Error)
+	t.throws(mergeAll.bind(null, { example: true }, { another: '2' }), Error)
 	t.end()
 })
 
 test('return an empty object if first argument is an array with no elements', function(t) {
-	t.deepEqual(merge.all([]), {})
+	t.deepEqual(mergeAll([]), {})
 	t.end()
 })
 
 test('Work just fine if first argument is an array with least than two elements', function(t) {
-	var actual = merge.all([{ example: true }])
+	var actual = mergeAll([{ example: true }])
 	var expected = { example: true }
 	t.deepEqual(actual, expected)
 	t.end()
@@ -20,13 +20,13 @@ test('Work just fine if first argument is an array with least than two elements'
 
 test('execute correctly if options object were not passed', function(t) {
 	var arrayToMerge = [{ example: true }, { another: '123' }]
-	t.doesNotThrow(merge.all.bind(null, arrayToMerge))
+	t.doesNotThrow(mergeAll.bind(null, arrayToMerge))
 	t.end()
 })
 
 test('execute correctly if options object were passed', function(t) {
 	var arrayToMerge = [{ example: true }, { another: '123' }]
-	t.doesNotThrow(merge.all.bind(null, arrayToMerge, { clone: true }))
+	t.doesNotThrow(mergeAll.bind(null, arrayToMerge, { clone: true }))
 	t.end()
 })
 
@@ -36,7 +36,7 @@ test('invoke merge on every item in array should result with all props', functio
 	var thirdObject = { third: 123 }
 	var fourthObject = { fourth: 'some string' }
 
-	var mergedObject = merge.all([ firstObject, secondObject, thirdObject, fourthObject ])
+	var mergedObject = mergeAll([ firstObject, secondObject, thirdObject, fourthObject ])
 
 	t.ok(mergedObject.first === true)
 	t.ok(mergedObject.second === false)
@@ -50,7 +50,7 @@ test('invoke merge on every item in array with clone should clone all elements',
 	var secondObject = { b: { e: true } }
 	var thirdObject = { c: { f: 'string' } }
 
-	var mergedWithClone = merge.all([ firstObject, secondObject, thirdObject ], { clone: true })
+	var mergedWithClone = mergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
 
 	t.notEqual(mergedWithClone.a, firstObject.a)
 	t.notEqual(mergedWithClone.b, secondObject.b)
@@ -64,7 +64,7 @@ test('invoke merge on every item in array clone=false should not clone all eleme
 	var secondObject = { b: { e: true } }
 	var thirdObject = { c: { f: 'string' } }
 
-	var mergedWithoutClone = merge.all([ firstObject, secondObject, thirdObject ], { clone: false })
+	var mergedWithoutClone = mergeAll([ firstObject, secondObject, thirdObject ], { clone: false })
 
 	t.equal(mergedWithoutClone.a, firstObject.a)
 	t.equal(mergedWithoutClone.b, secondObject.b)
@@ -79,7 +79,7 @@ test('invoke merge on every item in array without clone should clone all element
 	var secondObject = { b: { e: true } }
 	var thirdObject = { c: { f: 'string' } }
 
-	var mergedWithoutClone = merge.all([ firstObject, secondObject, thirdObject ])
+	var mergedWithoutClone = mergeAll([ firstObject, secondObject, thirdObject ])
 
 	t.notEqual(mergedWithoutClone.a, firstObject.a)
 	t.notEqual(mergedWithoutClone.b, secondObject.b)

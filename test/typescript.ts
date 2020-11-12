@@ -1,4 +1,4 @@
-import * as merge from '../';
+import merge, { deepmergeAll, Options } from '../';
 
 const x = {
 	foo: 'abc',
@@ -20,7 +20,7 @@ const z = {
 
 let merged1 = merge(x, y);
 let merged2 = merge(x, z);
-let merged3 = merge.all<{wat: number}>([ x, y, z ]);
+let merged3 = deepmergeAll([ x, y, z ]);
 
 merged1.foo;
 merged1.bar;
@@ -29,14 +29,14 @@ merged2.baz;
 merged3.wat;
 
 
-const options1: merge.Options = {
+const options1: Options = {
 	clone: true,
 	isMergeable (obj) {
 		return false;
 	},
 };
 
-const options2: merge.Options = {
+const options2: Options = {
 	arrayMerge (target, source, options) {
 		target.length;
 		source.length;
@@ -50,7 +50,7 @@ const options2: merge.Options = {
 	},
 };
 
-const options3: merge.Options = {
+const options3: Options = {
     customMerge: (key) => {
         if (key === 'foo') {
           return (target, source) => target + source;
@@ -60,6 +60,6 @@ const options3: merge.Options = {
 
 merged1 = merge(x, y, options1);
 merged2 = merge(x, z, options2);
-merged3 = merge.all<{wat: number}>([x, y, z], options1);
+merged3 = deepmergeAll([x, y, z], options1);
 
 const merged4 = merge(x, y, options3);

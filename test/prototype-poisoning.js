@@ -1,4 +1,4 @@
-var merge = require('../')
+var merge = require('../').default
 var test = require('tape')
 var isMergeableObject = require('is-mergeable-object')
 

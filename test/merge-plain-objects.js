@@ -1,4 +1,4 @@
-var merge = require('../')
+var merge = require('../').default
 var test = require('tape')
 
 test('plain objects are merged by default', function(t) {

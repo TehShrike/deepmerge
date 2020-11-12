@@ -26,15 +26,17 @@
     "readme.md"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && npm run typedef",
     "size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
     "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
+    "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
+    "typedef": "tsc -p tsconfig.typedef.json"
   },
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-typescript": "^6.1.0",
     "@types/node": "^8.10.54",
     "is-mergeable-object": "1.1.0",
     "is-plain-obj": "^3.0.0",
@@ -42,7 +44,8 @@
     "rollup": "^2.33.1",
     "tape": "^5.0.1",
     "terser": "^5.3.8",
-    "typescript": "=2.2.2"
+    "tslib": "^2.0.3",
+    "typescript": "^4.1.2"
   },
   "engines": {
     "node": ">=0.10.0"

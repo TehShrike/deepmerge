@@ -1,4 +1,4 @@
-var merge = require('../')
+var merge = require('../').default
 var test = require('tape')
 
 test('custom merge array', function(t) {
