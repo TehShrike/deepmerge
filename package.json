@@ -17,9 +17,10 @@
   },
   "license": "MIT",
   "main": "dist/cjs.js",
+  "types": "types/index.d.ts",
   "files": [
     "dist",
-    "index.d.ts",
+    "types",
     "changelog.md",
     "license.txt",
     "readme.md"
