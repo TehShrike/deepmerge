@@ -36,7 +36,7 @@
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@types/node": "^8.10.54",
     "is-mergeable-object": "1.1.0",
-    "is-plain-obj": "^2.0.0",
+    "is-plain-obj": "^3.0.0",
     "jsmd": "^1.0.2",
     "rollup": "^2.33.1",
     "tape": "^4.11.0",
