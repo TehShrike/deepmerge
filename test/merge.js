@@ -1,6 +1,18 @@
 var merge = require('../')
 var test = require('tape')
 
+test('should handle an undefined value in the target object when merging', function(t) {
+	var src = { key1: 'value1', key2: { key4: 'value4'}, key3: ['value3'] }
+	var target = { key1: 'value', key2: undefined, key3: undefined }
+
+	var notClonedRes = merge(target, src, {mergeWithTarget: true})
+
+	t.assert(notClonedRes === target, 'should successfully merge mutating target');
+	t.assert(notClonedRes.key2 instanceof Object, 'should successfully merge object');
+	t.assert(Array.isArray(notClonedRes.key3), 'should successfully merge array');
+	t.end()
+})
+
 test('result should retain target type information when mergeWithTarget set to true', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }
 	class CustomType {}

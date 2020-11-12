@@ -56,16 +56,20 @@ function propertyIsUnsafe(target, key) {
 }
 
 // Retrieves either a new object or the appropriate target object to mutate.
-function getDestinationObject(target, options) {
-	if (options && options.mergeWithTarget) {
+function getDestinationObject(target, source, options) {
+	const targetDefined = typeof target !== 'undefined'
+	const isArray = Array.isArray(target) || Array.isArray(source)
+	const doMerge = options && (options.mergeWithTarget || options.clone === false)
+
+	if (targetDefined && doMerge) {
 		return Array.isArray(target) ? firstArrayEntry(target) : target
 	}
 
-	return {}
+	return isArray ? [] : {};
 }
 
 function mergeObject(target, source, options) {
-	var destination = getDestinationObject(target, options)
+	var destination = getDestinationObject(target, source, options)
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
@@ -113,7 +117,7 @@ deepmerge.all = function deepmergeAll(array, options) {
 
 	return array.reduce(function(prev, next) {
 		return deepmerge(prev, next, options)
-	}, getDestinationObject(array, options))
+	}, getDestinationObject(array, undefined, options))
 }
 
 module.exports = deepmerge
