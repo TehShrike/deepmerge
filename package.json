@@ -40,7 +40,7 @@
     "is-plain-obj": "^3.0.0",
     "jsmd": "^1.0.2",
     "rollup": "^2.33.1",
-    "tape": "^4.11.0",
+    "tape": "^5.0.1",
     "ts-node": "7.0.1",
     "typescript": "=2.2.2",
     "uglify-js": "^3.6.1"
