@@ -26,11 +26,22 @@
     "readme.md"
   ],
   "scripts": {
-    "build": "rollup -c && npm run typedef",
-    "size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
-    "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "dtslint --localTs node_modules/typescript/lib --expectOnly test/types",
-    "typedef": "tsc -p tsconfig.typedef.json"
+    "build": "npm run build:js && npm run build:types",
+    "prebuild:js": "npm run clean:dist",
+    "build:js": "rollup -c",
+    "prebuild:types": "npm run clean:types",
+    "build:types": "tsc -p tsconfig.typedef.json",
+    "clean": "npm run clean:dist && npm run clean:types",
+    "clean:dist": "rimraf dist",
+    "clean:types": "rimraf 'types/[!legacy/]*'",
+    "presize": "npm run build:js",
+    "size": "terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
+    "test": "npm run test:js && npm run test:types && npm run test:jsmd",
+    "pretest:js": "npm run build:js",
+    "test:js": "tape test/*.js",
+    "test:jsmd": "jsmd readme.md",
+    "pretest:types": "npm run build:types",
+    "test:types": "dtslint --localTs node_modules/typescript/lib --expectOnly test/types"
   },
   "dependencies": {},
   "devDependencies": {
@@ -42,6 +53,7 @@
     "is-mergeable-object": "1.1.0",
     "is-plain-obj": "^3.0.0",
     "jsmd": "^1.0.2",
+    "rimraf": "^3.0.2",
     "rollup": "^2.33.1",
     "tape": "^5.0.1",
     "terser": "^5.3.8",
