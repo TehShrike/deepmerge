@@ -14,11 +14,11 @@ test('should handle an undefined value in the target object when merging', funct
 	t.assert(Array.isArray(notClonedRes.key3), 'should retain array type when merging into undefined target');
 
 	// Explicit undefined source
-	t.assert(typeof key5 === 'undefined', 'should overwrite value with explicitly undefined value');
+	t.assert(typeof key5 === 'undefined', 'should overwrite target value with explicitly undefined source value');
 
 	// Not defined source props
 	t.assert(Array.isArray(notClonedRes.key6), 'should preserve target property value when no source value exists');
-	t.assert(typeof notClonedRes.key7 === 'object', 'should preserve target property value when');
+	t.assert(typeof notClonedRes.key7 === 'object', 'should preserve target property value when no source value exists');
 	t.end()
 })
 
