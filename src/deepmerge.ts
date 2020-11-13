@@ -10,7 +10,7 @@ function emptyTarget(val) {
 
 function cloneUnlessOtherwiseSpecified(value, options) {
 	return (options.clone !== false && options.isMergeable(value))
-		? deepmerge(emptyTarget(value), value, options)
+		? deepmergeImpl(emptyTarget(value), value, options)
 		: value
 }
 
@@ -22,10 +22,10 @@ function defaultArrayMerge(target, source, options) {
 
 function getMergeFunction(key, options) {
 	if (!options.customMerge) {
-		return deepmerge
+		return deepmergeImpl
 	}
 	const customMerge = options.customMerge(key)
-	return typeof customMerge === 'function' ? customMerge : deepmerge
+	return typeof customMerge === 'function' ? customMerge : deepmergeImpl
 }
 
 function getEnumerableOwnPropertySymbols(target) {
@@ -76,14 +76,7 @@ function mergeObject(target, source, options) {
 	return destination
 }
 
-export default function deepmerge(target, source, options) {
-	options = {
-		arrayMerge: defaultArrayMerge,
-		isMergeable: defaultIsMergeable,
-	  ...options,
-		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
-	}
-
+function deepmergeImpl(target, source, options) {
 	const sourceIsArray = Array.isArray(source)
 	const targetIsArray = Array.isArray(target)
 	const sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
@@ -97,10 +90,34 @@ export default function deepmerge(target, source, options) {
 	}
 }
 
+function getFullOptions(options) {
+	const overrides =
+		options === undefined
+			? undefined
+			: (Object.fromEntries(
+					// Filter out keys explicitly set to undefined.
+					Object.entries(options).filter(([key, value]) => value !== undefined)
+				))
+
+	return {
+		arrayMerge: defaultArrayMerge,
+		isMergeable: defaultIsMergeable,
+		clone: true,
+	  ...overrides,
+		cloneUnlessOtherwiseSpecified
+	};
+}
+
+export default function deepmerge(target, source, options) {
+	return deepmergeImpl(target, source, getFullOptions(options))
+}
+
 export function deepmergeAll(array, options) {
 	if (!Array.isArray(array)) {
 		throw new Error('first argument should be an array')
 	}
 
-	return array.reduce((prev, next) => deepmerge(prev, next, options), {})
+	return array.reduce((prev, next) =>
+		deepmergeImpl(prev, next, getFullOptions(options)), {}
+	)
 }
