@@ -1,44 +1,52 @@
-import { deepmergeImpl } from './deepmerge';
+import { deepmergeImpl } from "./deepmerge"
+import type { FullOptions, ObjectMerge } from "./options"
+import type { Property } from "./types"
 
-function emptyTarget(value) {
+function emptyTarget(value: unknown) {
 	return Array.isArray(value) ? [] : {}
 }
 
-export function cloneUnlessOtherwiseSpecified(value, options) {
-	return (options.clone !== false && options.isMergeable(value))
-		? deepmergeImpl(emptyTarget(value), value, options)
+export function cloneUnlessOtherwiseSpecified<T>(value: T, options: FullOptions): T {
+	return options.clone !== false && options.isMergeable(value)
+		? (deepmergeImpl(emptyTarget(value), value, options) as T)
 		: value
 }
 
-function getEnumerableOwnPropertySymbols(target) {
+function getEnumerableOwnPropertySymbols(target: object) {
 	return Object.getOwnPropertySymbols
-		? Object.getOwnPropertySymbols(target).filter((symbol) => target.propertyIsEnumerable(symbol)
-		)
-		: [];
+		? Object.getOwnPropertySymbols(target).filter((symbol) => target.propertyIsEnumerable(symbol))
+		: []
 }
 
-export function getKeys(target) {
-	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target));
+export function getKeys(target: object) {
+	// Symbols cannot be used to index objects yet.
+	// So cast to an array of strings for simplicity.
+	// @see https://github.com/microsoft/TypeScript/issues/1863
+	// TODO: Remove cast once symbols indexing of objects is supported.
+	return [...Object.keys(target), ...getEnumerableOwnPropertySymbols(target)] as string[]
 }
 
-export function propertyIsOnObject(object, property) {
+export function propertyIsOnObject(object: object, property: Property) {
 	try {
-		return property in object;
+		return property in object
 	} catch (_) {
-		return false;
+		return false
 	}
 }
 
-export function getMergeFunction(key, options) {
+export function getMergeFunction(
+	key: Property,
+	options: FullOptions
+): NonNullable<ReturnType<ObjectMerge>> {
 	if (!options.customMerge) {
 		return deepmergeImpl
 	}
 	const customMerge = options.customMerge(key)
-	return typeof customMerge === 'function' ? customMerge : deepmergeImpl
+	return typeof customMerge === "function" ? customMerge : deepmergeImpl
 }
 
 // Protects from prototype poisoning and unexpected merging up the prototype chain.
-export function propertyIsUnsafe(target, key) {
+export function propertyIsUnsafe(target: object, key: Property) {
 	return propertyIsOnObject(target, key) // Properties are safe to merge if they don't exist in the target yet,
 		&& !(Object.hasOwnProperty.call(target, key) // unsafe if they exist up the prototype chain,
 			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
