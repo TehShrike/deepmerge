@@ -2,14 +2,23 @@ var merge = require('../')
 var test = require('tape')
 
 test('should handle an undefined value in the target object when merging', function(t) {
-	var src = { key1: 'value1', key2: { key4: 'value4'}, key3: ['value3'] }
-	var target = { key1: 'value', key2: undefined, key3: undefined }
+	var src = { key1: 'value1', key2: { key4: 'value4'}, key3: ['value3'], key5: undefined }
+	var target = { key1: 'value', key2: undefined, key3: undefined, key5: ['value5'], key6: ['value6'], key7: { key8: 'value8'} }
 
 	var notClonedRes = merge(target, src, {mergeWithTarget: true})
 
-	t.assert(notClonedRes === target, 'should successfully merge mutating target');
-	t.assert(notClonedRes.key2 instanceof Object, 'should successfully merge object');
-	t.assert(Array.isArray(notClonedRes.key3), 'should successfully merge array');
+	// Undefined target
+	t.assert(notClonedRes.key2 === target.key2, 'should merge object source into undefined value');
+	t.assert(notClonedRes.key3 === target.key3, 'should merge array source into undefined target');
+	t.assert(typeof notClonedRes.key2 === 'object', 'should retain object type when merging into undefined target');
+	t.assert(Array.isArray(notClonedRes.key3), 'should retain array type when merging into undefined target');
+
+	// Explicit undefined source
+	t.assert(typeof key5 === 'undefined', 'should overwrite value with explicitly undefined value');
+
+	// Not defined source props
+	t.assert(Array.isArray(notClonedRes.key6), 'should preserve target property value when no source value exists');
+	t.assert(typeof notClonedRes.key7 === 'object', 'should preserve target property value when');
 	t.end()
 })
 
