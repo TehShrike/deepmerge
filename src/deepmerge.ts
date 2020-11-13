@@ -1,4 +1,4 @@
-import isPlainObj from 'is-plain-obj';
+import isPlainObj from 'is-plain-obj'
 
 function defaultIsMergeable(value) {
 	return Array.isArray(value) || isPlainObj(value)
@@ -15,24 +15,24 @@ function cloneUnlessOtherwiseSpecified(value, options) {
 }
 
 function defaultArrayMerge(target, source, options) {
-	return target.concat(source).map(function(element) {
-		return cloneUnlessOtherwiseSpecified(element, options)
-	})
+	return target.concat(source).map((element) =>
+		cloneUnlessOtherwiseSpecified(element, options)
+	)
 }
 
 function getMergeFunction(key, options) {
 	if (!options.customMerge) {
 		return deepmerge
 	}
-	var customMerge = options.customMerge(key)
+	const customMerge = options.customMerge(key)
 	return typeof customMerge === 'function' ? customMerge : deepmerge
 }
 
 function getEnumerableOwnPropertySymbols(target) {
 	return Object.getOwnPropertySymbols
-		? Object.getOwnPropertySymbols(target).filter(function(symbol) {
-			return target.propertyIsEnumerable(symbol)
-		})
+		? Object.getOwnPropertySymbols(target).filter((symbol) =>
+			target.propertyIsEnumerable(symbol)
+		)
 		: []
 }
 
@@ -56,13 +56,13 @@ function propertyIsUnsafe(target, key) {
 }
 
 function mergeObject(target, source, options) {
-	var destination = {}
+	const destination = {}
 	if (options.isMergeable(target)) {
-		getKeys(target).forEach(function(key) {
+		getKeys(target).forEach((key) => {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
-	getKeys(source).forEach(function(key) {
+	getKeys(source).forEach((key) => {
 		if (propertyIsUnsafe(target, key)) {
 			return
 		}
@@ -77,16 +77,16 @@ function mergeObject(target, source, options) {
 }
 
 export default function deepmerge(target, source, options) {
-	options = Object.assign({
+	options = {
 		arrayMerge: defaultArrayMerge,
-		isMergeable: defaultIsMergeable
-	}, options, {
+		isMergeable: defaultIsMergeable,
+	  ...options,
 		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
-	})
+	}
 
-	var sourceIsArray = Array.isArray(source)
-	var targetIsArray = Array.isArray(target)
-	var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
+	const sourceIsArray = Array.isArray(source)
+	const targetIsArray = Array.isArray(target)
+	const sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
 
 	if (!sourceAndTargetTypesMatch) {
 		return cloneUnlessOtherwiseSpecified(source, options)
@@ -102,7 +102,5 @@ export function deepmergeAll(array, options) {
 		throw new Error('first argument should be an array')
 	}
 
-	return array.reduce(function(prev, next) {
-		return deepmerge(prev, next, options)
-	}, {})
+	return array.reduce((prev, next) => deepmerge(prev, next, options), {})
 }
