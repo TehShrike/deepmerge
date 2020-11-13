@@ -1,4 +1,4 @@
-import isPlainObj from 'is-plain-obj'
+import { getFullOptions } from './options'
 import {
 	cloneUnlessOtherwiseSpecified,
 	getKeys,
@@ -6,16 +6,6 @@ import {
 	propertyIsOnObject,
 	propertyIsUnsafe
 } from './utils'
-
-function defaultIsMergeable(value) {
-	return Array.isArray(value) || isPlainObj(value)
-}
-
-function defaultArrayMerge(target, source, options) {
-	return target.concat(source).map((element) =>
-		cloneUnlessOtherwiseSpecified(element, options)
-	)
-}
 
 function mergeObject(target, source, options) {
 	const destination = {}
@@ -50,24 +40,6 @@ export function deepmergeImpl(target, source, options) {
 	} else {
 		return mergeObject(target, source, options)
 	}
-}
-
-function getFullOptions(options) {
-	const overrides =
-		options === undefined
-			? undefined
-			: (Object.fromEntries(
-					// Filter out keys explicitly set to undefined.
-					Object.entries(options).filter(([key, value]) => value !== undefined)
-				))
-
-	return {
-		arrayMerge: defaultArrayMerge,
-		isMergeable: defaultIsMergeable,
-		clone: true,
-	  ...overrides,
-		cloneUnlessOtherwiseSpecified
-	};
 }
 
 export default function deepmerge(target, source, options) {
