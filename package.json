@@ -25,7 +25,19 @@
     }
   },
   "main": "./dist/index.cjs",
-  "types": "types/index.d.ts",
+  "types": "types/legacy/index.d.ts",
+  "typesVersions": {
+    "<4.1": {
+      "*": [
+        "types/legacy/*"
+      ]
+    },
+    ">=4.1": {
+      "*": [
+        "types/*"
+      ]
+    }
+  },
   "files": [
     "dist",
     "types",
@@ -39,6 +51,7 @@
     "build:js": "rollup -c",
     "prebuild:types": "npm run clean:types",
     "build:types": "tsc -p tsconfig.typedef.json",
+    "postbuild:types": "echo \"// Minimum TypeScript Version: 4.1\n\n$(cat types/index.d.ts)\" > types/index.d.ts",
     "clean": "npm run clean:dist && npm run clean:types",
     "clean:dist": "rimraf dist",
     "clean:types": "rimraf 'types/[!legacy/]*'",
