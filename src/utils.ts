@@ -14,19 +14,21 @@ export function cloneUnlessOtherwiseSpecified<T>(value: T, options: FullOptions)
 
 function getEnumerableOwnPropertySymbols(target: object) {
 	return Object.getOwnPropertySymbols
-		? Object.getOwnPropertySymbols(target).filter((symbol) => target.propertyIsEnumerable(symbol))
+		? Object.getOwnPropertySymbols(target).filter((symbol) =>
+			Object.prototype.propertyIsEnumerable.call(target, symbol),
+		)
 		: []
 }
 
-export function getKeys(target: object) {
+export function getKeys(target: object): Array<string> {
 	// Symbols cannot be used to index objects yet.
 	// So cast to an array of strings for simplicity.
 	// @see https://github.com/microsoft/TypeScript/issues/1863
 	// TODO: Remove cast once symbols indexing of objects is supported.
-	return [...Object.keys(target), ...getEnumerableOwnPropertySymbols(target)] as string[]
+	return [ ...Object.keys(target), ...getEnumerableOwnPropertySymbols(target) ] as Array<string>
 }
 
-export function propertyIsOnObject(object: object, property: Property) {
+export function propertyIsOnObject(object: object, property: Property): boolean {
 	try {
 		return property in object
 	} catch (_) {
@@ -36,17 +38,17 @@ export function propertyIsOnObject(object: object, property: Property) {
 
 export function getMergeFunction(
 	key: Property,
-	options: FullOptions
+	options: FullOptions,
 ): NonNullable<ReturnType<ObjectMerge>> {
 	if (!options.customMerge) {
 		return deepmergeImpl
 	}
 	const customMerge = options.customMerge(key)
-	return typeof customMerge === "function" ? customMerge : deepmergeImpl
+	return typeof customMerge === `function` ? customMerge : deepmergeImpl
 }
 
 // Protects from prototype poisoning and unexpected merging up the prototype chain.
-export function propertyIsUnsafe(target: object, key: Property) {
+export function propertyIsUnsafe(target: object, key: Property): boolean {
 	return propertyIsOnObject(target, key) // Properties are safe to merge if they don't exist in the target yet,
 		&& !(Object.hasOwnProperty.call(target, key) // unsafe if they exist up the prototype chain,
 			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.

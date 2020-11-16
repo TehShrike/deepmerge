@@ -40,7 +40,7 @@ function mergeObject<
 export function deepmergeImpl<T1 extends any, T2 extends any, O extends Options>(
 	target: T1,
 	source: T2,
-	options: FullOptions<O>
+	options: FullOptions<O>,
 ): DeepMerge<T1, T2, ExplicitOptions<O>> {
 	const sourceIsArray = Array.isArray(source)
 	const targetIsArray = Array.isArray(target)
@@ -49,16 +49,16 @@ export function deepmergeImpl<T1 extends any, T2 extends any, O extends Options>
 	if (!sourceAndTargetTypesMatch) {
 		return cloneUnlessOtherwiseSpecified(source, options) as DeepMerge<T1, T2, ExplicitOptions<O>>
 	} else if (sourceIsArray) {
-		return options.arrayMerge(target as unknown[], source as unknown[], options) as DeepMerge<
-			T1,
-			T2,
-			ExplicitOptions<O>
-		>
+		return options.arrayMerge(
+			target as Array<unknown>,
+			source as Array<unknown>,
+			options,
+		) as DeepMerge<T1, T2, ExplicitOptions<O>>
 	} else {
 		return mergeObject(
 			target as Record<Property, unknown>,
 			source as Record<Property, unknown>,
-			options
+			options,
 		) as DeepMerge<T1, T2, ExplicitOptions<O>>
 	}
 }
@@ -70,11 +70,11 @@ export function deepmergeImpl<T1 extends any, T2 extends any, O extends Options>
  * @param source The second object.
  * @param options Deep merge options.
  */
-export default function deepmerge<
-	T1 extends object,
-	T2 extends object,
-	O extends Options = {}
->(target: T1, source: T2, options?: O) {
+export default function deepmerge<T1 extends object, T2 extends object, O extends Options = object>(
+	target: T1,
+	source: T2,
+	options?: O,
+): DeepMerge<T1, T2, ExplicitOptions<O>> {
 	return deepmergeImpl(target, source, getFullOptions(options))
 }
 
@@ -85,8 +85,8 @@ export default function deepmerge<
  * @param options Deep merge options.
  */
 export function deepmergeAll<
-	Ts extends readonly [object, ...object[]],
-	O extends Options = {}
+	Ts extends readonly [object, ...Array<object>],
+	O extends Options = object
 >(objects: [...Ts], options?: O): DeepMergeAll<Ts, ExplicitOptions<O>>
 
 /**

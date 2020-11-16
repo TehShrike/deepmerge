@@ -12,7 +12,7 @@ export default {
 	plugins: [
 		resolve(),
 		commonjs(),
-		typescript()
+		typescript(),
 	],
 
 	output: [

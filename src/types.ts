@@ -4,11 +4,11 @@ import type { Options } from "./options"
  * Deep merge 1 or more types given in an array.
  */
 export type DeepMergeAll<
-	Ts extends readonly [any, ...any[]],
+	Ts extends readonly [any, ...Array<any>],
 	O extends Options
-> = Ts extends readonly [infer T1, ...any[]]
+> = Ts extends readonly [infer T1, ...Array<any>]
 	? Ts extends readonly [T1, infer T2, ...infer TRest]
-		? TRest extends readonly never[]
+		? TRest extends ReadonlyArray<never>
 			? DeepMerge<T1, T2, O>
 			: DeepMerge<T1, DeepMergeAll<[T2, ...TRest], O>, O>
 		: T1
@@ -54,8 +54,8 @@ type DeepMergeObjectProps<T1, T2, O extends Options> = Or<
 	IsUndefinedOrNever<T2>
 > extends true
 	? Leaf<T1, T2>
-	: IsUndefinedOrNever<O["isMergeable"]> extends true
-	? IsUndefinedOrNever<O["customMerge"]> extends true
+	: IsUndefinedOrNever<O[`isMergeable`]> extends true
+	? IsUndefinedOrNever<O[`customMerge`]> extends true
 		? DeepMerge<T1, T2, O>
 		: DeepMergeObjectPropsCustom<T1, T2, O>
 	: MaybeLeaf<T1, T2>
@@ -65,16 +65,16 @@ type DeepMergeObjectProps<T1, T2, O extends Options> = Or<
  * merged and where a "customMerge" function has been provided.
  */
 type DeepMergeObjectPropsCustom<T1, T2, O extends Options> = ReturnType<
-	NonNullable<O["customMerge"]>
+	NonNullable<O[`customMerge`]>
 > extends undefined
 	? DeepMerge<T1, T2, O>
-	: undefined extends ReturnType<NonNullable<O["customMerge"]>>
+	: undefined extends ReturnType<NonNullable<O[`customMerge`]>>
 	? Or<IsArray<T1>, IsArray<T2>> extends true
 		? And<IsArray<T1>, IsArray<T2>> extends true
 			? DeepMergeArrays<T1, T2, O>
 			: Leaf<T1, T2>
-		: DeepMerge<T1, T2, O> | ReturnType<NonNullable<ReturnType<NonNullable<O["customMerge"]>>>>
-	: ReturnType<NonNullable<ReturnType<NonNullable<O["customMerge"]>>>>
+		: DeepMerge<T1, T2, O> | ReturnType<NonNullable<ReturnType<NonNullable<O[`customMerge`]>>>>
+	: ReturnType<NonNullable<ReturnType<NonNullable<O[`customMerge`]>>>>
 
 /**
  * Deep merge 2 arrays.
@@ -83,13 +83,13 @@ type DeepMergeObjectPropsCustom<T1, T2, O extends Options> = ReturnType<
  * TypeScript does not yet support higher order types.
  * @see https://github.com/Microsoft/TypeScript/issues/1213
  */
-type DeepMergeArrays<T1, T2, O extends Options> = IsUndefinedOrNever<O["arrayMerge"]> extends true
+type DeepMergeArrays<T1, T2, O extends Options> = IsUndefinedOrNever<O[`arrayMerge`]> extends true
 	? T1 extends readonly [...infer E1]
 		? T2 extends readonly [...infer E2]
 			? [...E1, ...E2]
 			: never
 		: never
-	: ReturnType<NonNullable<O["arrayMerge"]>>
+	: ReturnType<NonNullable<O[`arrayMerge`]>>
 
 /**
  * Get the leaf type from 2 types that can't be merged.
@@ -111,12 +111,13 @@ type MaybeLeaf<T1, T2> = Or<
 > extends true
 	? Leaf<T1, T2>
 	: // TODO: Handle case where return type of "isMergeable" is a typeguard. If it is we can do better than just "unknown".
-	  unknown
+		unknown
 
 /**
  * Flatten a complex type such as a union or intersection of objects into a
  * single object.
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 type FlatternAlias<T> = {} & { [P in keyof T]: T[P] }
 
 /**
