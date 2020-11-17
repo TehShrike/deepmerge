@@ -671,3 +671,12 @@ test(`Falsey properties should be mergeable`, (t) => {
 	t.ok(customMergeWasCalled, `custom merge function was called`)
 	t.end()
 })
+
+test(`should not mutate options`, (t) => {
+	const options = {}
+
+	merge({}, {}, options)
+
+	t.deepEqual(options, {})
+	t.end()
+})
