@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  lint:
+    name: Linting Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linting Checks
+        run: npm run lint
+  test:
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-latest
+        node_version:
+          - "14"
+          - "12"
+    name: Test with Node ${{ matrix.node_version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm run test
