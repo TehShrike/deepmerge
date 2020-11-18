@@ -16,7 +16,15 @@
     "url": "git://github.com/TehShrike/deepmerge.git"
   },
   "license": "MIT",
-  "main": "dist/cjs.js",
+  "exports": {
+    "default": "./dist/index.umd.js",
+    "import": "./dist/index.mjs",
+    "node": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
   "types": "types/index.d.ts",
   "files": [
     "dist",
@@ -35,7 +43,7 @@
     "clean:dist": "rimraf dist",
     "clean:types": "rimraf 'types/[!legacy/]*'",
     "presize": "npm run build:js",
-    "size": "terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
+    "size": "terser --compress --mangle -- ./dist/index.umd.js | gzip -c | wc -c",
     "test": "npm run test:js && npm run test:types && npm run test:jsmd",
     "pretest:js": "npm run build:js",
     "test:js": "tape test/*.js",
