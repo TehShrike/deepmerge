@@ -1,4 +1,4 @@
-import deepmerge, { deepmergeAll } from "../../src"
+import deepmerge, { deepmergeAll } from "deepmerge"
 
 const a = {
 	foo: `abc`,

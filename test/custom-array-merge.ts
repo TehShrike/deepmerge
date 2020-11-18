@@ -1,9 +1,10 @@
-const merge = require(`../`).default
-const test = require(`tape`)
+import type { Options } from "deepmerge"
+import deepmerge from "deepmerge"
+import test from "tape"
 
 test(`custom merge array`, (t) => {
 	let mergeFunctionCalled = false
-	function overwriteMerge(target, source, options) {
+	const overwriteMerge: Options[`arrayMerge`] = (target, source, options) => {
 		mergeFunctionCalled = true
 		t.equal(options.arrayMerge, overwriteMerge)
 
@@ -17,7 +18,7 @@ test(`custom merge array`, (t) => {
 		someArray: [ 1, 2, 3 ],
 	}
 
-	const actual = merge(destination, source, { arrayMerge: overwriteMerge })
+	const actual = deepmerge(destination, source, { arrayMerge: overwriteMerge })
 	const expected = {
 		someArray: [ 1, 2, 3 ],
 		someObject: { what: `yes` },
@@ -29,10 +30,8 @@ test(`custom merge array`, (t) => {
 })
 
 test(`merge top-level arrays`, (t) => {
-	function overwriteMerge(a, b) {
-		return b
-	}
-	const actual = merge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
+	const overwriteMerge: Options[`arrayMerge`] = (a, b) => b
+	const actual = deepmerge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
 	const expected = [ 1, 2 ]
 
 	t.deepEqual(actual, expected)
@@ -41,7 +40,7 @@ test(`merge top-level arrays`, (t) => {
 
 test(`cloner function is available for merge functions to use`, (t) => {
 	let customMergeWasCalled = false
-	function cloneMerge(target, source, options) {
+	const cloneMerge: Options[`arrayMerge`] = (target, source, options) => {
 		customMergeWasCalled = true
 		t.ok(options.cloneUnlessOtherwiseSpecified, `cloner function is available`)
 		return target.concat(source).map((element) => options.cloneUnlessOtherwiseSpecified(element, options))
@@ -60,9 +59,9 @@ test(`cloner function is available for merge functions to use`, (t) => {
 		key2: [ `four` ],
 	}
 
-	t.deepEqual(merge(target, src, { arrayMerge: cloneMerge }), expected)
+	t.deepEqual(deepmerge(target, src, { arrayMerge: cloneMerge }), expected)
 	t.ok(customMergeWasCalled)
-	t.ok(Array.isArray(merge(target, src).key1))
-	t.ok(Array.isArray(merge(target, src).key2))
+	t.ok(Array.isArray(deepmerge(target, src).key1))
+	t.ok(Array.isArray(deepmerge(target, src).key2))
 	t.end()
 })

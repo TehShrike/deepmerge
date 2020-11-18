@@ -1,15 +1,15 @@
-const merge = require(`../`).default
-const test = require(`tape`)
+import type { Options } from "deepmerge"
+import deepmerge from "deepmerge"
+import test from "tape"
 
 test(`isMergeable function copying object over object`, (t) => {
 	const src = { key: { isMergeable: false }, baz: `yes` }
 	const target = { key: { foo: `wat` }, baz: `whatever` }
 
-	function customIsMergeable(object) {
-		return object && typeof value === `object` && object.isMergeable !== false
-	}
+	const customIsMergeable: Options[`isMergeable`] = (object) =>
+		object && typeof object === `object` && object.isMergeable !== false
 
-	const res = merge(target, src, {
+	const res = deepmerge(target, src, {
 		isMergeable: customIsMergeable,
 	})
 
@@ -22,11 +22,10 @@ test(`isMergeable function copying object over nothing`, (t) => {
 	const src = { key: { isMergeable: false, foo: `bar` }, baz: `yes` }
 	const target = { baz: `whatever` }
 
-	function customIsMergeable(object) {
-		return object && typeof value === `object` && object.isMergeable !== false
-	}
+	const customIsMergeable: Options[`isMergeable`] = (object) =>
+		object && typeof object === `object` && object.isMergeable !== false
 
-	const res = merge(target, src, {
+	const res = deepmerge(target, src, {
 		isMergeable: customIsMergeable,
 	})
 

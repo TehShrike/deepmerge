@@ -1,11 +1,12 @@
-const merge = require(`../`).default
-const test = require(`tape`)
-const isMergeableObject = require(`is-mergeable-object`)
+import type { Options } from "deepmerge"
+import deepmerge from "deepmerge"
+import test from "tape"
+import isPlainObj from 'is-plain-obj'
 
 test(`merging objects with own __proto__`, (t) => {
 	const user = {}
 	const malicious = JSON.parse(`{ "__proto__": { "admin": true } }`)
-	const mergedObject = merge(user, malicious)
+	const mergedObject = deepmerge(user, malicious)
 	t.notOk(mergedObject.__proto__.admin, `non-plain properties should not be merged`)
 	t.notOk(mergedObject.admin, `the destination should have an unmodified prototype`)
 	t.end()
@@ -28,7 +29,7 @@ test(`merging objects with plain and non-plain properties`, (t) => {
 		[plainSymbolKey]: `qux`,
 	}
 
-	const mergedObject = merge(target, source)
+	const mergedObject = deepmerge(target, source)
 	t.equal(undefined, mergedObject.parentKey, `inherited properties of target should be removed, not merged or ignored`)
 	t.equal(`bar`, mergedObject.plainKey, `enumerable own properties of target should be merged`)
 	t.equal(`baz`, mergedObject.newKey, `properties not yet on target should be merged`)
@@ -40,21 +41,20 @@ test(`merging objects with plain and non-plain properties`, (t) => {
 test(`merging strings works with a custom string merge`, (t) => {
 	const target = { name: `Alexander` }
 	const source = { name: `Hamilton` }
-	function customMerge(key, options) {
+	const customMerge: Options[`customMerge`] = (key) => {
 		if (key === `name`) {
-			return function(target, source, options) {
-				return target[0] + `. ` + source.substring(0, 3)
+			return function(target: string, source: string, options) {
+				return `${ target[0] }. ${ source.substring(0, 3) }`
 			}
 		} else {
-			return merge
+			return deepmerge
 		}
 	}
 
-	function mergeable(target) {
-		return isMergeableObject(target) || (typeof target === `string` && target.length > 1)
-	}
+	const mergeable: Options[`isMergeable`] = (target) =>
+		isPlainObj(target) || (typeof target === `string` && target.length > 1)
 
-	t.equal(`A. Ham`, merge(target, source, { customMerge, isMergeable: mergeable }).name)
+	t.equal(`A. Ham`, deepmerge(target, source, { customMerge, isMergeable: mergeable }).name)
 	t.end()
 })
 
@@ -73,6 +73,6 @@ test(`merging objects with null prototype`, (t) => {
 		},
 	}
 
-	t.deepEqual(expected, merge(target, source))
+	t.deepEqual(expected, deepmerge(target, source))
 	t.end()
 })

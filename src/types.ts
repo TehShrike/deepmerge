@@ -35,7 +35,7 @@ type DeepMergeValues<T1, T2, O extends Options> = And<IsArray<T1>, IsArray<T2>> 
 /**
  * Deep merge 2 non-array objects.
  */
-export type DeepMergeObjects<T1, T2, O extends Options> = FlatternAlias<
+export type DeepMergeObjects<T1, T2, O extends Options> = FlattenAlias<
 	// @see https://github.com/microsoft/TypeScript/issues/41448
 	{
 		-readonly [K in keyof T1]: DeepMergeObjectProps<ValueOfKey<T1, K>, ValueOfKey<T2, K>, O>
@@ -118,7 +118,7 @@ type MaybeLeaf<T1, T2> = Or<
  * single object.
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-type FlatternAlias<T> = {} & { [P in keyof T]: T[P] }
+export type FlattenAlias<T> = {} & { [P in keyof T]: T[P] }
 
 /**
  * Get the value of the given key in the given object.

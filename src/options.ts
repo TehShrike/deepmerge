@@ -1,7 +1,7 @@
 import isPlainObj from "is-plain-obj"
 
 import { cloneUnlessOtherwiseSpecified } from "./impl"
-import type { Property } from "./types"
+import type { FlattenAlias, Property } from "./types"
 
 /**
  * Deep merge options.
@@ -23,7 +23,7 @@ export type ExplicitOptions<O extends Options = Options> = {
 /**
  * Deep merge options with defaults applied.
  */
-export type FullOptions<O extends Options = Options> = {
+export type FullOptions<O extends Options = Options> = FlattenAlias<{
 	arrayMerge: O[`arrayMerge`] extends undefined
 		? typeof defaultArrayMerge
 		: NonNullable<O[`arrayMerge`]>
@@ -33,7 +33,7 @@ export type FullOptions<O extends Options = Options> = {
 		? typeof defaultIsMergeable
 		: NonNullable<O[`isMergeable`]>
 	cloneUnlessOtherwiseSpecified: <T>(value: T, options: FullOptions) => T
-}
+}>
 
 /**
  * A function that determins if a type is mergable.
@@ -85,5 +85,5 @@ export function getFullOptions<O extends Options>(options?: O): FullOptions<O> {
 		clone: true,
 		...overrides,
 		cloneUnlessOtherwiseSpecified,
-	} as FullOptions<O>
+	} as unknown as FullOptions<O>
 }

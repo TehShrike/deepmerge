@@ -1,12 +1,12 @@
-const merge = require(`../`).default
-const test = require(`tape`)
+import deepmerge from "deepmerge"
+import test from "tape"
 
 test(`plain objects are merged by default`, (t) => {
 	const input = {
 		newObject: new Object(),
 		objectLiteral: { a: 123 },
 	}
-	const output = merge({}, input)
+	const output = deepmerge({}, input)
 
 	t.deepEqual(output.newObject, input.newObject)
 	t.notEqual(output.newObject, input.newObject)
@@ -22,7 +22,7 @@ test(`instantiated objects are copied by reference`, (t) => {
 		error: new Error(),
 		regex: /regex/,
 	}
-	const output = merge({}, input)
+	const output = deepmerge({}, input)
 
 	t.equal(output.date, input.date)
 	t.equal(output.error, input.error)
