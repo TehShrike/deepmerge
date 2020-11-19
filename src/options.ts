@@ -1,7 +1,7 @@
 import isPlainObj from "is-plain-obj"
 
+import { cloneUnlessOtherwiseSpecified } from "./impl"
 import type { Property } from "./types"
-import { cloneUnlessOtherwiseSpecified } from "./utils"
 
 /**
  * Deep merge options.

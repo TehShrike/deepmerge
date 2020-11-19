@@ -1,67 +1,7 @@
-import type { ExplicitOptions, FullOptions, Options } from "./options"
+import { deepmergeImpl } from "./impl"
+import type { ExplicitOptions, Options } from "./options"
 import { getFullOptions } from "./options"
-import type { DeepMerge, DeepMergeAll, DeepMergeObjects, Property } from "./types"
-import {
-	cloneUnlessOtherwiseSpecified,
-	getKeys,
-	getMergeFunction,
-	propertyIsOnObject,
-	propertyIsUnsafe,
-} from "./utils"
-
-function mergeObject<
-	T1 extends Record<Property, unknown>,
-	T2 extends Record<Property, unknown>,
-	O extends Options
->(target: T1, source: T2, options: FullOptions<O>): DeepMergeObjects<T1, T2, O> {
-	const destination: any = {}
-
-	if (options.isMergeable(target)) {
-		getKeys(target).forEach((key) => {
-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
-		})
-	}
-
-	getKeys(source).forEach((key) => {
-		if (propertyIsUnsafe(target, key)) {
-			return
-		}
-
-		if (!options.isMergeable(source[key]) || !propertyIsOnObject(target, key)) {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
-		} else {
-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
-		}
-	})
-
-	return destination
-}
-
-export function deepmergeImpl<T1 extends any, T2 extends any, O extends Options>(
-	target: T1,
-	source: T2,
-	options: FullOptions<O>,
-): DeepMerge<T1, T2, ExplicitOptions<O>> {
-	const sourceIsArray = Array.isArray(source)
-	const targetIsArray = Array.isArray(target)
-	const sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
-
-	if (!sourceAndTargetTypesMatch) {
-		return cloneUnlessOtherwiseSpecified(source, options) as DeepMerge<T1, T2, ExplicitOptions<O>>
-	} else if (sourceIsArray) {
-		return options.arrayMerge(
-			target as Array<unknown>,
-			source as Array<unknown>,
-			options,
-		) as DeepMerge<T1, T2, ExplicitOptions<O>>
-	} else {
-		return mergeObject(
-			target as Record<Property, unknown>,
-			source as Record<Property, unknown>,
-			options,
-		) as DeepMerge<T1, T2, ExplicitOptions<O>>
-	}
-}
+import type { DeepMerge, DeepMergeAll } from "./types"
 
 /**
  * Deeply merge two objects.
