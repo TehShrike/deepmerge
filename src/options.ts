@@ -7,32 +7,32 @@ import type { FlattenAlias, Property } from "./types"
  * Deep merge options.
  */
 export type Options = Partial<{
-	arrayMerge?: ArrayMerge
-	clone?: boolean
-	customMerge?: ObjectMerge
-	isMergeable?: IsMergeable
+	readonly arrayMerge?: ArrayMerge
+	readonly clone?: boolean
+	readonly customMerge?: ObjectMerge
+	readonly isMergeable?: IsMergeable
 }>
 
 /**
  * Deep merge options with explicit keys.
  */
 export type ExplicitOptions<O extends Options = Options> = {
-	[K in keyof Options]-?: undefined extends O[K] ? never : O[K]
+	readonly [K in keyof Options]-?: undefined extends O[K] ? never : O[K]
 }
 
 /**
  * Deep merge options with defaults applied.
  */
 export type FullOptions<O extends Options = Options> = FlattenAlias<{
-	arrayMerge: O[`arrayMerge`] extends undefined
+	readonly arrayMerge: O[`arrayMerge`] extends undefined
 		? typeof defaultArrayMerge
 		: NonNullable<O[`arrayMerge`]>
-	clone: O[`clone`] extends undefined ? true : NonNullable<O[`clone`]>
-	customMerge?: O[`customMerge`]
-	isMergeable: O[`isMergeable`] extends undefined
+	readonly clone: O[`clone`] extends undefined ? true : NonNullable<O[`clone`]>
+	readonly customMerge?: O[`customMerge`]
+	readonly isMergeable: O[`isMergeable`] extends undefined
 		? typeof defaultIsMergeable
 		: NonNullable<O[`isMergeable`]>
-	cloneUnlessOtherwiseSpecified: <T>(value: T, options: FullOptions) => T
+	readonly cloneUnlessOtherwiseSpecified: <T>(value: T, options: FullOptions) => T
 }>
 
 /**

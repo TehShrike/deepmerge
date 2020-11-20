@@ -4,9 +4,9 @@ import type { Options } from "./options"
  * Deep merge 1 or more types given in an array.
  */
 export type DeepMergeAll<
-	Ts extends readonly [any, ...Array<any>],
+	Ts extends readonly [any, ...ReadonlyArray<any>],
 	O extends Options
-> = Ts extends readonly [infer T1, ...Array<any>]
+> = Ts extends readonly [infer T1, ...ReadonlyArray<any>]
 	? Ts extends readonly [T1, infer T2, ...infer TRest]
 		? TRest extends ReadonlyArray<never>
 			? DeepMerge<T1, T2, O>
@@ -81,6 +81,7 @@ type DeepMergeObjectPropsCustom<T1, T2, O extends Options> = ReturnType<
  *
  * Cannot get return type from arrayMerge passing generics.
  * TypeScript does not yet support higher order types.
+ *
  * @see https://github.com/Microsoft/TypeScript/issues/1213
  */
 type DeepMergeArrays<T1, T2, O extends Options> = IsUndefinedOrNever<O[`arrayMerge`]> extends true

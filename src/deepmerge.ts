@@ -25,7 +25,7 @@ export default function deepmerge<T1 extends object, T2 extends object, O extend
  * @param options Deep merge options.
  */
 export function deepmergeAll<
-	Ts extends readonly [object, ...Array<object>],
+	Ts extends readonly [object, ...ReadonlyArray<object>],
 	O extends Options = object
 >(objects: [...Ts], options?: O): DeepMergeAll<Ts, ExplicitOptions<O>>
 
@@ -38,7 +38,7 @@ export function deepmergeAll<
 export function deepmergeAll(objects: ReadonlyArray<object>, options?: Options): object
 export function deepmergeAll(objects: ReadonlyArray<object>, options?: Options): object {
 	if (!Array.isArray(objects)) {
-		throw new Error(`first argument should be an array`)
+		throw new TypeError(`first argument should be an array`)
 	}
 
 	return objects.reduce((prev, next) => deepmergeImpl(prev, next, getFullOptions(options)), {})

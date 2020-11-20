@@ -4,7 +4,7 @@ import test from "tape"
 test(`throw error if first argument is not an array`, (t) => {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error -- FIXME: Can't use @ts-expect-error due to it failing in tests.
 	// @ts-ignore Expect a type error when calling the function incorrectly.
-	t.throws(deepmergeAll.bind(null, { example: true }, { another: `2` }), Error)
+	t.throws(deepmergeAll.bind(null, { example: true }, { another: `2` }), TypeError)
 	t.end()
 })
 

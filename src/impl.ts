@@ -7,7 +7,7 @@ function emptyTarget(value: unknown) {
 
 export function cloneUnlessOtherwiseSpecified<T>(value: T, options: FullOptions): T {
 	return options.clone !== false && options.isMergeable(value)
-		? (deepmergeImpl(emptyTarget(value), value, options) as T)
+		? deepmergeImpl(emptyTarget(value), value, options) as T
 		: value
 }
 
@@ -30,7 +30,7 @@ function getKeys(target: object): Array<string> {
 function propertyIsOnObject(object: object, property: Property): boolean {
 	try {
 		return property in object
-	} catch (_) {
+	} catch {
 		return false
 	}
 }
@@ -101,17 +101,17 @@ export function deepmergeImpl<T1 extends any, T2 extends any, O extends Options>
 
 	if (!sourceAndTargetTypesMatch) {
 		return cloneUnlessOtherwiseSpecified(source, options) as DeepMerge<T1, T2, ExplicitOptions<O>>
-	} else if (sourceIsArray) {
+	}
+	if (sourceIsArray) {
 		return options.arrayMerge(
 			target as Array<unknown>,
 			source as Array<unknown>,
 			options,
 		) as DeepMerge<T1, T2, ExplicitOptions<O>>
-	} else {
-		return mergeObject(
+	}
+	return mergeObject(
 			target as Record<Property, unknown>,
 			source as Record<Property, unknown>,
 			options,
-		) as DeepMerge<T1, T2, ExplicitOptions<O>>
-	}
+	) as DeepMerge<T1, T2, ExplicitOptions<O>>
 }
