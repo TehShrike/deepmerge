@@ -112,8 +112,8 @@ There are multiple ways to merge two arrays, below are a few examples but you ca
 
 Your `arrayMerge` function will be called with three arguments: a `target` array, the `source` array, and an `options` object with these properties:
 
-- `isMergeableObject(value)`
-- `cloneUnlessOtherwiseSpecified(value, options)`
+- `isMergeable(value)`
+- `deepClone(value, options)`
 
 ##### `arrayMerge` example: overwrite target array
 
@@ -141,7 +141,7 @@ const combineMerge = (target, source, options) => {
 
   source.forEach((item, index) => {
     if (typeof destination[index] === 'undefined') {
-      destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
+      destination[index] = options.clone ? options.deepClone(item) : item
     } else if (options.isMergeable(item)) {
       destination[index] = deepmerge(target[index], item, options)
     } else if (target.indexOf(item) === -1) {

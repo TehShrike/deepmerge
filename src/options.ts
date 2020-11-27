@@ -1,6 +1,6 @@
 import isPlainObj from "is-plain-obj"
 
-import { cloneUnlessOtherwiseSpecified } from "./impl"
+import { getSubtree, getDeepCloneFn } from "./impl"
 import type { FlattenAlias, Property } from "./types"
 
 /**
@@ -8,7 +8,7 @@ import type { FlattenAlias, Property } from "./types"
  */
 export type Options = Partial<{
 	readonly arrayMerge?: ArrayMerge
-	readonly clone?: boolean
+	readonly clone?: Clone
 	readonly customMerge?: ObjectMerge
 	readonly isMergeable?: IsMergeable
 }>
@@ -32,7 +32,7 @@ export type FullOptions<O extends Options = Options> = FlattenAlias<{
 	readonly isMergeable: O[`isMergeable`] extends undefined
 		? typeof defaultIsMergeable
 		: NonNullable<O[`isMergeable`]>
-	readonly cloneUnlessOtherwiseSpecified: <T>(value: T, options: FullOptions) => T
+	readonly deepClone: ReturnType<typeof getDeepCloneFn>
 }>
 
 /**
@@ -44,6 +44,11 @@ export type IsMergeable = (value: any) => boolean
  * A function that merges any 2 arrays.
  */
 export type ArrayMerge<T1 = any, T2 = any> = (target: Array<T1>, source: Array<T2>, options: FullOptions) => any
+
+/**
+ * The cloning behavior.
+ */
+export type Clone<T = any> = boolean | ((object: T, options: FullOptions) => any)
 
 /**
  * A function that merges any 2 non-arrays values.
@@ -64,7 +69,7 @@ function defaultArrayMerge<T1 extends unknown, T2 extends unknown>(
 	options: FullOptions,
 ) {
 	return [ ...target, ...source ].map((element) =>
-		cloneUnlessOtherwiseSpecified(element, options),
+		getSubtree(element, options),
 	) as T1 extends readonly [...infer E1]
 		? T2 extends readonly [...infer E2]
 			? [...E1, ...E2]
@@ -81,11 +86,13 @@ export function getFullOptions<O extends Options>(options?: O): FullOptions<O> {
 				Object.entries(options).filter(([ _key, value ]) => value !== undefined),
 			) as O)
 
-	return {
+	const fullOptions = {
 		arrayMerge: defaultArrayMerge,
 		isMergeable: defaultIsMergeable,
 		clone: defaultClone,
 		...overrides,
-		cloneUnlessOtherwiseSpecified,
-	} as unknown as FullOptions<O>
+	} as any
+	fullOptions.deepClone = getDeepCloneFn(fullOptions)
+
+	return fullOptions
 }

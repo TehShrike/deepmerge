@@ -5,10 +5,18 @@ function emptyTarget(value: unknown) {
 	return Array.isArray(value) ? [] : {}
 }
 
-export function cloneUnlessOtherwiseSpecified<T>(value: T, options: FullOptions): T {
-	return options.clone !== false && options.isMergeable(value)
+export function getDeepCloneFn(options: FullOptions) {
+	return <T>(value: T): T => options.isMergeable(value)
 		? deepmergeImpl(emptyTarget(value), value, options) as T
 		: value
+}
+
+export function getSubtree<T>(value: T, options: FullOptions): T {
+	return options.clone === false
+		? value
+		: options.clone === true
+			? options.deepClone(value)
+			: options.clone(value, options)
 }
 
 function getEnumerableOwnPropertySymbols(target: object) {
@@ -71,7 +79,7 @@ function mergeObject<
 
 	if (options.isMergeable(target)) {
 		getKeys(target).forEach((key) => {
-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
+			destination[key] = getSubtree(target[key], options)
 		})
 	}
 
@@ -81,7 +89,7 @@ function mergeObject<
 		}
 
 		if (!options.isMergeable(source[key]) || !propertyIsOnObject(target, key)) {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
+			destination[key] = getSubtree(source[key], options)
 		} else {
 			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
 		}
@@ -100,7 +108,7 @@ export function deepmergeImpl<T1 extends any, T2 extends any, O extends Options>
 	const sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
 
 	if (!sourceAndTargetTypesMatch) {
-		return cloneUnlessOtherwiseSpecified(source, options) as DeepMerge<T1, T2, ExplicitOptions<O>>
+		return getSubtree(source, options) as DeepMerge<T1, T2, ExplicitOptions<O>>
 	}
 	if (sourceIsArray) {
 		return options.arrayMerge(
