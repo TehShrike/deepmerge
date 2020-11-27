@@ -1,5 +1,6 @@
 # [5.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v5.0.0)
 
+- Breaking: Cloning is not turned off by default
 - Breaking: Endpoint are now exported in esm style [#215](https://github.com/TehShrike/deepmerge/pull/215)
   - The main merge function is now a default export
   - The all merge function is now exported as "deepmergeAll" and is no longer a property on the main merge function.

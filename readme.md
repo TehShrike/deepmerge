@@ -251,11 +251,9 @@ result.pets // => ['Cat', 'Parrot', 'Dog']
 
 #### `clone`
 
-*Deprecated.*
+Defaults to `false`.
 
-Defaults to `true`.
-
-If `clone` is `false` then child objects will be copied directly instead of being cloned.  This was the default behavior before version 2.x.
+If `clone` is `true` then child objects will be cloned into the destination object instead of being directly copied. This was the default behavior before version 5.x.
 
 ## Testing
 

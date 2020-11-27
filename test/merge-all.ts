@@ -61,31 +61,31 @@ test(`invoke merge on every item in array with clone should clone all elements`,
 	t.end()
 })
 
-test(`invoke merge on every item in array clone=false should not clone all elements`, (t) => {
+test(`invoke merge on every item in array clone=true should clone all elements`, (t) => {
 	const firstObject = { a: { d: 123 } }
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
 
-	const mergedWithoutClone = deepmergeAll([ firstObject, secondObject, thirdObject ], { clone: false })
+	const mergedWithoutClone = deepmergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
 
-	t.equal(mergedWithoutClone.a, firstObject.a)
-	t.equal(mergedWithoutClone.b, secondObject.b)
-	t.equal(mergedWithoutClone.c, thirdObject.c)
+	t.notEqual(mergedWithoutClone.a, firstObject.a)
+	t.notEqual(mergedWithoutClone.b, secondObject.b)
+	t.notEqual(mergedWithoutClone.c, thirdObject.c)
 
 	t.end()
 })
 
 
-test(`invoke merge on every item in array without clone should clone all elements`, (t) => {
+test(`invoke merge on every item in array without clone should not clone all elements`, (t) => {
 	const firstObject = { a: { d: 123 } }
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
 
 	const mergedWithoutClone = deepmergeAll([ firstObject, secondObject, thirdObject ])
 
-	t.notEqual(mergedWithoutClone.a, firstObject.a)
-	t.notEqual(mergedWithoutClone.b, secondObject.b)
-	t.notEqual(mergedWithoutClone.c, thirdObject.c)
+	t.equal(mergedWithoutClone.a, firstObject.a)
+	t.equal(mergedWithoutClone.b, secondObject.b)
+	t.equal(mergedWithoutClone.c, thirdObject.c)
 
 	t.end()
 })

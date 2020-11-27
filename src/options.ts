@@ -52,7 +52,7 @@ export type ObjectMerge<K = any> = (
 	key: K
 ) => ((target: any, source: any, options: FullOptions) => any) | undefined
 
-const defaultClone = true as const
+const defaultClone = false as const
 
 function defaultIsMergeable(value: unknown): value is Record<Property, unknown> | Array<unknown> {
 	return Array.isArray(value) || isPlainObj(value)
