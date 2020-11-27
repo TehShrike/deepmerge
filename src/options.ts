@@ -27,7 +27,7 @@ export type FullOptions<O extends Options = Options> = FlattenAlias<{
 	readonly arrayMerge: O[`arrayMerge`] extends undefined
 		? typeof defaultArrayMerge
 		: NonNullable<O[`arrayMerge`]>
-	readonly clone: O[`clone`] extends undefined ? true : NonNullable<O[`clone`]>
+	readonly clone: O[`clone`] extends undefined ? typeof defaultClone : NonNullable<O[`clone`]>
 	readonly customMerge?: O[`customMerge`]
 	readonly isMergeable: O[`isMergeable`] extends undefined
 		? typeof defaultIsMergeable
@@ -51,6 +51,8 @@ export type ArrayMerge<T1 = any, T2 = any> = (target: Array<T1>, source: Array<T
 export type ObjectMerge<K = any> = (
 	key: K
 ) => ((target: any, source: any, options: FullOptions) => any) | undefined
+
+const defaultClone = true as const
 
 function defaultIsMergeable(value: unknown): value is Record<Property, unknown> | Array<unknown> {
 	return Array.isArray(value) || isPlainObj(value)
@@ -82,7 +84,7 @@ export function getFullOptions<O extends Options>(options?: O): FullOptions<O> {
 	return {
 		arrayMerge: defaultArrayMerge,
 		isMergeable: defaultIsMergeable,
-		clone: true,
+		clone: defaultClone,
 		...overrides,
 		cloneUnlessOtherwiseSpecified,
 	} as unknown as FullOptions<O>
