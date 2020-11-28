@@ -1,6 +1,6 @@
 import isPlainObj from "is-plain-obj"
 
-import { getSubtree, getDeepCloneFn } from "./impl"
+import { getSubtree, getDeepCloneFn, getDeepMergeFn } from "./impl"
 import type { FlattenAlias, Property } from "./types"
 
 /**
@@ -33,6 +33,7 @@ export type FullOptions<O extends Options = Options> = FlattenAlias<{
 		? typeof defaultIsMergeable
 		: NonNullable<O[`isMergeable`]>
 	readonly deepClone: ReturnType<typeof getDeepCloneFn>
+	readonly deepMerge: ReturnType<typeof getDeepMergeFn>
 }>
 
 /**
@@ -53,9 +54,7 @@ export type Clone<T = any> = boolean | ((object: T, options: FullOptions) => any
 /**
  * A function that merges any 2 non-arrays values.
  */
-export type ObjectMerge<K = any> = (
-	key: K
-) => ((target: any, source: any, options: FullOptions) => any) | undefined
+export type ObjectMerge<K = any> = ((target: any, source: any, key: K, options: FullOptions) => any) | undefined
 
 const defaultClone = false as const
 
@@ -93,6 +92,7 @@ export function getFullOptions<O extends Options>(options?: O): FullOptions<O> {
 		...overrides,
 	} as any
 	fullOptions.deepClone = getDeepCloneFn(fullOptions)
+	fullOptions.deepMerge = getDeepMergeFn(fullOptions)
 
 	return fullOptions
 }

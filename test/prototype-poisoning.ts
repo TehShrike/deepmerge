@@ -41,13 +41,11 @@ test(`merging objects with plain and non-plain properties`, (t) => {
 test(`merging strings works with a custom string merge`, (t) => {
 	const target = { name: `Alexander` }
 	const source = { name: `Hamilton` }
-	const customMerge: Options[`customMerge`] = (key) => {
+	const customMerge: Options[`customMerge`] = (target, source, key, options) => {
 		if (key === `name`) {
-			return function(target: string, source: string, options) {
-				return `${ target[0] }. ${ source.substring(0, 3) }`
-			}
+			return `${ (target as string)[0] }. ${ (source as string).substring(0, 3) }`
 		} else {
-			return deepmerge
+			return options.deepMerge(target, source)
 		}
 	}
 

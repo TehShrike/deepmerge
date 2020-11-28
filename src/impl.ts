@@ -1,4 +1,4 @@
-import type { ExplicitOptions, FullOptions, ObjectMerge, Options } from "./options"
+import type { ExplicitOptions, FullOptions, Options } from "./options"
 import type { DeepMerge, DeepMergeObjects, Property } from "./types"
 
 function emptyTarget(value: unknown) {
@@ -9,6 +9,12 @@ export function getDeepCloneFn(options: FullOptions) {
 	return <T>(value: T): T => options.isMergeable(value)
 		? deepmergeImpl(emptyTarget(value), value, options) as T
 		: value
+}
+
+export function getDeepMergeFn<O extends Options>(
+	options: FullOptions<O>,
+): <T1 extends any, T2 extends any>(target: T1, source: T2) => DeepMerge<T1, T2, ExplicitOptions<O>> {
+	return (target, source) => deepmergeImpl(target, source, options)
 }
 
 export function getSubtree<T>(value: T, options: FullOptions): T {
@@ -41,17 +47,6 @@ function propertyIsOnObject(object: object, property: Property): boolean {
 	} catch {
 		return false
 	}
-}
-
-function getMergeFunction(
-	key: Property,
-	options: FullOptions,
-): NonNullable<ReturnType<ObjectMerge>> {
-	if (!options.customMerge) {
-		return deepmergeImpl
-	}
-	const customMerge = options.customMerge(key)
-	return typeof customMerge === `function` ? customMerge : deepmergeImpl
 }
 
 /**
@@ -91,7 +86,9 @@ function mergeObject<
 		if (!options.isMergeable(source[key]) || !propertyIsOnObject(target, key)) {
 			destination[key] = getSubtree(source[key], options)
 		} else {
-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
+			destination[key] = typeof options.customMerge === `function`
+				? options.customMerge(target[key], source[key], key, options)
+				: deepmergeImpl(target[key], source[key], options)
 		}
 	})
 

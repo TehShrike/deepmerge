@@ -507,12 +507,12 @@ test(`should handle custom merge functions`, (t) => {
 	}
 
 	const options: Options = {
-		customMerge: (key) => {
+		customMerge: (x, y, key, options) => {
 			if (key === `people`) {
-				return mergePeople
+				return mergePeople(x, y)
 			}
 
-			return deepmerge
+			return options.deepMerge(x, y)
 		},
 	}
 
@@ -551,52 +551,18 @@ test(`should handle custom merge functions`, (t) => {
 
 	const mergeLetters = () => `merged letters`
 
-	const options = {
-		customMerge: (key: string) => {
+	const options: Options = {
+		customMerge: (x, y, key: string, options) => {
 			if (key === `letters`) {
-				return mergeLetters
+				return mergeLetters()
 			}
+
+			return options.deepMerge(x, y)
 		},
 	}
 
 	const expected = {
 		letters: `merged letters`,
-		people: {
-			first: `Smith`,
-			second: `Bertson`,
-			third: `Car`,
-		},
-	}
-
-	const actual = deepmerge(target, source, options)
-	t.deepEqual(actual, expected)
-	t.end()
-})
-
-test(`should merge correctly if custom merge is not a valid function`, (t) => {
-	const target = {
-		letters: [ `a`, `b` ],
-		people: {
-			first: `Alex`,
-			second: `Bert`,
-		},
-	}
-
-	const source = {
-		letters: [ `c` ],
-		people: {
-			first: `Smith`,
-			second: `Bertson`,
-			third: `Car`,
-		},
-	}
-
-	const options: Options = {
-		customMerge: () => undefined,
-	}
-
-	const expected = {
-		letters: [ `a`, `b`, `c` ],
 		people: {
 			first: `Smith`,
 			second: `Bertson`,
@@ -659,10 +625,8 @@ test(`Falsey properties should be mergeable`, (t) => {
 			return true
 		},
 		customMerge() {
-			return function() {
-				customMergeWasCalled = true
-				return uniqueValue
-			}
+			customMergeWasCalled = true
+			return uniqueValue
 		},
 	})
 
