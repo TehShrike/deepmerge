@@ -1,5 +1,14 @@
 # [5.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v5.0.0)
 
+- Update to the internals exposed in the passed `options` object
+  - `deepMerge`
+  - `deepClone`
+  - Breaking: `cloneUnlessOtherwiseSpecified` has been removed - `deepClone` is very similar
+- Breaking: Cloning is not turned off by default
+- Breaking: Endpoint are now exported in esm style [#215](https://github.com/TehShrike/deepmerge/pull/215)
+  - The main merge function is now a default export
+  - The all merge function is now exported as "deepmergeAll" and is no longer a property on the main merge function.
+- Breaking: TypeScript types have been completely reworked [#215](https://github.com/TehShrike/deepmerge/pull/215)
 - Breaking for ES5 environments: `Object.assign` is now used to avoid mutating the `options` argument.   [#167](https://github.com/TehShrike/deepmerge/pull/167)
 - Breaking: by default, only [plain objects](https://github.com/sindresorhus/is-plain-obj/#is-plain-obj-) will have their properties merged, with all other values being copied to the target.  [#152](https://github.com/TehShrike/deepmerge/issues/152)
 - Breaking: the `isMergeableObject` option is renamed to `isMergeable` [#168](https://github.com/TehShrike/deepmerge/pull/168)

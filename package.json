@@ -1,5 +1,6 @@
 {
   "name": "deepmerge",
+  "version": "4.2.2",
   "description": "A library for deep (recursive) merging of Javascript objects",
   "keywords": [
     "merge",
@@ -9,35 +10,85 @@
     "clone",
     "recursive"
   ],
-  "version": "4.2.2",
   "homepage": "https://github.com/TehShrike/deepmerge",
   "repository": {
     "type": "git",
     "url": "git://github.com/TehShrike/deepmerge.git"
   },
-  "main": "dist/cjs.js",
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "build": "rollup -c",
-    "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
-    "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c"
-  },
-  "devDependencies": {
-    "@types/node": "^8.10.54",
-    "is-mergeable-object": "1.1.0",
-    "is-plain-obj": "^2.0.0",
-    "jsmd": "^1.0.2",
-    "rollup": "^1.23.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "tape": "^4.11.0",
-    "ts-node": "7.0.1",
-    "typescript": "=2.2.2",
-    "uglify-js": "^3.6.1"
-  },
   "license": "MIT",
-  "dependencies": {}
+  "exports": {
+    "default": "./dist/index.umd.js",
+    "import": "./dist/index.mjs",
+    "node": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "types/legacy/index.d.ts",
+  "typesVersions": {
+    "<4.1": {
+      "*": [
+        "types/legacy/*"
+      ]
+    },
+    ">=4.1": {
+      "*": [
+        "types/*"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "types",
+    "changelog.md",
+    "license.txt",
+    "readme.md"
+  ],
+  "scripts": {
+    "build": "npm run build:js && npm run build:types",
+    "prebuild:js": "npm run clean:dist",
+    "build:js": "rollup -c",
+    "prebuild:types": "npm run clean:types",
+    "build:types": "tsc -p tsconfig.typedef.json",
+    "postbuild:types": "echo \"// Minimum TypeScript Version: 4.1\n\n$(cat types/index.d.ts)\" > types/index.d.ts",
+    "clean": "npm run clean:dist && npm run clean:types",
+    "clean:dist": "rimraf dist",
+    "clean:types": "rimraf 'types/[!legacy/]*'",
+    "lint": "npm run lint:js",
+    "lint:js": "eslint .",
+    "presize": "npm run build:js",
+    "size": "terser --compress --mangle -- ./dist/index.umd.js | gzip -c | wc -c",
+    "test": "npm run test:js && npm run test:types && npm run test:jsmd",
+    "test:js": "ts-node -C typescript -P tsconfig.test.json -r tsconfig-paths/register node_modules/tape/bin/tape test/*.ts",
+    "pretest:jsmd": "npm run build:js",
+    "test:jsmd": "jsmd readme.md",
+    "pretest:types": "npm run build:types",
+    "test:types": "dtslint --localTs node_modules/typescript/lib --expectOnly test/types"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-typescript": "^6.1.0",
+    "@types/node": "^8.10.54",
+    "@types/tape": "^4.13.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.0",
+    "@typescript-eslint/parser": "^4.8.0",
+    "dtslint": "^4.0.5",
+    "eslint": "^7.13.0",
+    "is-plain-obj": "^3.0.0",
+    "jsmd": "^1.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.33.1",
+    "tape": "^5.0.1",
+    "terser": "^5.3.8",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "tslib": "^2.0.3",
+    "typescript": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=12"
+  }
 }

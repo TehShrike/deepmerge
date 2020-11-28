@@ -1,22 +1,33 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+// @ts-check
+
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import typescript from '@rollup/plugin-typescript'
+
 import pkg from './package.json'
 
 export default {
-	input: `index.js`,
+	input: `src/index.ts`,
+
 	plugins: [
-		commonjs(),
 		resolve(),
+		commonjs(),
+		typescript(),
 	],
+
 	output: [
 		{
-			file: pkg.main,
-			format: `cjs`
+			file: pkg.exports.import,
+			format: `esm`,
 		},
 		{
-			name: 'deepmerge',
-			file: 'dist/umd.js',
-			format: `umd`
+			file: pkg.exports.node.require,
+			format: `cjs`,
+		},
+		{
+			name: pkg.name,
+			file: pkg.exports.default,
+			format: `umd`,
 		},
 	],
 }
