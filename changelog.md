@@ -1,3 +1,13 @@
+# [5.0.0](https://github.com/TehShrike/deepmerge/releases/tag/v5.0.0)
+
+- Breaking: Dropped ES5 support. [#161](https://github.com/TehShrike/deepmerge/issues/161)
+- Breaking: by default, only [plain objects](https://github.com/sindresorhus/is-plain-obj/#is-plain-obj-) will have their properties merged, with all other values being copied to the target.  [#152](https://github.com/TehShrike/deepmerge/issues/152)
+- Breaking: the `isMergeableObject` option is renamed to `isMergeable` [#168](https://github.com/TehShrike/deepmerge/pull/168)
+
+# [4.2.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.2)
+
+- `isMergeableObject` is now only called if there are two values that could be merged.  [a34dd4d2](https://github.com/TehShrike/deepmerge/commit/a34dd4d25bf5e250653540a2022bc832c7b00a19)
+
 # [4.2.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.1)
 
 - Fix: falsey values can now be merged.  [#170](https://github.com/TehShrike/deepmerge/issues/170)

@@ -16,18 +16,18 @@ test('merging objects with plain and non-plain properties', function(t) {
 	var parent = {
 		parentKey: 'should be undefined'
 	}
-	
-	var target = Object.create(parent)	
+
+	var target = Object.create(parent)
 	target.plainKey = 'should be replaced'
 	target[plainSymbolKey] = 'should also be replaced'
-	
+
 	var source = {
 		parentKey: 'foo',
 		plainKey: 'bar',
 		newKey: 'baz',
 		[plainSymbolKey]: 'qux'
 	}
-	
+
 	var mergedObject = merge(target, source)
 	t.equal(undefined, mergedObject.parentKey, 'inherited properties of target should be removed, not merged or ignored')
 	t.equal('bar', mergedObject.plainKey, 'enumerable own properties of target should be merged')
@@ -54,7 +54,7 @@ test('merging strings works with a custom string merge', function(t) {
 		return isMergeableObject(target) || (typeof target === 'string' && target.length > 1)
 	}
 
-	t.equal('A. Ham', merge(target, source, { customMerge: customMerge, isMergeableObject: mergeable }).name)
+	t.equal('A. Ham', merge(target, source, { customMerge: customMerge, isMergeable: mergeable }).name)
 	t.end()
 })
 

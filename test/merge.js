@@ -638,6 +638,15 @@ test('copy symbol keys in target that do exist on the target', function(t) {
 	t.end()
 })
 
+test('should not mutate options', function(t) {
+	var options = {};
+
+	merge({}, {}, options);
+
+	t.deepEqual(options, {});
+	t.end();
+})
+
 test('Falsey properties should be mergeable', function(t) {
 	var uniqueValue = {}
 
@@ -652,7 +661,7 @@ test('Falsey properties should be mergeable', function(t) {
 	var customMergeWasCalled = false
 
 	var result = merge(target, source, {
-		isMergeableObject: function() {
+		isMergeable: function() {
 			return true
 		},
 		customMerge: function() {
