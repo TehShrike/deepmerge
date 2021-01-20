@@ -4,6 +4,7 @@
 - Breaking: by default, only [plain objects](https://github.com/sindresorhus/is-plain-obj/#is-plain-obj-) will have their properties merged, with all other values being copied to the target.  [#152](https://github.com/TehShrike/deepmerge/issues/152)
 - Breaking: the `isMergeableObject` option is renamed to `isMergeable` [#168](https://github.com/TehShrike/deepmerge/pull/168)
 - Fixed: the options argument is no longer mutated (again) [#173](https://github.com/TehShrike/deepmerge/pull/173)
+- Breaking+fixed: setting `clone` to `false` will cause values to be copied directly onto the destination object rather than cloning the destination and only mutating child properties.
 
 # [4.2.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.2)
 

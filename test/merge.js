@@ -685,3 +685,25 @@ test('should not mutate options', function(t) {
 	t.deepEqual(options, {})
 	t.end()
 })
+
+test('With clone: false, merge should not clone the target root', t => {
+	const destination = {}
+	const output = merge(destination, {
+		sup: true
+	}, { clone: false })
+
+	t.equal(destination, output)
+	t.end()
+})
+
+test('With clone: false, merge.all should not clone the target root', t => {
+	const destination = {}
+	const output = merge.all([
+		destination, {
+			sup: true
+		}
+	], { clone: false })
+
+	t.equal(destination, output)
+	t.end()
+})
