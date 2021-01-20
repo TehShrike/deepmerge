@@ -4,6 +4,8 @@ Merges the enumerable properties of two or more objects deeply.
 
 > UMD bundle is 718B minified+gzipped
 
+**As of version 5, ES5 is no longer supported**
+
 ## Getting Started
 
 ### Example Usage
