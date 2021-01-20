@@ -70,7 +70,7 @@ const mergeObject = (target, source, options) => {
 	return destination
 }
 
-function deepmerge(target, source, inputOptions) {
+const deepmerge = (target, source, inputOptions) => {
 	const options = {
 		arrayMerge: defaultArrayMerge,
 		isMergeable: defaultIsMergeable,
