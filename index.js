@@ -70,13 +70,15 @@ const mergeObject = (target, source, options) => {
 	return destination
 }
 
-const deepmerge = (target, source, options) => {
-	options = Object.assign({
+const deepmerge = (target, source, inputOptions) => {
+	const options = {
 		arrayMerge: defaultArrayMerge,
 		isMergeable: defaultIsMergeable,
-	}, options, {
-		cloneUnlessOtherwiseSpecified,
-	})
+		...inputOptions,
+		// cloneUnlessOtherwiseSpecified is added to `options` so that custom arrayMerge()
+		// implementations can use it. The caller may not replace it.
+		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
+	}
 
 	const sourceIsArray = Array.isArray(source)
 	const targetIsArray = Array.isArray(target)
