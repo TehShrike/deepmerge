@@ -1,50 +1,50 @@
 {
-  "name": "deepmerge",
-  "version": "4.2.2",
-  "description": "A library for deep (recursive) merging of Javascript objects",
-  "keywords": [
-    "merge",
-    "deep",
-    "extend",
-    "copy",
-    "clone",
-    "recursive"
-  ],
-  "homepage": "https://github.com/TehShrike/deepmerge",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/TehShrike/deepmerge.git"
-  },
-  "license": "MIT",
-  "main": "dist/cjs.js",
-  "files": [
-    "/dist",
-    "index.d.ts",
-    "changelog.md",
-    "license.txt",
-    "readme.md"
-  ],
-  "scripts": {
-    "build": "rollup -c",
-    "size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
-    "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^16.0.0",
-    "@rollup/plugin-node-resolve": "^10.0.0",
-    "@types/node": "^8.10.54",
-    "is-mergeable-object": "1.1.0",
-    "is-plain-obj": "^3.0.0",
-    "jsmd": "^1.0.2",
-    "rollup": "^2.33.1",
-    "tape": "^5.0.1",
-    "terser": "^5.5.1",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.1.2"
-  },
-  "engines": {
-    "node": ">=10"
-  }
+	"name": "deepmerge",
+	"version": "4.2.2",
+	"description": "A library for deep (recursive) merging of Javascript objects",
+	"keywords": [
+		"merge",
+		"deep",
+		"extend",
+		"copy",
+		"clone",
+		"recursive"
+	],
+	"homepage": "https://github.com/TehShrike/deepmerge",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/TehShrike/deepmerge.git"
+	},
+	"license": "MIT",
+	"main": "dist/cjs.js",
+	"files": [
+		"/dist",
+		"index.d.ts",
+		"changelog.md",
+		"license.txt",
+		"readme.md"
+	],
+	"scripts": {
+		"build": "rollup -c",
+		"size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
+		"test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
+		"test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^16.0.0",
+		"@rollup/plugin-node-resolve": "^10.0.0",
+		"@types/node": "^8.10.54",
+		"is-mergeable-object": "1.1.0",
+		"is-plain-obj": "^3.0.0",
+		"jsmd": "^1.0.2",
+		"rollup": "^2.33.1",
+		"tape": "^5.0.1",
+		"terser": "^5.5.1",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.1.2"
+	},
+	"engines": {
+		"node": ">=10"
+	}
 }
