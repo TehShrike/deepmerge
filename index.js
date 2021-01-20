@@ -70,12 +70,11 @@ const mergeObject = (target, source, options) => {
 	return destination
 }
 
-function deepmerge(target, source, opts) {
+function deepmerge(target, source, inputOptions) {
 	const options = {
-		clone: opts && opts.clone,
-		customMerge: opts && opts.customMerge,
-		arrayMerge: (opts && opts.arrayMerge) || defaultArrayMerge,
-		isMergeable: (opts && opts.isMergeable) || defaultIsMergeable,
+		arrayMerge: defaultArrayMerge,
+		isMergeable: defaultIsMergeable,
+		...inputOptions,
 		// cloneUnlessOtherwiseSpecified is added to `options` so that custom arrayMerge()
 		// implementations can use it. The caller may not replace it.
 		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
