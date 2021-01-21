@@ -35,6 +35,7 @@
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^16.0.0",
 		"@rollup/plugin-node-resolve": "^10.0.0",
+		"@rollup/plugin-typescript": "^8.1.0",
 		"@types/node": "^8.10.54",
 		"is-mergeable-object": "1.1.0",
 		"is-plain-obj": "^3.0.0",
@@ -43,6 +44,7 @@
 		"tape": "^5.0.1",
 		"terser": "^5.5.1",
 		"ts-node": "^9.0.0",
+		"tslib": "^2.1.0",
 		"typescript": "^4.1.2"
 	},
 	"engines": {
