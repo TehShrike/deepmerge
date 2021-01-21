@@ -1,0 +1,9 @@
+{
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"declaration": true,
+		"declarationDir": "types/current/",
+		"emitDeclarationOnly": true
+	},
+	"include": ["./src"]
+}

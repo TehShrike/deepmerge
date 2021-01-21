@@ -17,16 +17,19 @@
 	},
 	"license": "MIT",
 	"main": "dist/cjs.js",
-	"types": "types/index.d.ts",
+	"types": "types/current/index.d.ts",
 	"files": [
-		"/dist",
+		"dist/",
+		"types/",
 		"index.d.ts",
 		"changelog.md",
 		"license.txt",
 		"readme.md"
 	],
 	"scripts": {
-		"build": "rollup -c",
+		"build": "npm run build:js && npm run build:types",
+		"build:js": "rollup -c",
+		"build:types": "tsc -p tsconfig.typedef.json",
 		"size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
 		"test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
 		"test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
