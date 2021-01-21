@@ -1,5 +1,7 @@
-import isPlainObj from "is-plain-obj"
-
+import {
+	defaultArrayMerge,
+	defaultIsMergeable,
+} from "./options"
 import {
 	cloneUnlessOtherwiseSpecified,
 	getKeys,
@@ -7,16 +9,6 @@ import {
 	propertyIsOnObject,
 	propertyIsUnsafe,
 } from "./utils"
-
-function defaultIsMergeable(value) {
-	return Array.isArray(value) || isPlainObj(value)
-}
-
-function defaultArrayMerge(target, source, options) {
-	return target
-		.concat(source)
-		.map((element) => cloneUnlessOtherwiseSpecified(element, options))
-}
 
 function mergeObject(target, source, options) {
 	const destination = options.clone ? emptyTarget(target) : target
