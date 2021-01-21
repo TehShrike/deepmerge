@@ -4,7 +4,7 @@ const defaultIsMergeable = value => Array.isArray(value) || isPlainObj(value)
 const emptyTarget = value => Array.isArray(value) ? [] : {}
 
 const cloneUnlessOtherwiseSpecified = (value, options) => {
-	return (options.clone !== false && options.isMergeable(value))
+	return (options.clone && options.isMergeable(value))
 		? deepmerge(emptyTarget(value), value, options)
 		: value
 }
@@ -48,7 +48,7 @@ const propertyIsUnsafe = (target, key) => {
 }
 
 const mergeObject = (target, source, options) => {
-	const destination = {}
+	const destination = options.clone ? emptyTarget(target) : target
 
 	if (options.isMergeable(target)) {
 		getKeys(target)
@@ -70,15 +70,18 @@ const mergeObject = (target, source, options) => {
 	return destination
 }
 
+const cloneOptionsWithDefault = inputOptions => ({
+	arrayMerge: defaultArrayMerge,
+	isMergeable: defaultIsMergeable,
+	clone: true,
+	...inputOptions,
+	// cloneUnlessOtherwiseSpecified is added to `options` so that custom arrayMerge()
+	// implementations can use it. The caller may not replace it.
+	cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
+})
+
 const deepmerge = (target, source, inputOptions) => {
-	const options = {
-		arrayMerge: defaultArrayMerge,
-		isMergeable: defaultIsMergeable,
-		...inputOptions,
-		// cloneUnlessOtherwiseSpecified is added to `options` so that custom arrayMerge()
-		// implementations can use it. The caller may not replace it.
-		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
-	}
+	const options = cloneOptionsWithDefault(inputOptions)
 
 	const sourceIsArray = Array.isArray(source)
 	const targetIsArray = Array.isArray(target)
@@ -92,12 +95,23 @@ const deepmerge = (target, source, inputOptions) => {
 	return mergeObject(target, source, options)
 }
 
-deepmerge.all = (array, options) => {
+deepmerge.all = (array, inputOptions) => {
 	if (!Array.isArray(array)) {
 		throw new Error(`first argument should be an array`)
 	}
 
-	return array.reduce((prev, next) => deepmerge(prev, next, options), {})
+	const options = cloneOptionsWithDefault(inputOptions)
+
+	if (array.length === 0) {
+		return {}
+	} else if (array.length === 1) {
+		const value = array[0]
+		return options.clone
+			? deepmerge(emptyTarget(value), value, options)
+			: value
+	}
+
+	return array.reduce((prev, next) => deepmerge(prev, next, options))
 }
 
 module.exports = deepmerge
