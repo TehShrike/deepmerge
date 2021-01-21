@@ -1,4 +1,4 @@
-import { deepmerge } from './deepmerge'
+import { deepmergeImpl } from './deepmerge'
 
 function emptyTarget(value) {
 	return Array.isArray(value) ? [] : {}
@@ -6,7 +6,7 @@ function emptyTarget(value) {
 
 export function cloneUnlessOtherwiseSpecified(value, options) {
 	return (options.clone && options.isMergeable(value))
-		? deepmerge(emptyTarget(value), value, options)
+		? deepmergeImpl(emptyTarget(value), value, options)
 		: value
 }
 
@@ -32,11 +32,11 @@ export function propertyIsOnObject(object, property) {
 
 export function getMergeFunction(key, options) {
 	if (!options.customMerge) {
-		return deepmerge
+		return deepmergeImpl
 	}
 
 	const customMerge = options.customMerge(key)
-	return typeof customMerge === `function` ? customMerge : deepmerge
+	return typeof customMerge === `function` ? customMerge : deepmergeImpl
 }
 
 // Protects from prototype poisoning and unexpected merging up the prototype chain.

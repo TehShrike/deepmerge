@@ -1,7 +1,4 @@
-import {
-	defaultArrayMerge,
-	defaultIsMergeable,
-} from "./options"
+import { getFullOptions } from "./options"
 import {
 	cloneUnlessOtherwiseSpecified,
 	getKeys,
@@ -39,21 +36,7 @@ function mergeObject(target, source, options) {
 	return destination
 }
 
-function cloneOptionsWithDefault(inputOptions) {
-	return {
-		arrayMerge: defaultArrayMerge,
-		isMergeable: defaultIsMergeable,
-		clone: true,
-		...inputOptions,
-		// cloneUnlessOtherwiseSpecified is added to `options` so that custom arrayMerge()
-		// implementations can use it. The caller may not replace it.
-		cloneUnlessOtherwiseSpecified,
-	}
-}
-
-export function deepmerge(target, source, inputOptions) {
-	const options = cloneOptionsWithDefault(inputOptions)
-
+export function deepmergeImpl(target, source, options) {
 	const sourceIsArray = Array.isArray(source)
 	const targetIsArray = Array.isArray(target)
 	const sourceAndTargetTypesMatch = sourceIsArray === targetIsArray
@@ -66,12 +49,16 @@ export function deepmerge(target, source, inputOptions) {
 	return mergeObject(target, source, options)
 }
 
+export function deepmerge(target, source, inputOptions) {
+	return deepmergeImpl(target, source, getFullOptions(inputOptions))
+}
+
 export function deepmergeAll(array, inputOptions) {
 	if (!Array.isArray(array)) {
 		throw new Error(`first argument should be an array`)
 	}
 
-	const options = cloneOptionsWithDefault(inputOptions)
+	const options = getFullOptions(inputOptions)
 
 	if (array.length === 0) {
 		return {}
@@ -82,5 +69,5 @@ export function deepmergeAll(array, inputOptions) {
 			: value
 	}
 
-	return array.reduce((prev, next) => deepmerge(prev, next, options))
+	return array.reduce((prev, next) => deepmergeImpl(prev, next, options))
 }
