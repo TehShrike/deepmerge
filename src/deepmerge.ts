@@ -117,5 +117,5 @@ export function deepmergeAll(objects: ReadonlyArray<object>, options?: Options):
 			: value
 	}
 
-	return objects.reduce((prev, next) => deepmergeImpl(prev, next, fullOptions), {})
+	return objects.reduce((prev, next) => deepmergeImpl(prev, next, fullOptions))
 }

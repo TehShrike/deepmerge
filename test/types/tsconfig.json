@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"lib": [
+			"ESNext"
+		],
+		"noEmit": true,
+		"strict": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"alwaysStrict": true,
+		"baseUrl": "../../",
+		"paths": {
+			"deepmerge": [
+				"src/"
+			]
+		}
+	}
+}
