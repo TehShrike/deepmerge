@@ -17,7 +17,19 @@
 	},
 	"license": "MIT",
 	"main": "dist/cjs.js",
-	"types": "types/current/index.d.ts",
+	"types": "types/legacy/index.d.ts",
+	"typesVersions": {
+		"<4.1": {
+			"*": [
+				"types/legacy/index.d.ts"
+			]
+		},
+		">=4.1": {
+			"*": [
+				"types/current/*"
+			]
+		}
+	},
 	"files": [
 		"dist/",
 		"types/",
