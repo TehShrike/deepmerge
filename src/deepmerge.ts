@@ -15,7 +15,8 @@ function mergeObject<
 	T2 extends Record<Property, unknown>,
 	O extends Options
 >(target: T1, source: T2, options: FullOptions<O>): DeepMergeObjects<T1, T2, O> {
-	const destination: any = options.clone ? emptyTarget(target) : target
+	// const destination: any = options.mergeWithTarget ? target : {}
+	const destination: any = {}
 
 	if (options.isMergeable(target)) {
 		getKeys(target).forEach(
@@ -117,5 +118,5 @@ export function deepmergeAll(objects: ReadonlyArray<object>, options?: Options):
 			: value
 	}
 
-	return objects.reduce((prev, next) => deepmergeImpl(prev, next, fullOptions))
+	return objects.reduce((prev, next) => deepmergeImpl(prev, next, fullOptions), {})
 }

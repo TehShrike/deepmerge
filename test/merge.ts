@@ -668,12 +668,13 @@ test(`Falsey properties should be mergeable`, (t) => {
 	t.end()
 })
 
-test(`With clone: false, merge should not clone the target root`, (t) => {
-	const destination = {}
-	const output = merge(destination, {
-		sup: true,
-	}, { clone: false })
+// test(`With mergeWithTarget=true, merge should mutate the root target`, (t) => {
+// 	const destination = {}
+// 	const output = merge(destination, {
+// 		sup: true,
+// 	}, { mergeWithTarget: true })
 
-	t.equal(destination, output)
-	t.end()
-})
+// 	t.notEqual(destination, {})
+// 	t.equal(destination, output)
+// 	t.end()
+// })
