@@ -40,7 +40,7 @@ test('merging objects with plain and non-plain properties', function(t) {
 test('merging strings works with a custom string merge', function(t) {
 	var target = { name: "Alexander" }
 	var source = { name: "Hamilton" }
-	function customMerge(key, options) {
+	function customMerge(key) {
 		if (key === 'name') {
 			return function(target, source, options) {
 				return target[0] + '. ' + source.substring(0, 3)

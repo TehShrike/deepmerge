@@ -10,7 +10,7 @@ Merges the enumerable properties of two or more objects deeply.
 
 ### Example Usage
 <!--js
-const merge = require('./')
+const { deepmerge: merge, deepmergeAll: mergeAll } = require('./')
 -->
 
 ```js
@@ -90,7 +90,7 @@ Merging creates a new object, so that neither `x` or `y` is modified.
 
 **Note:** By default, arrays are merged by concatenating them.
 
-## `merge.all(arrayOfObjects, [options])`
+## `mergeAll(arrayOfObjects, [options])`
 
 Merges any number of objects into a single result object.
 
@@ -99,7 +99,7 @@ const foobar = { foo: { bar: 3 } }
 const foobaz = { foo: { baz: 4 } }
 const bar = { bar: 'yay!' }
 
-merge.all([ foobar, foobaz, bar ]) // => { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
+mergeAll([ foobar, foobaz, bar ]) // => { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
 ```
 
 

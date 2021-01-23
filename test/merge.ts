@@ -1,4 +1,4 @@
-import { deepmerge as merge } from "deepmerge"
+import { deepmerge as merge, deepmergeAll as mergeAll } from "deepmerge"
 import test from "tape"
 
 test('add keys in target that do not exist at the root', function(t) {
@@ -339,7 +339,7 @@ test('should work on array of objects with clone option', function(t) {
 	t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
 	t.notEqual(merged[0].key1, src[0].key1)
 	t.notEqual(merged[0].key1, target[0].key1)
-	t.notEqual(merged[0].key2, src[0].key2)
+	t.false(Object.prototype.hasOwnProperty.call(merged[0], 'key2'), '"key2" should not exist on "merged[0]"');
 	t.notEqual(merged[1].key3, src[1].key3)
 	t.notEqual(merged[1].key3, target[1].key3)
 	t.end()
@@ -507,7 +507,7 @@ test('should handle custom merge functions', function(t) {
    }
 
    const options = {
-       customMerge: (key, options) => {
+       customMerge: (key) => {
          if (key === 'people') {
            return mergePeople
 		 }
@@ -555,7 +555,7 @@ test('should handle custom merge functions', function(t) {
 
 
     const options = {
-        customMerge: (key, options) => {
+        customMerge: (key) => {
           if (key === 'letters') {
             return mergeLetters
           }
@@ -609,7 +609,7 @@ test('should merge correctly if custom merge is not a valid function', function(
         }
     }
 
-	var actual = merge(target, source, options)
+	var actual = merge(target, source)
 	t.deepEqual(actual, expected)
 	t.end()
 
@@ -634,7 +634,7 @@ test('copy symbol keys in target that do exist on the target', function(t) {
 
 	var res = merge(target, src)
 
-	t.equal(res[mySymbol], 'value1')
+	t.equal(res[mySymbol as unknown as string], 'value1')
 	t.end()
 })
 
@@ -698,7 +698,7 @@ test('With clone: false, merge should not clone the target root', t => {
 
 test('With clone: false, merge.all should not clone the target root', t => {
 	const destination = {}
-	const output = merge.all([
+	const output = mergeAll([
 		destination, {
 			sup: true
 		}

@@ -6,7 +6,7 @@ test('isMergeable function copying object over object', function(t) {
 	var target = { key: { foo: 'wat' }, baz: 'whatever' }
 
 	function customIsMergeable(object) {
-		return object && typeof value === 'object' && object.isMergeable !== false
+		return object && typeof object === 'object' && object.isMergeable !== false
 	}
 
 	var res = merge(target, src, {
@@ -23,7 +23,7 @@ test('isMergeable function copying object over nothing', function(t) {
 	var target = { baz: 'whatever' }
 
 	function customIsMergeable(object) {
-		return object && typeof value === 'object' && object.isMergeable !== false
+		return object && typeof object === 'object' && object.isMergeable !== false
 	}
 
 	var res = merge(target, src, {
