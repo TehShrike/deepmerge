@@ -88,3 +88,15 @@ test('invoke merge on every item in array without clone should clone all element
 
 	t.end()
 })
+
+test('With clone: false, mergeAll should not clone the target root', t => {
+	const destination = {}
+	const output = mergeAll([
+		destination, {
+			sup: true
+		}
+	], { clone: false })
+
+	t.equal(destination, output)
+	t.end()
+})

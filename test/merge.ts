@@ -1,4 +1,4 @@
-import { deepmerge as merge, deepmergeAll as mergeAll } from "deepmerge"
+import { deepmerge as merge } from "deepmerge"
 import test from "tape"
 
 test('add keys in target that do not exist at the root', function(t) {
@@ -687,14 +687,3 @@ test('With clone: false, merge should not clone the target root', t => {
 	t.end()
 })
 
-test('With clone: false, merge.all should not clone the target root', t => {
-	const destination = {}
-	const output = mergeAll([
-		destination, {
-			sup: true
-		}
-	], { clone: false })
-
-	t.equal(destination, output)
-	t.end()
-})
