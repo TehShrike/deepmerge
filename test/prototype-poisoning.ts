@@ -1,12 +1,12 @@
 import type { Options } from "deepmerge"
-import { deepmerge as merge } from "deepmerge"
+import { deepmerge } from "deepmerge"
 import isPlainObj from "is-plain-obj"
 import test from "tape"
 
 test(`merging objects with own __proto__`, (t) => {
 	const user = {}
 	const malicious = JSON.parse(`{ "__proto__": { "admin": true } }`)
-	const mergedObject = merge(user, malicious)
+	const mergedObject = deepmerge(user, malicious)
 	t.notOk(mergedObject.__proto__.admin, `non-plain properties should not be merged`)
 	t.notOk(mergedObject.admin, `the destination should have an unmodified prototype`)
 	t.end()
@@ -29,7 +29,7 @@ test(`merging objects with plain and non-plain properties`, (t) => {
 		[plainSymbolKey]: `qux`,
 	}
 
-	const mergedObject = merge(target, source, { clone: true })
+	const mergedObject = deepmerge(target, source, { clone: true })
 	t.equal(undefined, mergedObject.parentKey, `inherited properties of target should be removed, not merged or ignored`)
 	t.equal(`bar`, mergedObject.plainKey, `enumerable own properties of target should be merged`)
 	t.equal(`baz`, mergedObject.newKey, `properties not yet on target should be merged`)
@@ -47,14 +47,14 @@ test(`merging strings works with a custom string merge`, (t) => {
 				return target[0] + `. ` + source.substring(0, 3)
 			}
 		} else {
-			return merge
+			return deepmerge
 		}
 	}
 
 	const mergeable: Options[`isMergeable`] = (target) =>
 		isPlainObj(target) || (typeof target === `string` && target.length > 1)
 
-	t.equal(`A. Ham`, merge(target, source, { customMerge, isMergeable: mergeable }).name)
+	t.equal(`A. Ham`, deepmerge(target, source, { customMerge, isMergeable: mergeable }).name)
 	t.end()
 })
 
@@ -73,6 +73,6 @@ test(`merging objects with null prototype`, (t) => {
 		},
 	}
 
-	t.deepEqual(merge(target, source, { clone: true }), expected)
+	t.deepEqual(deepmerge(target, source, { clone: true }), expected)
 	t.end()
 })

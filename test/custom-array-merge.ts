@@ -1,5 +1,5 @@
 import type { Options } from "deepmerge"
-import { deepmerge as merge } from "deepmerge"
+import { deepmerge } from "deepmerge"
 import test from "tape"
 
 test(`custom merge array`, (t) => {
@@ -20,7 +20,7 @@ test(`custom merge array`, (t) => {
 		someArray: [ 1, 2, 3 ],
 	}
 
-	const actual = merge(destination, source, { arrayMerge: overwriteMerge })
+	const actual = deepmerge(destination, source, { arrayMerge: overwriteMerge })
 	const expected = {
 		someArray: [ 1, 2, 3 ],
 		someObject: { what: `yes` },
@@ -34,7 +34,7 @@ test(`custom merge array`, (t) => {
 test(`merge top-level arrays`, (t) => {
 	const overwriteMerge: Options[`arrayMerge`] = (a, b) => b
 
-	const actual = merge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
+	const actual = deepmerge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
 	const expected = [ 1, 2 ]
 
 	t.deepEqual(actual, expected)
@@ -63,9 +63,9 @@ test(`cloner function is available for merge functions to use`, (t) => {
 		key2: [ `four` ],
 	}
 
-	t.deepEqual(merge(target, src, { arrayMerge: cloneMerge }), expected)
+	t.deepEqual(deepmerge(target, src, { arrayMerge: cloneMerge }), expected)
 	t.ok(customMergeWasCalled)
-	t.ok(Array.isArray(merge(target, src).key1))
-	t.ok(Array.isArray(merge(target, src).key2))
+	t.ok(Array.isArray(deepmerge(target, src).key1))
+	t.ok(Array.isArray(deepmerge(target, src).key2))
 	t.end()
 })

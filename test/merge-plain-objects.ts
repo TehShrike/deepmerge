@@ -1,4 +1,4 @@
-import { deepmerge as merge } from "deepmerge"
+import { deepmerge } from "deepmerge"
 import test from "tape"
 
 test(`plain objects are merged by default`, (t) => {
@@ -6,7 +6,7 @@ test(`plain objects are merged by default`, (t) => {
 		newObject: new Object(),
 		objectLiteral: { a: 123 },
 	}
-	const output = merge({}, input, { clone: false })
+	const output = deepmerge({}, input, { clone: false })
 
 	t.deepEqual(output.newObject, input.newObject)
 	t.equal(output.newObject, input.newObject)
@@ -22,7 +22,7 @@ test(`instantiated objects are copied by reference`, (t) => {
 		error: new Error(),
 		regex: /regex/,
 	}
-	const output = merge({}, input)
+	const output = deepmerge({}, input)
 
 	t.equal(output.date, input.date)
 	t.equal(output.error, input.error)

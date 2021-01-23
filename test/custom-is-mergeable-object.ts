@@ -1,5 +1,5 @@
 import type { Options } from "deepmerge"
-import { deepmerge as merge } from "deepmerge"
+import { deepmerge } from "deepmerge"
 import test from "tape"
 
 test(`isMergeable function copying object over object`, (t) => {
@@ -9,7 +9,7 @@ test(`isMergeable function copying object over object`, (t) => {
 	const customIsMergeable: Options[`isMergeable`] = (object) =>
 		object && typeof object === `object` && object.isMergeable !== false
 
-	const res = merge(target, src, {
+	const res = deepmerge(target, src, {
 		isMergeable: customIsMergeable,
 	})
 
@@ -25,7 +25,7 @@ test(`isMergeable function copying object over nothing`, (t) => {
 	const customIsMergeable: Options[`isMergeable`] = (object) =>
 		object && typeof object === `object` && object.isMergeable !== false
 
-	const res = merge(target, src, {
+	const res = deepmerge(target, src, {
 		isMergeable: customIsMergeable,
 	})
 

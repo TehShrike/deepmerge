@@ -1,19 +1,19 @@
-import { deepmergeAll as mergeAll } from "deepmerge"
+import { deepmergeAll } from "deepmerge"
 import test from "tape"
 
 test(`throw error if first argument is not an array`, (t) => {
 	// @ts-expect-error -- Calling mergeAll without passing in an array.
-	t.throws(mergeAll.bind(null, { example: true }, { another: `2` }), Error)
+	t.throws(deepmergeAll.bind(null, { example: true }, { another: `2` }), Error)
 	t.end()
 })
 
 test(`return an empty object if first argument is an array with no elements`, (t) => {
-	t.deepEqual(mergeAll([]), {})
+	t.deepEqual(deepmergeAll([]), {})
 	t.end()
 })
 
 test(`Work just fine if first argument is an array with least than two elements`, (t) => {
-	const actual = mergeAll([{ example: true }])
+	const actual = deepmergeAll([{ example: true }])
 	const expected = { example: true }
 	t.deepEqual(actual, expected)
 	t.end()
@@ -21,13 +21,13 @@ test(`Work just fine if first argument is an array with least than two elements`
 
 test(`execute correctly if options object were not passed`, (t) => {
 	const arrayToMerge = [{ example: true }, { another: `123` }]
-	t.doesNotThrow(mergeAll.bind(null, arrayToMerge))
+	t.doesNotThrow(deepmergeAll.bind(null, arrayToMerge))
 	t.end()
 })
 
 test(`execute correctly if options object were passed`, (t) => {
 	const arrayToMerge = [{ example: true }, { another: `123` }]
-	t.doesNotThrow(mergeAll.bind(null, arrayToMerge, { clone: true }))
+	t.doesNotThrow(deepmergeAll.bind(null, arrayToMerge, { clone: true }))
 	t.end()
 })
 
@@ -37,7 +37,7 @@ test(`invoke merge on every item in array should result with all props`, (t) => 
 	const thirdObject = { third: 123 }
 	const fourthObject = { fourth: `some string` }
 
-	const mergedObject = mergeAll([ firstObject, secondObject, thirdObject, fourthObject ])
+	const mergedObject = deepmergeAll([ firstObject, secondObject, thirdObject, fourthObject ])
 
 	t.ok(mergedObject.first === true)
 	t.ok(mergedObject.second === false)
@@ -51,7 +51,7 @@ test(`invoke merge on every item in array with clone should clone all elements`,
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
 
-	const mergedWithClone = mergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
+	const mergedWithClone = deepmergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
 
 	t.notEqual(mergedWithClone.a, firstObject.a)
 	t.notEqual(mergedWithClone.b, secondObject.b)
@@ -65,7 +65,7 @@ test(`invoke merge on every item in array with clone=false should not clone all 
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
 
-	const mergedWithoutClone = mergeAll([ firstObject, secondObject, thirdObject ], { clone: false })
+	const mergedWithoutClone = deepmergeAll([ firstObject, secondObject, thirdObject ], { clone: false })
 
 	t.equal(mergedWithoutClone.a, firstObject.a)
 	t.equal(mergedWithoutClone.b, secondObject.b)
@@ -79,7 +79,7 @@ test(`invoke merge on every item in array with clone=true should clone all eleme
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
 
-	const mergedWithoutClone = mergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
+	const mergedWithoutClone = deepmergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
 
 	t.notEqual(mergedWithoutClone.a, firstObject.a)
 	t.notEqual(mergedWithoutClone.b, secondObject.b)
