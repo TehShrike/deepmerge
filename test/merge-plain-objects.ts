@@ -1,10 +1,10 @@
 import { deepmerge as merge } from "deepmerge"
 import test from "tape"
 
-test('plain objects are merged by default', function(t) {
+test(`plain objects are merged by default`, (t) => {
 	const input = {
 		newObject: new Object(),
-		objectLiteral: { a: 123 }
+		objectLiteral: { a: 123 },
 	}
 	const output = merge({}, input)
 
@@ -16,11 +16,11 @@ test('plain objects are merged by default', function(t) {
 	t.end()
 })
 
-test('instantiated objects are copied by reference', function(t) {
+test(`instantiated objects are copied by reference`, (t) => {
 	const input = {
 		date: new Date(),
 		error: new Error(),
-		regex: /regex/
+		regex: /regex/,
 	}
 	const output = merge({}, input)
 

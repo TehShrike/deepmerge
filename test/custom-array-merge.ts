@@ -1,17 +1,20 @@
+import type { Options } from "deepmerge"
 import { deepmerge as merge } from "deepmerge"
 import test from "tape"
 
-test('custom merge array', function(t) {
-	var mergeFunctionCalled = false
-	function overwriteMerge(target, source, options) {
+test(`custom merge array`, (t) => {
+	let mergeFunctionCalled = false
+
+	const overwriteMerge: Options[`arrayMerge`] = (target, source, options) => {
 		mergeFunctionCalled = true
 		t.equal(options.arrayMerge, overwriteMerge)
 
 		return source
 	}
+
 	const destination = {
 		someArray: [ 1, 2 ],
-		someObject: { what: 'yes' },
+		someObject: { what: `yes` },
 	}
 	const source = {
 		someArray: [ 1, 2, 3 ],
@@ -20,7 +23,7 @@ test('custom merge array', function(t) {
 	const actual = merge(destination, source, { arrayMerge: overwriteMerge })
 	const expected = {
 		someArray: [ 1, 2, 3 ],
-		someObject: { what: 'yes' },
+		someObject: { what: `yes` },
 	}
 
 	t.ok(mergeFunctionCalled)
@@ -28,38 +31,36 @@ test('custom merge array', function(t) {
 	t.end()
 })
 
-test('merge top-level arrays', function(t) {
-	function overwriteMerge(a, b) {
-		return b
-	}
-	var actual = merge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
-	var expected = [ 1, 2 ]
+test(`merge top-level arrays`, (t) => {
+	const overwriteMerge: Options[`arrayMerge`] = (a, b) => b
+
+	const actual = merge([ 1, 2 ], [ 1, 2 ], { arrayMerge: overwriteMerge })
+	const expected = [ 1, 2 ]
 
 	t.deepEqual(actual, expected)
 	t.end()
 })
 
-test('cloner function is available for merge functions to use', function(t) {
-	var customMergeWasCalled = false
-	function cloneMerge(target, source, options) {
+test(`cloner function is available for merge functions to use`, (t) => {
+	let customMergeWasCalled = false
+
+	const cloneMerge: Options[`arrayMerge`] = (target, source, options) => {
 		customMergeWasCalled = true
-		t.ok(options.cloneUnlessOtherwiseSpecified, 'cloner function is available')
-		return target.concat(source).map(function(element) {
-			return options.cloneUnlessOtherwiseSpecified(element, options)
-		})
+		t.ok(options.cloneUnlessOtherwiseSpecified, `cloner function is available`)
+		return [ ...target, ...source ].map((element) => options.cloneUnlessOtherwiseSpecified(element, options))
 	}
 
-	var src = {
-		key1: [ 'one', 'three' ],
-		key2: [ 'four' ],
+	const src = {
+		key1: [ `one`, `three` ],
+		key2: [ `four` ],
 	}
-	var target = {
-		key1: [ 'one', 'two' ],
+	const target = {
+		key1: [ `one`, `two` ],
 	}
 
-	var expected = {
-		key1: [ 'one', 'two', 'one', 'three' ],
-		key2: [ 'four' ],
+	const expected = {
+		key1: [ `one`, `two`, `one`, `three` ],
+		key2: [ `four` ],
 	}
 
 	t.deepEqual(merge(target, src, { arrayMerge: cloneMerge }), expected)

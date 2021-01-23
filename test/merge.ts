@@ -1,104 +1,105 @@
+import type { Options } from "deepmerge"
 import { deepmerge as merge } from "deepmerge"
 import test from "tape"
 
-test('add keys in target that do not exist at the root', function(t) {
-	var src = { key1: 'value1', key2: 'value2' }
-	var target = {}
+test(`add keys in target that do not exist at the root`, (t) => {
+	const src = { key1: `value1`, key2: `value2` }
+	const target = {}
 
-	var res = merge(target, src)
+	const res = merge(target, src)
 
-	t.deepEqual(target, {}, 'merge should be immutable')
+	t.deepEqual(target, {}, `merge should be immutable`)
 	t.deepEqual(res, src)
 	t.end()
 })
 
-test('merge existing simple keys in target at the roots', function(t) {
-	var src = { key1: 'changed', key2: 'value2' }
-	var target = { key1: 'value1', key3: 'value3' }
+test(`merge existing simple keys in target at the roots`, (t) => {
+	const src = { key1: `changed`, key2: `value2` }
+	const target = { key1: `value1`, key3: `value3` }
 
-	var expected = {
-		key1: 'changed',
-		key2: 'value2',
-		key3: 'value3',
+	const expected = {
+		key1: `changed`,
+		key2: `value2`,
+		key3: `value3`,
 	}
 
-	t.deepEqual(target, { key1: 'value1', key3: 'value3' })
+	t.deepEqual(target, { key1: `value1`, key3: `value3` })
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('merge nested objects into target', function(t) {
-	var src = {
+test(`merge nested objects into target`, (t) => {
+	const src = {
 		key1: {
-			subkey1: 'changed',
-			subkey3: 'added',
+			subkey1: `changed`,
+			subkey3: `added`,
 		},
 	}
-	var target = {
+	const target = {
 		key1: {
-			subkey1: 'value1',
-			subkey2: 'value2',
+			subkey1: `value1`,
+			subkey2: `value2`,
 		},
 	}
 
-	var expected = {
+	const expected = {
 		key1: {
-			subkey1: 'changed',
-			subkey2: 'value2',
-			subkey3: 'added',
+			subkey1: `changed`,
+			subkey2: `value2`,
+			subkey3: `added`,
 		},
 	}
 
 	t.deepEqual(target, {
 		key1: {
-			subkey1: 'value1',
-			subkey2: 'value2',
+			subkey1: `value1`,
+			subkey2: `value2`,
 		},
 	})
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('replace simple key with nested object in target', function(t) {
-	var src = {
+test(`replace simple key with nested object in target`, (t) => {
+	const src = {
 		key1: {
-			subkey1: 'subvalue1',
-			subkey2: 'subvalue2',
+			subkey1: `subvalue1`,
+			subkey2: `subvalue2`,
 		},
 	}
-	var target = {
-		key1: 'value1',
-		key2: 'value2',
+	const target = {
+		key1: `value1`,
+		key2: `value2`,
 	}
 
-	var expected = {
+	const expected = {
 		key1: {
-			subkey1: 'subvalue1',
-			subkey2: 'subvalue2',
+			subkey1: `subvalue1`,
+			subkey2: `subvalue2`,
 		},
-		key2: 'value2',
+		key2: `value2`,
 	}
 
-	t.deepEqual(target, { key1: 'value1', key2: 'value2' })
+	t.deepEqual(target, { key1: `value1`, key2: `value2` })
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('should add nested object in target', function(t) {
-	var src = {
-		"b": {
-			"c": {},
+test(`should add nested object in target`, (t) => {
+	const src = {
+		b: {
+			c: {},
 		},
 	}
 
-	var target = {
-		"a": {},
+	const target = {
+		a: {},
 	}
 
-	var expected = {
-		"a": {},
-		"b": {
-			"c": {},
+	const expected = {
+		a: {},
+		b: {
+			c: {},
 		},
 	}
 
@@ -106,29 +107,29 @@ test('should add nested object in target', function(t) {
 	t.end()
 })
 
-test('should clone source and target', function(t) {
-	var src = {
-		"b": {
-			"c": "foo",
+test(`should clone source and target`, (t) => {
+	const src = {
+		b: {
+			c: `foo`,
 		},
 	}
 
-	var target = {
-		"a": {
-			"d": "bar",
+	const target = {
+		a: {
+			d: `bar`,
 		},
 	}
 
-	var expected = {
-		"a": {
-			"d": "bar",
+	const expected = {
+		a: {
+			d: `bar`,
 		},
-		"b": {
-			"c": "foo",
+		b: {
+			c: `foo`,
 		},
 	}
 
-	var merged = merge(target, src, { clone: true })
+	const merged = merge(target, src, { clone: true })
 
 	t.deepEqual(merged, expected)
 
@@ -138,133 +139,133 @@ test('should clone source and target', function(t) {
 	t.end()
 })
 
-test('should clone source and target', function(t) {
-	var src = {
-		"b": {
-			"c": "foo",
+test(`should clone source and target`, (t) => {
+	const src = {
+		b: {
+			c: `foo`,
 		},
 	}
 
-	var target = {
-		"a": {
-			"d": "bar",
+	const target = {
+		a: {
+			d: `bar`,
 		},
 	}
 
-	var merged = merge(target, src)
+	const merged = merge(target, src)
 	t.notEqual(merged.a, target.a)
 	t.notEqual(merged.b, src.b)
 
 	t.end()
 })
 
-test('should replace object with simple key in target', function(t) {
-	var src = { key1: 'value1' }
-	var target = {
+test(`should replace object with simple key in target`, (t) => {
+	const src = { key1: `value1` }
+	const target = {
 		key1: {
-			subkey1: 'subvalue1',
-			subkey2: 'subvalue2',
+			subkey1: `subvalue1`,
+			subkey2: `subvalue2`,
 		},
-		key2: 'value2',
+		key2: `value2`,
 	}
 
-	var expected = { key1: 'value1', key2: 'value2' }
+	const expected = { key1: `value1`, key2: `value2` }
 
 	t.deepEqual(target, {
 		key1: {
-			subkey1: 'subvalue1',
-			subkey2: 'subvalue2',
+			subkey1: `subvalue1`,
+			subkey2: `subvalue2`,
 		},
-		key2: 'value2',
+		key2: `value2`,
 	})
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('should replace objects with arrays', function(t) {
-	var target = { key1: { subkey: 'one' } }
+test(`should replace objects with arrays`, (t) => {
+	const target = { key1: { subkey: `one` } }
 
-	var src = { key1: [ 'subkey' ] }
+	const src = { key1: [ `subkey` ] }
 
-	var expected = { key1: [ 'subkey' ] }
-
-	t.deepEqual(merge(target, src), expected)
-	t.end()
-})
-
-test('should replace arrays with objects', function(t) {
-	var target = { key1: [ "subkey" ] }
-
-	var src = { key1: { subkey: 'one' } }
-
-	var expected = { key1: { subkey: 'one' } }
+	const expected = { key1: [ `subkey` ] }
 
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('should replace dates with arrays', function(t) {
-	var target = { key1: new Date() }
+test(`should replace arrays with objects`, (t) => {
+	const target = { key1: [ `subkey` ] }
 
-	var src = { key1: [ "subkey" ] }
+	const src = { key1: { subkey: `one` } }
 
-	var expected = { key1: [ "subkey" ] }
+	const expected = { key1: { subkey: `one` } }
 
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('should replace null with arrays', function(t) {
-	var target = {
+test(`should replace dates with arrays`, (t) => {
+	const target = { key1: new Date() }
+
+	const src = { key1: [ `subkey` ] }
+
+	const expected = { key1: [ `subkey` ] }
+
+	t.deepEqual(merge(target, src), expected)
+	t.end()
+})
+
+test(`should replace null with arrays`, (t) => {
+	const target = {
 		key1: null,
 	}
 
-	var src = {
-		key1: [ "subkey" ],
+	const src = {
+		key1: [ `subkey` ],
 	}
 
-	var expected = {
-		key1: [ "subkey" ],
+	const expected = {
+		key1: [ `subkey` ],
 	}
 
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('should work on simple array', function(t) {
-	var src = [ 'one', 'three' ]
-	var target = [ 'one', 'two' ]
+test(`should work on simple array`, (t) => {
+	const src = [ `one`, `three` ]
+	const target = [ `one`, `two` ]
 
-	var expected = [ 'one', 'two', 'one', 'three' ]
+	const expected = [ `one`, `two`, `one`, `three` ]
 
-	t.deepEqual(merge(target, src), expected)
-	t.ok(Array.isArray(merge(target, src)))
-	t.end()
-})
-
-test('should work on another simple array', function(t) {
-	var target = [ "a1", "a2", "c1", "f1", "p1" ]
-	var src = [ "t1", "s1", "c2", "r1", "p2", "p3" ]
-
-	var expected = [ "a1", "a2", "c1", "f1", "p1", "t1", "s1", "c2", "r1", "p2", "p3" ]
-	t.deepEqual(target, [ "a1", "a2", "c1", "f1", "p1" ])
 	t.deepEqual(merge(target, src), expected)
 	t.ok(Array.isArray(merge(target, src)))
 	t.end()
 })
 
-test('should work on array properties', function(t) {
-	var src = {
-		key1: [ 'one', 'three' ],
-		key2: [ 'four' ],
+test(`should work on another simple array`, (t) => {
+	const target = [ `a1`, `a2`, `c1`, `f1`, `p1` ]
+	const src = [ `t1`, `s1`, `c2`, `r1`, `p2`, `p3` ]
+
+	const expected = [ `a1`, `a2`, `c1`, `f1`, `p1`, `t1`, `s1`, `c2`, `r1`, `p2`, `p3` ]
+	t.deepEqual(target, [ `a1`, `a2`, `c1`, `f1`, `p1` ])
+	t.deepEqual(merge(target, src), expected)
+	t.ok(Array.isArray(merge(target, src)))
+	t.end()
+})
+
+test(`should work on array properties`, (t) => {
+	const src = {
+		key1: [ `one`, `three` ],
+		key2: [ `four` ],
 	}
-	var target = {
-		key1: [ 'one', 'two' ],
+	const target = {
+		key1: [ `one`, `two` ],
 	}
 
-	var expected = {
-		key1: [ 'one', 'two', 'one', 'three' ],
-		key2: [ 'four' ],
+	const expected = {
+		key1: [ `one`, `two`, `one`, `three` ],
+		key2: [ `four` ],
 	}
 
 	t.deepEqual(merge(target, src), expected)
@@ -273,183 +274,183 @@ test('should work on array properties', function(t) {
 	t.end()
 })
 
-test('should work on array properties with clone option', function(t) {
-	var src = {
-		key1: [ 'one', 'three' ],
-		key2: [ 'four' ],
+test(`should work on array properties with clone option`, (t) => {
+	const src = {
+		key1: [ `one`, `three` ],
+		key2: [ `four` ],
 	}
-	var target = {
-		key1: [ 'one', 'two' ],
+	const target = {
+		key1: [ `one`, `two` ],
 	}
 
 	t.deepEqual(target, {
-		key1: [ 'one', 'two' ],
+		key1: [ `one`, `two` ],
 	})
-	var merged = merge(target, src, { clone: true })
+	const merged = merge(target, src, { clone: true })
 	t.notEqual(merged.key1, src.key1)
 	t.notEqual(merged.key1, target.key1)
 	t.notEqual(merged.key2, src.key2)
 	t.end()
 })
 
-test('should work on array of objects', function(t) {
-	var src = [
-		{ key1: [ 'one', 'three' ], key2: [ 'one' ] },
-		{ key3: [ 'five' ] },
+test(`should work on array of objects`, (t) => {
+	const src = [
+		{ key1: [ `one`, `three` ], key2: [ `one` ] },
+		{ key3: [ `five` ] },
 	]
-	var target = [
-		{ key1: [ 'one', 'two' ] },
-		{ key3: [ 'four' ] },
+	const target = [
+		{ key1: [ `one`, `two` ] },
+		{ key3: [ `four` ] },
 	]
 
-	var expected = [
-		{ key1: [ 'one', 'two' ] },
-		{ key3: [ 'four' ] },
-		{ key1: [ 'one', 'three' ], key2: [ 'one' ] },
-		{ key3: [ 'five' ] },
+	const expected = [
+		{ key1: [ `one`, `two` ] },
+		{ key3: [ `four` ] },
+		{ key1: [ `one`, `three` ], key2: [ `one` ] },
+		{ key3: [ `five` ] },
 	]
 
 	t.deepEqual(merge(target, src), expected)
-	t.ok(Array.isArray(merge(target, src)), 'result should be an array')
-	t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
+	t.ok(Array.isArray(merge(target, src)), `result should be an array`)
+	t.ok(Array.isArray(merge(target, src)[0].key1), `subkey should be an array too`)
 
 	t.end()
 })
 
-test('should work on array of objects with clone option', function(t) {
-	var src = [
-		{ key1: [ 'one', 'three' ], key2: [ 'one' ] },
-		{ key3: [ 'five' ] },
+test(`should work on array of objects with clone option`, (t) => {
+	const src = [
+		{ key1: [ `one`, `three` ], key2: [ `one` ] },
+		{ key3: [ `five` ] },
 	]
-	var target = [
-		{ key1: [ 'one', 'two' ] },
-		{ key3: [ 'four' ] },
-	]
-
-	var expected = [
-		{ key1: [ 'one', 'two' ] },
-		{ key3: [ 'four' ] },
-		{ key1: [ 'one', 'three' ], key2: [ 'one' ] },
-		{ key3: [ 'five' ] },
+	const target = [
+		{ key1: [ `one`, `two` ] },
+		{ key3: [ `four` ] },
 	]
 
-	var merged = merge(target, src, { clone: true })
+	const expected = [
+		{ key1: [ `one`, `two` ] },
+		{ key3: [ `four` ] },
+		{ key1: [ `one`, `three` ], key2: [ `one` ] },
+		{ key3: [ `five` ] },
+	]
+
+	const merged = merge(target, src, { clone: true })
 	t.deepEqual(merged, expected)
-	t.ok(Array.isArray(merge(target, src)), 'result should be an array')
-	t.ok(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too')
+	t.ok(Array.isArray(merge(target, src)), `result should be an array`)
+	t.ok(Array.isArray(merge(target, src)[0].key1), `subkey should be an array too`)
 	t.notEqual(merged[0].key1, src[0].key1)
 	t.notEqual(merged[0].key1, target[0].key1)
-	t.false(Object.prototype.hasOwnProperty.call(merged[0], 'key2'), '"key2" should not exist on "merged[0]"');
+	t.false(Object.prototype.hasOwnProperty.call(merged[0], `key2`), `"key2" should not exist on "merged[0]"`)
 	t.notEqual(merged[1].key3, src[1].key3)
 	t.notEqual(merged[1].key3, target[1].key3)
 	t.end()
 })
 
-test('should treat regular expressions like primitive values', function(t) {
-	var target = { key1: /abc/ }
-	var src = { key1: /efg/ }
-	var expected = { key1: /efg/ }
+test(`should treat regular expressions like primitive values`, (t) => {
+	const target = { key1: /abc/ }
+	const src = { key1: /efg/ }
+	const expected = { key1: /efg/ }
 
 	t.deepEqual(merge(target, src), expected)
-	t.deepEqual(merge(target, src).key1.test('efg'), true)
+	t.deepEqual(merge(target, src).key1.test(`efg`), true)
 	t.end()
 })
 
-test('should treat regular expressions like primitive values and should not'
-				+ ' clone even with clone option', function(t) {
-	var target = { key1: /abc/ }
-	var src = { key1: /efg/ }
+test(`should treat regular expressions like primitive values and should not`
+				+ ` clone even with clone option`, (t) => {
+	const target = { key1: /abc/ }
+	const src = { key1: /efg/ }
 
-	var output = merge(target, src, { clone: true })
+	const output = merge(target, src, { clone: true })
 
 	t.equal(output.key1, src.key1)
 	t.end()
-}
+},
 )
 
-test('should treat dates like primitives', function(t) {
-	var monday = new Date('2016-09-27T01:08:12.761Z')
-	var tuesday = new Date('2016-09-28T01:18:12.761Z')
+test(`should treat dates like primitives`, (t) => {
+	const monday = new Date(`2016-09-27T01:08:12.761Z`)
+	const tuesday = new Date(`2016-09-28T01:18:12.761Z`)
 
-	var target = {
+	const target = {
 		key: monday,
 	}
-	var source = {
+	const source = {
 		key: tuesday,
 	}
 
-	var expected = {
+	const expected = {
 		key: tuesday,
 	}
-	var actual = merge(target, source)
+	const actual = merge(target, source)
 
 	t.deepEqual(actual, expected)
 	t.equal(actual.key.valueOf(), tuesday.valueOf())
 	t.end()
 })
 
-test('should treat dates like primitives and should not clone even with clone'
-				+  ' option', function(t) {
-	var monday = new Date('2016-09-27T01:08:12.761Z')
-	var tuesday = new Date('2016-09-28T01:18:12.761Z')
+test(`should treat dates like primitives and should not clone even with clone`
+				+ ` option`, (t) => {
+	const monday = new Date(`2016-09-27T01:08:12.761Z`)
+	const tuesday = new Date(`2016-09-28T01:18:12.761Z`)
 
-	var target = {
+	const target = {
 		key: monday,
 	}
-	var source = {
+	const source = {
 		key: tuesday,
 	}
 
-	var actual = merge(target, source, { clone: true })
+	const actual = merge(target, source, { clone: true })
 
 	t.equal(actual.key, tuesday)
 	t.end()
 })
 
-test('should work on array with null in it', function(t) {
-	var target = []
+test(`should work on array with null in it`, (t) => {
+	const target = []
 
-	var src = [ null ]
+	const src = [ null ]
 
-	var expected = [ null ]
+	const expected = [ null ]
 
 	t.deepEqual(merge(target, src), expected)
 	t.end()
 })
 
-test('should clone array\'s element if it is object', function(t) {
-	var a = { key: 'yup' }
-	var target = []
-	var source = [ a ]
+test(`should clone array's element if it is object`, (t) => {
+	const a = { key: `yup` }
+	const target = []
+	const source = [ a ]
 
-	var output = merge(target, source, { clone: true })
+	const output = merge(target, source, { clone: true })
 
 	t.notEqual(output[0], a)
-	t.equal(output[0].key, 'yup')
+	t.equal(output[0].key, `yup`)
 	t.end()
 })
 
-test('should clone an array property when there is no target array', function(t) {
+test(`should clone an array property when there is no target array`, (t) => {
 	const someObject = {}
-	var target = {}
-	var source = { ary: [ someObject ] }
-	var output = merge(target, source, { clone: true })
+	const target = {}
+	const source = { ary: [ someObject ] }
+	const output = merge(target, source, { clone: true })
 
 	t.deepEqual(output, { ary: [{}] })
 	t.notEqual(output.ary[0], someObject)
 	t.end()
 })
 
-test('should overwrite values when property is initialised but undefined', function(t) {
-	var target1 = { value: [] }
-	var target2 = { value: null }
-	var target3 = { value: 2 }
+test(`should overwrite values when property is initialised but undefined`, (t) => {
+	const target1 = { value: [] }
+	const target2 = { value: null }
+	const target3 = { value: 2 }
 
-	var src = { value: undefined }
+	const src = { value: undefined }
 
 	function hasUndefinedProperty(o) {
-		t.ok(o.hasOwnProperty('value'))
-		t.equal(typeof o.value, 'undefined')
+		t.ok(Object.prototype.hasOwnProperty.call(o, `value`))
+		t.equal(typeof o.value, `undefined`)
 	}
 
 	hasUndefinedProperty(merge(target1, src))
@@ -459,231 +460,220 @@ test('should overwrite values when property is initialised but undefined', funct
 	t.end()
 })
 
-test('dates should copy correctly in an array', function(t) {
-	var monday = new Date('2016-09-27T01:08:12.761Z')
-	var tuesday = new Date('2016-09-28T01:18:12.761Z')
+test(`dates should copy correctly in an array`, (t) => {
+	const monday = new Date(`2016-09-27T01:08:12.761Z`)
+	const tuesday = new Date(`2016-09-28T01:18:12.761Z`)
 
-	var target = [ monday, 'dude' ]
-	var source = [ tuesday, 'lol' ]
+	const target = [ monday, `dude` ]
+	const source = [ tuesday, `lol` ]
 
-	var expected = [ monday, 'dude', tuesday, 'lol' ]
-	var actual = merge(target, source)
+	const expected = [ monday, `dude`, tuesday, `lol` ]
+	const actual = merge(target, source)
 
 	t.deepEqual(actual, expected)
 	t.end()
 })
 
-test('should handle custom merge functions', function(t) {
-	var target = {
-		letters: ['a', 'b'],
+test(`should handle custom merge functions`, (t) => {
+	const target = {
+		letters: [ `a`, `b` ],
 		people: {
-			first: 'Alex',
-			second: 'Bert',
-		}
+			first: `Alex`,
+			second: `Bert`,
+		},
 	}
 
-	var source = {
-		letters: ['c'],
+	const source = {
+		letters: [ `c` ],
 		people: {
-			first: 'Smith',
-			second: 'Bertson',
-			third: 'Car'
-		}
+			first: `Smith`,
+			second: `Bertson`,
+			third: `Car`,
+		},
 	}
 
-    const mergePeople = (target, source, options) => {
-       const keys = new Set(Object.keys(target).concat(Object.keys(source)))
-	   const destination = {}
-       keys.forEach(key => {
-           if (key in target && key in source) {
-               destination[key] = `${target[key]}-${source[key]}`
-           } else if (key in target) {
-               destination[key] = target[key]
-           } else {
-               destination[key] = source[key]
-           }
-	   })
-       return destination
-   }
-
-   const options = {
-       customMerge: (key) => {
-         if (key === 'people') {
-           return mergePeople
-		 }
-
-		 return merge
-       }
-   }
-
-	var expected = {
-		letters: ['a', 'b', 'c'],
-		people: {
-			first: 'Alex-Smith',
-			second: 'Bert-Bertson',
-			third: 'Car'
-		}
+	const mergePeople = (target: Record<string, string>, source: Record<string, string>) => {
+		const keys = new Set(Object.keys(target).concat(Object.keys(source)))
+		const destination = {}
+		keys.forEach((key) => {
+			if (key in target && key in source) {
+				destination[key] = `${ target[key] }-${ source[key] }`
+			} else if (key in target) {
+				destination[key] = target[key]
+			} else {
+				destination[key] = source[key]
+			}
+		})
+		return destination
 	}
 
-	var actual = merge(target, source, options)
+	const options: Options = {
+		customMerge: (key) => {
+			if (key === `people`) {
+				return mergePeople
+			}
+
+			return merge
+		},
+	}
+
+	const expected = {
+		letters: [ `a`, `b`, `c` ],
+		people: {
+			first: `Alex-Smith`,
+			second: `Bert-Bertson`,
+			third: `Car`,
+		},
+	}
+
+	const actual = merge(target, source, options)
 	t.deepEqual(actual, expected)
 	t.end()
 })
 
 
-test('should handle custom merge functions', function(t) {
-	var target = {
-		letters: ['a', 'b'],
+test(`should handle custom merge functions`, (t) => {
+	const target = {
+		letters: [ `a`, `b` ],
 		people: {
-			first: 'Alex',
-			second: 'Bert',
-		}
+			first: `Alex`,
+			second: `Bert`,
+		},
 	}
 
-	var source = {
-		letters: ['c'],
+	const source = {
+		letters: [ `c` ],
 		people: {
-			first: 'Smith',
-			second: 'Bertson',
-			third: 'Car'
-		}
+			first: `Smith`,
+			second: `Bertson`,
+			third: `Car`,
+		},
 	}
 
-    const mergeLetters = (target, source, options) => {
-      return 'merged letters'
-    }
+	const mergeLetters = (_target: string, _source: string) => `merged letters`
 
+	const options: Options = {
+		customMerge: (key) => {
+			if (key === `letters`) {
+				return mergeLetters
+			}
+		},
+	}
 
-    const options = {
-        customMerge: (key) => {
-          if (key === 'letters') {
-            return mergeLetters
-          }
-        }
-    }
+	const expected = {
+		letters: `merged letters`,
+		people: {
+			first: `Smith`,
+			second: `Bertson`,
+			third: `Car`,
+		},
+	}
 
-    const expected = {
-        letters: 'merged letters',
-        people: {
-            first: 'Smith',
-            second: 'Bertson',
-            third: 'Car'
-        }
-    }
-
-	var actual = merge(target, source, options)
+	const actual = merge(target, source, options)
 	t.deepEqual(actual, expected)
 	t.end()
 })
 
-test('should merge correctly if custom merge is not a valid function', function(t) {
-	var target = {
-		letters: ['a', 'b'],
+test(`should merge correctly if custom merge is not a valid function`, (t) => {
+	const target = {
+		letters: [ `a`, `b` ],
 		people: {
-			first: 'Alex',
-			second: 'Bert',
-		}
+			first: `Alex`,
+			second: `Bert`,
+		},
 	}
 
-	var source = {
-		letters: ['c'],
+	const source = {
+		letters: [ `c` ],
 		people: {
-			first: 'Smith',
-			second: 'Bertson',
-			third: 'Car'
-		}
+			first: `Smith`,
+			second: `Bertson`,
+			third: `Car`,
+		},
 	}
 
-    const options = {
-        customMerge: (key, options) => {
-            return  false
-        }
-    }
+	const expected = {
+		letters: [ `a`, `b`, `c` ],
+		people: {
+			first: `Smith`,
+			second: `Bertson`,
+			third: `Car`,
+		},
+	}
 
-    const expected = {
-        letters: ['a', 'b', 'c'],
-        people: {
-            first: 'Smith',
-            second: 'Bertson',
-            third: 'Car'
-        }
-    }
-
-	var actual = merge(target, source)
+	const actual = merge(target, source)
 	t.deepEqual(actual, expected)
 	t.end()
-
 })
 
-test('copy symbol keys in target that do not exist on the target', function(t) {
-	var mySymbol = Symbol();
-	var src = { [mySymbol]: 'value1' }
-	var target = {}
+test(`copy symbol keys in target that do not exist on the target`, (t) => {
+	const mySymbol = Symbol()
+	const src = { [mySymbol]: `value1` }
+	const target = {}
 
-	var res = merge(target, src)
+	const res = merge(target, src)
 
-	t.equal(res[mySymbol], 'value1')
+	t.equal(res[mySymbol], `value1`)
 	t.deepEqual(Object.getOwnPropertySymbols(res), Object.getOwnPropertySymbols(src))
 	t.end()
 })
 
-test('copy symbol keys in target that do exist on the target', function(t) {
-	var mySymbol = Symbol();
-	var src = { [mySymbol]: 'value1' }
-	var target = { [mySymbol]: 'wat'}
+test(`copy symbol keys in target that do exist on the target`, (t) => {
+	const mySymbol = Symbol()
+	const src = { [mySymbol]: `value1` }
+	const target = { [mySymbol]: `wat` }
 
-	var res = merge(target, src)
+	const res = merge(target, src)
 
-	t.equal(res[mySymbol as unknown as string], 'value1')
+	t.equal(res[mySymbol as unknown as string], `value1`)
 	t.end()
 })
 
-test('should not mutate options', function(t) {
-	var options = {};
+test(`should not mutate options`, (t) => {
+	const options: Options = {}
 
-	merge({}, {}, options);
+	merge({}, {}, options)
 
-	t.deepEqual(options, {});
-	t.end();
+	t.deepEqual(options, {})
+	t.end()
 })
 
-test('Falsey properties should be mergeable', function(t) {
-	var uniqueValue = {}
+test(`Falsey properties should be mergeable`, (t) => {
+	const uniqueValue = {}
 
-	var target = {
-		wat: false
+	const target = {
+		wat: false,
 	}
 
-	var source = {
-		wat: false
+	const source = {
+		wat: false,
 	}
 
-	var customMergeWasCalled = false
+	let customMergeWasCalled = false
 
-	var result = merge(target, source, {
-		isMergeable: function() {
+	const result = merge(target, source, {
+		isMergeable() {
 			return true
 		},
-		customMerge: function() {
+		customMerge() {
 			return function() {
 				customMergeWasCalled = true
 				return uniqueValue
 			}
-		}
+		},
 	})
 
 	t.equal(result.wat, uniqueValue)
-	t.ok(customMergeWasCalled, 'custom merge function was called')
+	t.ok(customMergeWasCalled, `custom merge function was called`)
 	t.end()
 })
 
-test('With clone: false, merge should not clone the target root', t => {
+test(`With clone: false, merge should not clone the target root`, (t) => {
 	const destination = {}
 	const output = merge(destination, {
-		sup: true
+		sup: true,
 	}, { clone: false })
 
 	t.equal(destination, output)
 	t.end()
 })
-
