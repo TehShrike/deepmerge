@@ -4,13 +4,13 @@ Merges the enumerable properties of two or more objects deeply.
 
 > UMD bundle is 718B minified+gzipped
 
-**As of version 5, ES5 is no longer supported**
+**As of version 5, ES5 is no longer natively supported**
 
 ## Getting Started
 
 ### Example Usage
 <!--js
-const merge = require('./')
+const { deepmerge, deepmergeAll } = require('./')
 -->
 
 ```js
@@ -50,7 +50,7 @@ const output = {
 	quux: 5
 }
 
-merge(x, y) // => output
+deepmerge(x, y) // => output
 ```
 
 
@@ -67,10 +67,10 @@ deepmerge can be used directly in the browser without the use of package manager
 
 ### Include
 
-deepmerge exposes a CommonJS entry point:
+deepmerge exposes a CommonJS entry point containing two functions:
 
 ```
-const merge = require('deepmerge')
+const { deepmerge, deepmergeAll } = require('deepmerge')
 ```
 
 The ESM entry point was dropped due to a [Webpack bug](https://github.com/webpack/webpack/issues/6584).
@@ -78,7 +78,7 @@ The ESM entry point was dropped due to a [Webpack bug](https://github.com/webpac
 # API
 
 
-## `merge(x, y, [options])`
+## `deepmerge(x, y, [options])`
 
 Merge two objects `x` and `y` deeply, returning a new merged object with the
 elements from both `x` and `y`.
@@ -90,7 +90,7 @@ Merging creates a new object, so that neither `x` or `y` is modified.
 
 **Note:** By default, arrays are merged by concatenating them.
 
-## `merge.all(arrayOfObjects, [options])`
+## `deepmergeAll(arrayOfObjects, [options])`
 
 Merges any number of objects into a single result object.
 
@@ -99,7 +99,7 @@ const foobar = { foo: { bar: 3 } }
 const foobaz = { foo: { baz: 4 } }
 const bar = { bar: 'yay!' }
 
-merge.all([ foobar, foobaz, bar ]) // => { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
+deepmergeAll([ foobar, foobaz, bar ]) // => { foo: { bar: 3, baz: 4 }, bar: 'yay!' }
 ```
 
 
@@ -121,7 +121,7 @@ Overwrites the existing array values completely rather than concatenating them:
 ```js
 const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
 
-merge(
+deepmerge(
 	[1, 2, 3],
 	[3, 2, 1],
 	{ arrayMerge: overwriteMerge }
@@ -142,7 +142,7 @@ const combineMerge = (target, source, options) => {
 		if (typeof destination[index] === 'undefined') {
 			destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
 		} else if (options.isMergeable(item)) {
-			destination[index] = merge(target[index], item, options)
+			destination[index] = deepmerge(target[index], item, options)
 		} else if (target.indexOf(item) === -1) {
 			destination.push(item)
 		}
@@ -150,7 +150,7 @@ const combineMerge = (target, source, options) => {
 	return destination
 }
 
-merge(
+deepmerge(
 	[{ a: true }],
 	[{ b: true }, 'ah yup'],
 	{ arrayMerge: combineMerge }
@@ -190,13 +190,13 @@ const source = {
 	someProperty: instantiatedSpecialObject
 }
 
-const defaultOutput = merge(target, source)
+const defaultOutput = deepmerge(target, source)
 
 defaultOutput.someProperty.cool // => undefined
 defaultOutput.someProperty.special // => 'oh yeah man totally'
 defaultOutput.someProperty instanceof SuperSpecial // => true
 
-const customMergeOutput = merge(target, source, {
+const customMergeOutput = deepmerge(target, source, {
 	isMergeable: mergeEverything
 })
 
@@ -240,7 +240,7 @@ const options = {
 	}
 }
 
-const result = merge(alex, tony, options)
+const result = deepmerge(alex, tony, options)
 
 result.name // => 'Alex and Tony'
 result.pets // => ['Cat', 'Parrot', 'Dog']
@@ -249,9 +249,9 @@ result.pets // => ['Cat', 'Parrot', 'Dog']
 
 ### `clone`
 
-Defaults to `true`.
+Defaults to `false`.
 
-If `clone` is `false` then child properties will be copied directly onto targets without cloning the target.
+If `clone` is `true` then no deeply nested mergable object in the inputs will be in the resulting value.
 
 # Testing
 

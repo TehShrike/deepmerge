@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ES2015",
+		"module": "ESNext",
+		"lib": [
+			"ESNext"
+		],
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"alwaysStrict": true,
+		"noImplicitAny": false,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"newLine": "LF"
+	}
+}
