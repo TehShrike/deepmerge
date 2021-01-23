@@ -17,24 +17,46 @@
 	},
 	"license": "MIT",
 	"main": "dist/cjs.js",
+	"types": "types/legacy/index.d.ts",
+	"typesVersions": {
+		"<4.1": {
+			"*": [
+				"types/legacy/index.d.ts"
+			]
+		},
+		">=4.1": {
+			"*": [
+				"types/current/*"
+			]
+		}
+	},
 	"files": [
-		"/dist",
+		"dist/",
+		"types/",
 		"index.d.ts",
 		"changelog.md",
 		"license.txt",
 		"readme.md"
 	],
 	"scripts": {
-		"build": "rollup -c",
+		"build": "npm run build:js && npm run build:types",
+		"build:js": "rollup -c",
+		"build:types": "tsc -p tsconfig.typedef.json",
 		"size": "npm run build && terser --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
-		"test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-		"test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
+		"test": "npm run test:js && npm run test:types && npm run test:jsmd",
+		"test:js": "ts-node -C typescript -P test/tsconfig.json -r tsconfig-paths/register node_modules/tape/bin/tape test/*.ts",
+		"pretest:jsmd": "npm run build:js",
+		"test:jsmd": "jsmd readme.md",
+		"test:types": "dtslint --localTs node_modules/typescript/lib --expectOnly test/types"
 	},
 	"dependencies": {},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^16.0.0",
 		"@rollup/plugin-node-resolve": "^10.0.0",
+		"@rollup/plugin-typescript": "^8.1.0",
 		"@types/node": "^8.10.54",
+		"@types/tape": "^4.13.0",
+		"dtslint": "^4.0.6",
 		"is-mergeable-object": "1.1.0",
 		"is-plain-obj": "^3.0.0",
 		"jsmd": "^1.0.2",
@@ -42,6 +64,8 @@
 		"tape": "^5.0.1",
 		"terser": "^5.5.1",
 		"ts-node": "^9.0.0",
+		"tsconfig-paths": "^3.9.0",
+		"tslib": "^2.1.0",
 		"typescript": "^4.1.2"
 	},
 	"engines": {
