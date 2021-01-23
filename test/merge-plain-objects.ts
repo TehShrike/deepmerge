@@ -6,12 +6,12 @@ test(`plain objects are merged by default`, (t) => {
 		newObject: new Object(),
 		objectLiteral: { a: 123 },
 	}
-	const output = merge({}, input)
+	const output = merge({}, input, { clone: false })
 
 	t.deepEqual(output.newObject, input.newObject)
-	t.notEqual(output.newObject, input.newObject)
+	t.equal(output.newObject, input.newObject)
 	t.deepEqual(output.objectLiteral, input.objectLiteral)
-	t.notEqual(output.objectLiteral, input.objectLiteral)
+	t.equal(output.objectLiteral, input.objectLiteral)
 
 	t.end()
 })

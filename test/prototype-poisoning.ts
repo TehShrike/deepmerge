@@ -29,7 +29,7 @@ test(`merging objects with plain and non-plain properties`, (t) => {
 		[plainSymbolKey]: `qux`,
 	}
 
-	const mergedObject = merge(target, source)
+	const mergedObject = merge(target, source, { clone: true })
 	t.equal(undefined, mergedObject.parentKey, `inherited properties of target should be removed, not merged or ignored`)
 	t.equal(`bar`, mergedObject.plainKey, `enumerable own properties of target should be merged`)
 	t.equal(`baz`, mergedObject.newKey, `properties not yet on target should be merged`)
@@ -73,6 +73,6 @@ test(`merging objects with null prototype`, (t) => {
 		},
 	}
 
-	t.deepEqual(expected, merge(target, source))
+	t.deepEqual(merge(target, source, { clone: true }), expected)
 	t.end()
 })

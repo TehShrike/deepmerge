@@ -60,7 +60,7 @@ test(`invoke merge on every item in array with clone should clone all elements`,
 	t.end()
 })
 
-test(`invoke merge on every item in array clone=false should not clone all elements`, (t) => {
+test(`invoke merge on every item in array with clone=false should not clone all elements`, (t) => {
 	const firstObject = { a: { d: 123 } }
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
@@ -74,13 +74,12 @@ test(`invoke merge on every item in array clone=false should not clone all eleme
 	t.end()
 })
 
-
-test(`invoke merge on every item in array without clone should clone all elements`, (t) => {
+test(`invoke merge on every item in array with clone=true should clone all elements`, (t) => {
 	const firstObject = { a: { d: 123 } }
 	const secondObject = { b: { e: true } }
 	const thirdObject = { c: { f: `string` } }
 
-	const mergedWithoutClone = mergeAll([ firstObject, secondObject, thirdObject ])
+	const mergedWithoutClone = mergeAll([ firstObject, secondObject, thirdObject ], { clone: true })
 
 	t.notEqual(mergedWithoutClone.a, firstObject.a)
 	t.notEqual(mergedWithoutClone.b, secondObject.b)

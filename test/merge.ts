@@ -80,8 +80,8 @@ test(`replace simple key with nested object in target`, (t) => {
 		key2: `value2`,
 	}
 
-	t.deepEqual(target, { key1: `value1`, key2: `value2` })
-	t.deepEqual(merge(target, src), expected)
+	t.deepEqual(merge(target, src, { clone: true }), expected)
+	t.deepEqual(merge(target, src, { clone: false }), expected)
 	t.end()
 })
 
@@ -139,7 +139,7 @@ test(`should clone source and target`, (t) => {
 	t.end()
 })
 
-test(`should clone source and target`, (t) => {
+test(`should clone source and target if specified`, (t) => {
 	const src = {
 		b: {
 			c: `foo`,
@@ -152,7 +152,7 @@ test(`should clone source and target`, (t) => {
 		},
 	}
 
-	const merged = merge(target, src)
+	const merged = merge(target, src, { clone: true })
 	t.notEqual(merged.a, target.a)
 	t.notEqual(merged.b, src.b)
 
