@@ -1,5 +1,5 @@
-var merge = require('../')
-var test = require('tape')
+import { deepmerge as merge } from "deepmerge"
+import test from "tape"
 
 test('add keys in target that do not exist at the root', function(t) {
 	var src = { key1: 'value1', key2: 'value2' }

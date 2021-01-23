@@ -1,6 +1,6 @@
-var merge = require('../')
-var test = require('tape')
-var isMergeableObject = require('is-mergeable-object')
+import { deepmerge as merge } from "deepmerge"
+import test from "tape"
+import isPlainObj from "is-plain-obj"
 
 test('merging objects with own __proto__', function(t) {
 	var user = {}
@@ -51,7 +51,7 @@ test('merging strings works with a custom string merge', function(t) {
 	}
 
 	function mergeable(target) {
-		return isMergeableObject(target) || (typeof target === 'string' && target.length > 1)
+		return isPlainObj(target) || (typeof target === 'string' && target.length > 1)
 	}
 
 	t.equal('A. Ham', merge(target, source, { customMerge: customMerge, isMergeable: mergeable }).name)

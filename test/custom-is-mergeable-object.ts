@@ -1,5 +1,5 @@
-var merge = require('../')
-var test = require('tape')
+import { deepmerge as merge } from "deepmerge"
+import test from "tape"
 
 test('isMergeable function copying object over object', function(t) {
 	var src = { key: { isMergeable: false }, baz: 'yes' }

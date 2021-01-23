@@ -1,5 +1,5 @@
-var merge = require('../')
-var test = require('tape')
+import { deepmerge as merge } from "deepmerge"
+import test from "tape"
 
 test('throw error if first argument is not an array', function(t) {
 	t.throws(merge.all.bind(null, { example: true }, { another: '2' }), Error)

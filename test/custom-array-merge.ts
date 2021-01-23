@@ -1,5 +1,5 @@
-var merge = require('../')
-var test = require('tape')
+import { deepmerge as merge } from "deepmerge"
+import test from "tape"
 
 test('custom merge array', function(t) {
 	var mergeFunctionCalled = false
