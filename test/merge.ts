@@ -677,15 +677,6 @@ test('Falsey properties should be mergeable', function(t) {
 	t.end()
 })
 
-test('should not mutate options', function(t) {
-	var options = {}
-
-	merge({}, {}, options)
-
-	t.deepEqual(options, {})
-	t.end()
-})
-
 test('With clone: false, merge should not clone the target root', t => {
 	const destination = {}
 	const output = merge(destination, {
