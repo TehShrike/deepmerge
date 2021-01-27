@@ -14,12 +14,12 @@ const defaultArrayMerge = (target, source, options) => {
 		.map(element => cloneUnlessOtherwiseSpecified(element, options))
 }
 
-const getMergeFunction = (key, options) => {
+const getMergeFunction = (key, options, target, source) => {
 	if (!options.customMerge) {
 		return deepmerge
 	}
 
-	const customMerge = options.customMerge(key)
+	const customMerge = options.customMerge(key, target, source)
 	return typeof customMerge === `function` ? customMerge : deepmerge
 }
 
@@ -61,7 +61,7 @@ const mergeObject = (target, source, options) => {
 		}
 
 		if (propertyIsOnObject(target, key) && options.isMergeable(source[key])) {
-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
+			destination[key] = getMergeFunction(key, options, target[key], source[key])(target[key], source[key], options)
 		} else {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		}
@@ -113,5 +113,9 @@ deepmerge.all = (array, inputOptions) => {
 
 	return array.reduce((prev, next) => deepmerge(prev, next, options))
 }
+
+deepmerge.customMergeIgnoreEmptyValues = (key, target, source) => !target || target === ''
+	? () => source
+	: () => target;
 
 module.exports = deepmerge

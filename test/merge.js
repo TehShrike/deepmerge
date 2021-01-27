@@ -677,6 +677,21 @@ test('Falsey properties should be mergeable', function(t) {
 	t.end()
 })
 
+test('customMerge without overwriting with null or empty string', function(t) {
+	var src = { someNewVariable: "herp", very: { nested: { thing: "" } } };
+  var target = { very: { nested: { thing: "derp" } } };
+
+  var res = merge(target, src, {
+    customMerge: merge.customMergeIgnoreEmptyValues,
+  });
+
+  t.deepEqual(res, {
+    someNewVariable: "herp",
+    very: { nested: { thing: "derp" } },
+  });
+  t.end();
+})
+
 test('should not mutate options', function(t) {
 	var options = {}
 
