@@ -11,6 +11,7 @@ declare namespace deepmerge {
 
 	export function all (objects: object[], options?: Options): object;
 	export function all<T> (objects: Partial<T>[], options?: Options): T;
+	export function customMergeIgnoreEmptyValues (key: any, target: any, source: any): any;
 }
 
 export = deepmerge;
