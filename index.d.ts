@@ -7,6 +7,7 @@ declare namespace deepmerge {
 		clone?: boolean;
 		customMerge?: (key: string, options?: Options) => ((x: any, y: any) => any) | undefined;
 		isMergeableObject?(value: object): boolean;
+		cloneUnlessOtherwiseSpecified?(value: object, options?: Options): any;
 	}
 
 	export function all (objects: object[], options?: Options): object;
