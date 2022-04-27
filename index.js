@@ -25,11 +25,12 @@ function getMergeFunction(key, options) {
 }
 
 function getEnumerableOwnPropertySymbols(target) {
-	return Object.getOwnPropertySymbols
-		? Object.getOwnPropertySymbols(target).filter(function(symbol) {
-			return target.propertyIsEnumerable(symbol)
-		})
-		: []
+	var result = [];
+	var keys = Object.getOwnPropertySymbols(target);
+	for (var i = 0, il = keys.length; i < il; ++i) {
+		target.propertyIsEnumerable(keys[i]) && result.push(keys[i]);
+	}
+	return result;
 }
 
 var pushArray = Array.prototype.push;
