@@ -25,23 +25,23 @@ function getMergeFunction(key, options) {
 }
 
 function getEnumerableOwnPropertySymbols(target) {
-	var result = [];
-	var keys = Object.getOwnPropertySymbols(target);
+	var result = []
+	var keys = Object.getOwnPropertySymbols(target)
 	for (var i = 0, il = keys.length; i < il; ++i) {
-		target.propertyIsEnumerable(keys[i]) && result.push(keys[i]);
+		target.propertyIsEnumerable(keys[i]) && result.push(keys[i])
 	}
-	return result;
+	return result
 }
 
-var pushArray = Array.prototype.push;
+var pushArray = Array.prototype.push
 
 var getKeys = Object.getOwnPropertySymbols
 	? function getKeys(target) {
-		var result = Object.keys(target);
+		var result = Object.keys(target)
 		pushArray.apply(result, getEnumerableOwnPropertySymbols(target))
 		return result
 	}
-	: Object.keys;
+	: Object.keys
 
 function propertyIsOnObject(object, property) {
 	try {
