@@ -32,9 +32,15 @@ function getEnumerableOwnPropertySymbols(target) {
 		: []
 }
 
-function getKeys(target) {
-	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
-}
+var pushArray = Array.prototype.push;
+
+var getKeys = Object.getOwnPropertySymbols
+	? function getKeys(target) {
+		var result = Object.keys(target);
+		pushArray.apply(result, getEnumerableOwnPropertySymbols(target))
+		return result
+	}
+	: Object.keys;
 
 function propertyIsOnObject(object, property) {
 	try {
