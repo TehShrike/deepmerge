@@ -46,20 +46,27 @@ function propertyIsOnObject(object, property) {
 
 // Protects from prototype poisoning and unexpected merging up the prototype chain.
 function propertyIsUnsafe(target, key) {
-	return propertyIsOnObject(target, key) // Properties are safe to merge if they don't exist in the target yet,
-		&& !(Object.hasOwnProperty.call(target, key) // unsafe if they exist up the prototype chain,
-			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
+	if (key === "__proto__") {
+		return true;
+	}
+	const propertyIsInPrototypeChain = propertyIsOnObject(target, key) && !Object.hasOwnProperty.call(target, key);
+	const propertyIsEnumerable = Object.propertyIsEnumerable.call(target, key)
+
+	return propertyIsInPrototypeChain || !propertyIsEnumerable
 }
 
 function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
+			if (propertyIsUnsafe(target, key)) {
+				return
+			}
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
 	getKeys(source).forEach(function(key) {
-		if (propertyIsUnsafe(target, key)) {
+		if (propertyIsUnsafe(source, key)) {
 			return
 		}
 
