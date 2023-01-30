@@ -1,3 +1,7 @@
+# [4.3.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.3.0)
+
+- Avoid thrown errors if the target doesn't have `propertyIsEnumerable`.  [#252](https://github.com/TehShrike/deepmerge/pull/252)
+
 # [4.2.2](https://github.com/TehShrike/deepmerge/releases/tag/v4.2.2)
 
 - `isMergeableObject` is now only called if there are two values that could be merged.  [a34dd4d2](https://github.com/TehShrike/deepmerge/commit/a34dd4d25bf5e250653540a2022bc832c7b00a19)
