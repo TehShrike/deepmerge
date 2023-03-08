@@ -166,7 +166,7 @@ You can accomplish this by passing in a function for the `isMergeableObject` opt
 If you only want to clone properties of plain objects, and ignore all "special" kinds of instantiated objects, you probably want to drop in [`is-plain-object`](https://github.com/jonschlinkert/is-plain-object).
 
 ```js
-const isPlainObject = require('is-plain-object')
+const { isPlainObject } = require('is-plain-object')
 
 function SuperSpecial() {
 	this.special = 'oh yeah man totally'
