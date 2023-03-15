@@ -68,6 +68,11 @@ function mergeObject(target, source, options) {
 		} else {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		}
+		//alexk code begin
+		 var newdest=destination[key];
+        if(typeof newdest === 'function') 
+        destination[key]=newdest();
+		//alex code ends
 	})
 	return destination
 }
