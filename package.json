@@ -16,17 +16,19 @@
     "url": "git://github.com/TehShrike/deepmerge.git"
   },
   "main": "dist/cjs.js",
+  "types": "types",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "build": "rollup -c",
     "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
-    "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
+    "test:typescript": "dtslint --expectOnly types",
     "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c"
   },
   "devDependencies": {
     "@types/node": "^8.10.54",
+    "dtslint": "^4.0.5",
     "is-mergeable-object": "1.1.0",
     "is-plain-object": "^2.0.4",
     "jsmd": "^1.0.2",
@@ -35,7 +37,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "tape": "^4.11.0",
     "ts-node": "7.0.1",
-    "typescript": "=2.2.2",
+    "typescript": "^4.1.1-rc",
     "uglify-js": "^3.6.1"
   },
   "license": "MIT",
