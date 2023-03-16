@@ -1,3 +1,7 @@
+# [4.3.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.3.1)
+
+- Fix type definition for arrayMerge options.  [#239](https://github.com/TehShrike/deepmerge/pull/239)
+
 # [4.3.0](https://github.com/TehShrike/deepmerge/releases/tag/v4.3.0)
 
 - Avoid thrown errors if the target doesn't have `propertyIsEnumerable`.  [#252](https://github.com/TehShrike/deepmerge/pull/252)
