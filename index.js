@@ -4,6 +4,10 @@ function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}
 }
 
+function firstArrayEntry(arr) {
+	return arr && arr.length ? arr[0] : []
+}
+
 function cloneUnlessOtherwiseSpecified(value, options) {
 	return (options.clone !== false && options.isMergeableObject(value))
 		? deepmerge(emptyTarget(value), value, options)
@@ -51,8 +55,21 @@ function propertyIsUnsafe(target, key) {
 			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
 }
 
+// Retrieves either a new object or the appropriate target object to mutate.
+function getDestinationObject(target, source, options) {
+	const targetDefined = typeof target !== 'undefined'
+	const isArray = Array.isArray(target) || Array.isArray(source)
+	const doMerge = options && (options.mergeWithTarget || options.clone === false)
+
+	if (targetDefined && doMerge) {
+		return Array.isArray(target) ? firstArrayEntry(target) : target
+	}
+
+	return isArray ? [] : {};
+}
+
 function mergeObject(target, source, options) {
-	var destination = {}
+	var destination = getDestinationObject(target, source, options)
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
@@ -100,7 +117,7 @@ deepmerge.all = function deepmergeAll(array, options) {
 
 	return array.reduce(function(prev, next) {
 		return deepmerge(prev, next, options)
-	}, {})
+	}, getDestinationObject(array, undefined, options))
 }
 
 module.exports = deepmerge
