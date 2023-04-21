@@ -103,4 +103,4 @@ deepmerge.all = function deepmergeAll(array, options) {
 	}, {})
 }
 
-module.exports = deepmerge
+export default deepmerge;

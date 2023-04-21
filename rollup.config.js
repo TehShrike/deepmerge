@@ -12,6 +12,7 @@ export default {
 		{
 			name: 'deepmerge',
 			file: pkg.main,
+			exports: 'named',
 			format: `cjs`
 		},
 		{
