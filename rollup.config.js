@@ -10,12 +10,19 @@ export default {
 	],
 	output: [
 		{
+			name: 'deepmerge',
 			file: pkg.main,
+			exports: 'named',
 			format: `cjs`
 		},
 		{
 			name: 'deepmerge',
-			file: 'dist/umd.js',
+			file: pkg.module,
+			format: `es`
+		},
+		{
+			name: 'deepmerge',
+			file: 'dist/deepmerge.umd.js',
 			format: `umd`
 		},
 	],

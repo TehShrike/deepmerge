@@ -9,13 +9,15 @@
     "clone",
     "recursive"
   ],
-  "version": "4.3.1",
+  "version": "4.3.2",
   "homepage": "https://github.com/TehShrike/deepmerge",
   "repository": {
     "type": "git",
     "url": "git://github.com/TehShrike/deepmerge.git"
   },
-  "main": "dist/cjs.js",
+  "main": "dist/deepmerge.cjs.js",
+  "module": "dist/deepmerge.esm.js",
+  "typings": "index.d.ts",
   "engines": {
     "node": ">=0.10.0"
   },
