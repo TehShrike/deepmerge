@@ -1,0 +1,13 @@
+diff --git a/node_modules/@ljharb/through/through.d.ts b/node_modules/@ljharb/through/through.d.ts
+index 38178c5..2b29aa8 100644
+--- a/node_modules/@ljharb/through/through.d.ts
++++ b/node_modules/@ljharb/through/through.d.ts
+@@ -1,6 +1,7 @@
+ /// <reference types="node" />
+ 
+-import stream from 'stream';
++import * as stream from 'stream';
++
+ 
+ declare function through(
+     write?: null | ((data: unknown) => void),
