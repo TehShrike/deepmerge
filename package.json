@@ -9,7 +9,7 @@
     "clone",
     "recursive"
   ],
-  "version": "4.3.2",
+  "version": "4.3.7",
   "homepage": "https://github.com/TehShrike/deepmerge",
   "repository": {
     "type": "git",
@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "@types/node": "^8.10.54",
-    "is-mergeable-object": "1.1.0",
     "is-plain-object": "^5.0.0",
     "jsmd": "^1.0.2",
     "rollup": "^1.23.1",
