@@ -11,6 +11,47 @@ test('merging objects with own __proto__', function(t) {
 	t.end()
 })
 
+// the following cases come from https://github.com/TehShrike/deepmerge/issues/273
+test('merging a __proto__ key into a null-prototype target', function(t) {
+	var defaults = Object.create(null)
+	defaults.debug = false
+	var malicious = JSON.parse('{ "__proto__": { "isAdmin": true } }')
+	var mergedObject = merge(defaults, malicious)
+	t.equal(Object.getPrototypeOf(mergedObject), Object.prototype, 'the destination should keep the default prototype')
+	t.notOk(mergedObject.isAdmin, 'the destination should not inherit attacker-controlled properties')
+	t.equal(mergedObject.debug, false, 'legitimate target properties should still be merged')
+	t.end()
+})
+
+test('merging a __proto__ key into a null placeholder on the target', function(t) {
+	var defaults = { session: null }
+	var malicious = JSON.parse('{ "session": { "__proto__": { "isAdmin": true } } }')
+	var mergedObject = merge(defaults, malicious)
+	t.equal(Object.getPrototypeOf(mergedObject.session), Object.prototype, 'the nested destination should keep the default prototype')
+	t.notOk(mergedObject.session.isAdmin, 'the nested destination should not inherit attacker-controlled properties')
+	t.end()
+})
+
+test('merging when the target has an own __proto__ key', function(t) {
+	var poisonedTarget = JSON.parse('{ "__proto__": { "isAdmin": true }, "debug": false }')
+	var mergedObject = merge(poisonedTarget, { verbose: true })
+	t.equal(Object.getPrototypeOf(mergedObject), Object.prototype, 'the destination should keep the default prototype')
+	t.notOk(mergedObject.isAdmin, 'an own __proto__ key on the target should not be copied')
+	t.notOk(Object.prototype.hasOwnProperty.call(mergedObject, '__proto__'), 'the destination should not have an own __proto__ key')
+	t.equal(mergedObject.debug, false, 'other target properties should still be merged')
+	t.equal(mergedObject.verbose, true, 'source properties should still be merged')
+	t.end()
+})
+
+test('merging a __proto__ key nested inside an array element', function(t) {
+	var defaults = { list: [] }
+	var malicious = JSON.parse('{ "list": [ { "__proto__": { "isAdmin": true } } ] }')
+	var mergedObject = merge(defaults, malicious)
+	t.equal(Object.getPrototypeOf(mergedObject.list[0]), Object.prototype, 'cloned array elements should keep the default prototype')
+	t.notOk(mergedObject.list[0].isAdmin, 'cloned array elements should not inherit attacker-controlled properties')
+	t.end()
+})
+
 test('merging objects with plain and non-plain properties', function(t) {
 	var plainSymbolKey = Symbol('plainSymbolKey')
 	var parent = {
