@@ -203,7 +203,9 @@ customMergeOutput.someProperty instanceof SuperSpecial // => true
 
 Specifies a function which can be used to override the default merge behavior for a property, based on the property name.
 
-The `customMerge` function will be passed the key for each property, and should return the function which should be used to merge the values for that property.
+When merging an object property, `customMerge` is called only if the property exists on the target and the source value passes [`isMergeableObject`](#ismergeableobject). It is not called for every property copied to the result.
+
+The `customMerge` function is passed the property key, and should return the function which should be used to merge the values for that property.
 
 It may also return undefined, in which case the default merge behaviour will be used.
 
