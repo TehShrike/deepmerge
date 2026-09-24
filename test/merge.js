@@ -667,3 +667,20 @@ test('Falsey properties should be mergeable', function(t) {
 	t.ok(customMergeWasCalled, 'custom merge function was called')
 	t.end()
 })
+
+test('Does not override non-object properties with empty object', function(t) {
+	var target = {
+		bool: true
+	}
+
+	var source = {}
+
+	var result = merge(target, source, {
+		isMergeableObject: function() {
+			return true
+		}
+	})
+
+	t.equal(result.bool, true)
+	t.end()
+})
