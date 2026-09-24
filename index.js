@@ -1,4 +1,18 @@
-var defaultIsMergeableObject = require('is-mergeable-object')
+function defaultIsMergeableObject(value) {
+	return isNonNullObject(value)
+		&& !isSpecial(value)
+}
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
+}
+
+function isSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value)
+
+	return stringValue === '[object RegExp]'
+		|| stringValue === '[object Date]'
+}
 
 function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}
@@ -103,4 +117,4 @@ deepmerge.all = function deepmergeAll(array, options) {
 	}, {})
 }
 
-module.exports = deepmerge
+export default deepmerge;
