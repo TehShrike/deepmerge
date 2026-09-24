@@ -35,7 +35,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "tape": "^4.11.0",
     "ts-node": "7.0.1",
-    "typescript": "=2.2.2",
+    "typescript": "^3.7.2",
     "uglify-js": "^3.6.1"
   },
   "license": "MIT"
