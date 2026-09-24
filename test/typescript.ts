@@ -1,33 +1,66 @@
 import * as merge from '../';
 
-const x = {
+let x = {
 	foo: 'abc',
 	bar: 'def',
-	wat: 42,
 }
 
-const y = {
+let y = {
 	foo: 'cba',
-	bar: 'fed',
+	baz: 'fed',
 	wat: 42,
 }
 
-const z = {
-	baz: '123',
-	quux: '456',
-	wat: 42,
+let z: {
+	bar: string,
+	baz: string,
+	qux?: string,
+} = {
+	bar: 'a',
+	baz: 'a'
 }
 
-let merged1 = merge(x, y);
-let merged2 = merge(x, z);
-let merged3 = merge.all<{wat: number}>([ x, y, z ]);
+let merged1: {foo: string, bar: string, baz: string, wat: number} = merge(x, y);
+let merged2: {foo: string, bar: string, baz: string, qux?: string} = merge(x, z);
 
-merged1.foo;
-merged1.bar;
-merged2.foo;
-merged2.baz;
-merged3.wat;
+let mergedAll1: {t1: string} = merge.all([
+	{t1: 'a'},
+])
 
+let mergedAll2: {t1: string, t2: string} = merge.all([
+	{t1: 'a'},
+	{t2: 'a'},
+])
+
+let mergedAll3: {t1: string, t2: string, t3: string} = merge.all([
+	{t1: 'a'},
+	{t2: 'a'},
+	{t3: 'a'},
+])
+
+let mergedAll4: {t1: string, t2: string, t3: string, t4: string} = merge.all([
+	{t1: 'a'},
+	{t2: 'a'},
+	{t3: 'a'},
+	{t4: 'a'},
+])
+
+let mergedAll5: {t1: string, t2: string, t3: string, t4: string, t5: string} = merge.all([
+	{t1: 'a'},
+	{t2: 'a'},
+	{t3: 'a'},
+	{t4: 'a'},
+	{t5: 'a'},
+])
+
+let merged6: {t1: string} = merge.all([
+	{t1: 'a'},
+	{t1: 'a'},
+	{t1: 'a'},
+	{t1: 'a'},
+	{t1: 'a'},
+	{t1: 'a'},
+])
 
 const options1: merge.Options = {
 	clone: true,
@@ -60,6 +93,10 @@ const options3: merge.Options = {
 
 merged1 = merge(x, y, options1);
 merged2 = merge(x, z, options2);
-merged3 = merge.all<{wat: number}>([x, y, z], options1);
+mergedAll3 = merge.all([
+	{t1: 'a'},
+	{t2: 'a'},
+	{t3: 'a'},
+], options1)
 
-const merged4 = merge(x, y, options3);
+merged1 = merge(x, y, options3);
