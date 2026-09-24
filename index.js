@@ -52,7 +52,7 @@ function propertyIsUnsafe(target, key) {
 }
 
 function mergeObject(target, source, options) {
-	var destination = {}
+	var destination = Object.create(null);
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
