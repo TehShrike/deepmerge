@@ -63,3 +63,51 @@ merged2 = merge(x, z, options2);
 merged3 = merge.all<{wat: number}>([x, y, z], options1);
 
 const merged4 = merge(x, y, options3);
+
+const t1 = {
+	key1: 'key1-val',
+	key2: {
+			key2key1: [false, 'true']
+	},
+	key3: {
+			key3key1: {
+				key3key1key1: 'key3key1key1-val',
+				key3key1key2: true,
+				key3key1key3: ['key3key1key3-val']
+			},
+			key3key2: ['key3key2-val']
+	}
+};
+
+const t2 = {
+	key1: ['key1-val'],
+	key2: {
+			key2key1: {
+					key2key1key1: () => 'key2key1key1-val',
+					key2key1key2: true,
+					key2key1key3: ['key2key1key3-val']
+			}
+	},
+	key3: {
+			key3key1: () => false,
+			key3key2: ['key3key2-val', true]
+	}
+};
+
+const merged5: {
+	key1: string | string[];
+	key2: {
+			key2key1: (string | boolean)[] | {
+					key2key1key1: () => string;
+					key2key1key2: boolean;
+					key2key1key3: string[];
+			};
+	};
+	key3: {
+			key3key1: {
+					key3key1key1: string;key3key1key2: boolean;
+					key3key1key3: string[];
+			};
+			key3key2: (string | boolean)[] | string[];
+	};
+} = merge(t1, t2);
