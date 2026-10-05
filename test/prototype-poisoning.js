@@ -11,6 +11,57 @@ test('merging objects with own __proto__', function(t) {
 	t.end()
 })
 
+test('preserving an own __proto__ data property from a null-prototype source', function(t) {
+	var target = Object.create(null)
+	var source = JSON.parse('{ "__proto__": { "admin": true } }')
+	var mergedObject = merge(target, source)
+
+	t.equal(Object.getPrototypeOf(mergedObject), Object.prototype, 'the destination should keep the default prototype')
+	t.equal(mergedObject.__proto__.admin, true, 'the own data property should be preserved')
+	t.notEqual(mergedObject.__proto__, source.__proto__, 'the own data property should be cloned')
+	t.notOk(mergedObject.admin, 'the own data property should not become the destination prototype')
+	t.end()
+})
+
+test('preserving an own __proto__ data property from a null-prototype target', function(t) {
+	var target = Object.create(null)
+	var proto = { admin: true }
+	Object.defineProperty(target, '__proto__', {
+		value: proto,
+		enumerable: true,
+		writable: true,
+		configurable: true
+	})
+
+	var mergedObject = merge(target, {})
+
+	t.equal(Object.getPrototypeOf(mergedObject), Object.prototype, 'the destination should keep the default prototype')
+	t.equal(mergedObject.__proto__.admin, true, 'the own data property should be preserved')
+	t.notEqual(mergedObject.__proto__, proto, 'the own data property should be cloned')
+	t.notOk(mergedObject.admin, 'the own data property should not become the destination prototype')
+	t.end()
+})
+
+test('preserving an own __proto__ data property through a null placeholder', function(t) {
+	var target = { session: null }
+	var proto = { admin: true }
+	var source = { session: Object.create(null) }
+	Object.defineProperty(source.session, '__proto__', {
+		value: proto,
+		enumerable: true,
+		writable: true,
+		configurable: true
+	})
+
+	var mergedObject = merge(target, source)
+
+	t.equal(Object.getPrototypeOf(mergedObject.session), Object.prototype, 'the nested destination should keep the default prototype')
+	t.equal(mergedObject.session.__proto__.admin, true, 'the nested own data property should be preserved')
+	t.notEqual(mergedObject.session.__proto__, proto, 'the nested own data property should be cloned')
+	t.notOk(mergedObject.session.admin, 'the nested own data property should not become the nested prototype')
+	t.end()
+})
+
 test('merging objects with plain and non-plain properties', function(t) {
 	var plainSymbolKey = Symbol('plainSymbolKey')
 	var parent = {

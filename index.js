@@ -36,6 +36,19 @@ function getKeys(target) {
 	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
 }
 
+function setProperty(target, property, value) {
+	if (property === '__proto__') {
+		Object.defineProperty(target, property, {
+			value: value,
+			writable: true,
+			enumerable: true,
+			configurable: true
+		})
+	} else {
+		target[property] = value
+	}
+}
+
 function propertyIsOnObject(object, property) {
 	try {
 		return property in object
@@ -55,7 +68,7 @@ function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
+			setProperty(destination, key, cloneUnlessOtherwiseSpecified(target[key], options))
 		})
 	}
 	getKeys(source).forEach(function(key) {
@@ -64,9 +77,9 @@ function mergeObject(target, source, options) {
 		}
 
 		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
+			setProperty(destination, key, getMergeFunction(key, options)(target[key], source[key], options))
 		} else {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
+			setProperty(destination, key, cloneUnlessOtherwiseSpecified(source[key], options))
 		}
 	})
 	return destination
