@@ -1,4 +1,13 @@
-var defaultIsMergeableObject = require('is-mergeable-object')
+var isMergeableObject = require('is-mergeable-object')
+var reactTransitionalElementType = typeof Symbol === 'function' && Symbol.for
+	? Symbol.for('react.transitional.element')
+	: undefined
+
+function defaultIsMergeableObject(value) {
+	// React 19 elements use a different marker but must remain opaque values.
+	return isMergeableObject(value)
+		&& (!reactTransitionalElementType || value.$$typeof !== reactTransitionalElementType)
+}
 
 function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}
