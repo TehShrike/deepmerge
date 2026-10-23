@@ -63,3 +63,13 @@ merged2 = merge(x, z, options2);
 merged3 = merge.all<{wat: number}>([x, y, z], options1);
 
 const merged4 = merge(x, y, options3);
+
+function customMergeForSymbol(symbolKey: symbol): merge.Options {
+    return {
+        customMerge: (key) => {
+            if (key === symbolKey) {
+                return (target, source) => ({ value: target.value + source.value });
+            }
+        }
+    };
+}

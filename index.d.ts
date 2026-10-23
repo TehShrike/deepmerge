@@ -5,7 +5,7 @@ declare namespace deepmerge {
 	export interface Options {
 		arrayMerge?(target: any[], source: any[], options?: ArrayMergeOptions): any[];
 		clone?: boolean;
-		customMerge?: (key: string, options?: Options) => ((x: any, y: any) => any) | undefined;
+		customMerge?: (key: string | symbol, options?: Options) => ((x: any, y: any) => any) | undefined;
 		isMergeableObject?(value: object): boolean;
 	}
 	export interface ArrayMergeOptions {

@@ -667,3 +667,20 @@ test('Falsey properties should be mergeable', function(t) {
 	t.ok(customMergeWasCalled, 'custom merge function was called')
 	t.end()
 })
+
+test('customMerge receives symbol keys', function(t) {
+	var key = Symbol('customMerge')
+	var target = { [key]: { value: 1 } }
+	var source = { [key]: { value: 2 } }
+	var result = merge(target, source, {
+		customMerge: function(receivedKey) {
+			t.equal(receivedKey, key)
+			return function(a, b) {
+				return { value: a.value + b.value }
+			}
+		}
+	})
+
+	t.deepEqual(result[key], { value: 3 })
+	t.end()
+})
