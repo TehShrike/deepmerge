@@ -1,3 +1,7 @@
+# Unreleased
+
+- Ignore own enumerable `__proto__` keys in both merge inputs to prevent prototype poisoning of returned objects (CVE-2026-93753).
+
 # [4.3.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.3.1)
 
 - Fix type definition for arrayMerge options.  [#239](https://github.com/TehShrike/deepmerge/pull/239)

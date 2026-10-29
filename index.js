@@ -33,7 +33,10 @@ function getEnumerableOwnPropertySymbols(target) {
 }
 
 function getKeys(target) {
-	return Object.keys(target).concat(getEnumerableOwnPropertySymbols(target))
+	// Never copy __proto__: assigning it to the destination would change its prototype.
+	return Object.keys(target).filter(function(key) {
+		return key !== '__proto__'
+	}).concat(getEnumerableOwnPropertySymbols(target))
 }
 
 function propertyIsOnObject(object, property) {
