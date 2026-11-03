@@ -76,3 +76,34 @@ test('merging objects with null prototype', function(t) {
 	t.deepEqual(expected, merge(target, source))
 	t.end()
 })
+
+test('merge.all matches repeated merges for __proto__', function(t) {
+	var items = [
+		{ user: null },
+		JSON.parse('{ "user": { "__proto__": { "admin": true } } }'),
+		{ other: true },
+	]
+	var expected = items.reduce(function(prev, next) {
+		return merge(prev, next)
+	}, {})
+	var mergedObject = merge.all(items)
+
+	t.notOk(mergedObject.user.admin, 'the merged object should not inherit from __proto__')
+	t.equal(Object.getPrototypeOf(mergedObject.user), Object.getPrototypeOf(expected.user))
+	t.deepEqual(mergedObject, expected)
+	t.end()
+})
+
+test('merge.all matches repeated merges for constructor', function(t) {
+	var items = [
+		{ settings: null },
+		{ settings: { constructor: 'value', other: 'value' } },
+		{ more: true },
+	]
+	var expected = items.reduce(function(prev, next) {
+		return merge(prev, next)
+	}, {})
+
+	t.deepEqual(merge.all(items), expected)
+	t.end()
+})
