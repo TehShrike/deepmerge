@@ -51,9 +51,9 @@ function propertyIsUnsafe(target, key) {
 			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
 }
 
-function mergeObject(target, source, options) {
-	var destination = {}
-	if (options.isMergeableObject(target)) {
+function mergeObject(target, source, options, inPlace) {
+	var destination = inPlace ? target : {}
+	if (!inPlace && options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
@@ -64,7 +64,9 @@ function mergeObject(target, source, options) {
 		}
 
 		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
+			destination[key] = inPlace
+				? mergeInPlace(target[key], source[key], options, inPlace)
+				: getMergeFunction(key, options)(target[key], source[key], options)
 		} else {
 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
 		}
@@ -93,13 +95,75 @@ function deepmerge(target, source, options) {
 	}
 }
 
+// Reuse the accumulator owned by deepmerge.all().
+function mergeInPlace(target, source, options, inPlace) {
+	if (Array.isArray(target) !== Array.isArray(source)) {
+		return deepmerge(target, source, options)
+	} else if (!options.isMergeableObject(target)) {
+		var result = deepmerge(target, source, options)
+		// Later copies may remove unsafe keys or change the prototype.
+		if (!copiesUnchanged(result, options)) {
+			inPlace.stop = true
+		}
+		return result
+	} else if (Array.isArray(source)) {
+		if (Object.getPrototypeOf(target) !== Array.prototype) {
+			return deepmerge(target, source, options)
+		}
+		var appended = defaultArrayMerge([], source, options)
+		var offset = target.length
+		target.length += appended.length
+		appended.forEach(function(element, index) {
+			target[offset + index] = element
+		})
+		return target
+	}
+	return mergeObject(target, source, options, inPlace)
+}
+
+// Whether copying preserves the value's keys and prototype.
+function copiesUnchanged(value, options) {
+	if (!options.isMergeableObject(value)) {
+		return true
+	} else if (Array.isArray(value)) {
+		return Object.getPrototypeOf(value) === Array.prototype
+			&& value.every(function(element) {
+				return copiesUnchanged(element, options)
+			})
+	}
+	return Object.getPrototypeOf(value) === Object.prototype
+		&& getKeys(value).every(function(key) {
+			return !propertyIsUnsafe({}, key) && copiesUnchanged(value[key], options)
+		})
+}
+
 deepmerge.all = function deepmergeAll(array, options) {
 	if (!Array.isArray(array)) {
 		throw new Error('first argument should be an array')
 	}
 
+	// Reuse the result only when the default merge owns its copies.
+	options = options || {}
+	var inPlace = options.clone !== false
+		&& !options.customMerge
+		&& (!options.arrayMerge || options.arrayMerge === defaultArrayMerge)
+		&& (!options.isMergeableObject || options.isMergeableObject === defaultIsMergeableObject)
+		? { stop: false }
+		: null
+	// Don't rely on deepmerge() filling in the caller's options.
+	var defaults = {
+		arrayMerge: defaultArrayMerge,
+		isMergeableObject: defaultIsMergeableObject,
+		cloneUnlessOtherwiseSpecified: cloneUnlessOtherwiseSpecified
+	}
+
+	var first = true
 	return array.reduce(function(prev, next) {
-		return deepmerge(prev, next, options)
+		var result = inPlace && !first && !inPlace.stop
+			? mergeInPlace(prev, next, defaults, inPlace)
+			: deepmerge(prev, next, options)
+		first = false
+		return result
 	}, {})
 }
 
