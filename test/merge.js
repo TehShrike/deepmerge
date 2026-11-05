@@ -667,3 +667,38 @@ test('Falsey properties should be mergeable', function(t) {
 	t.ok(customMergeWasCalled, 'custom merge function was called')
 	t.end()
 })
+
+test('does not clone target values that get merged again', function(t) {
+	var reads = 0
+	var leaf = {}
+	Object.defineProperty(leaf, 'value', {
+		enumerable: true,
+		get: function() {
+			reads++
+			return 1
+		},
+	})
+	var depth = 20
+	var target = leaf
+	var source = { other: 2 }
+	for (var i = 0; i < depth; i++) {
+		target = { a: target }
+		source = { a: source }
+	}
+
+	var result = merge(target, source)
+
+	for (var j = 0; j < depth; j++) {
+		result = result.a
+	}
+	t.deepEqual(result, { value: 1, other: 2 })
+	t.equal(reads, 1, 'the leaf should only be copied once')
+	t.end()
+})
+
+test('merged keys keep their position from the target', function(t) {
+	var result = merge({ a: { x: 1 }, b: 1, c: { y: 1 } }, { c: { z: 2 }, a: { w: 2 }, d: 3 })
+
+	t.deepEqual(Object.keys(result), [ 'a', 'b', 'c', 'd' ])
+	t.end()
+})

@@ -55,7 +55,11 @@ function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
+			// Keep the key's position, but don't clone a value that gets merged below
+			var mergedLater = Object.prototype.propertyIsEnumerable.call(source, key)
+				&& !propertyIsUnsafe(target, key)
+				&& options.isMergeableObject(source[key])
+			destination[key] = mergedLater ? undefined : cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
 	getKeys(source).forEach(function(key) {
