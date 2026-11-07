@@ -11,6 +11,17 @@ test('merging objects with own __proto__', function(t) {
 	t.end()
 })
 
+test('merging objects with own __proto__ into a null-prototype target', function(t) {
+	var target = Object.create(null)
+	var malicious = JSON.parse('{ "__proto__": { "admin": true } }')
+	var mergedObject = merge(target, malicious)
+	t.notOk(Object.prototype.hasOwnProperty.call(mergedObject, '__proto__'), '__proto__ should not be copied')
+	t.notOk(Object.prototype.hasOwnProperty.call(mergedObject, 'admin'), 'attacker properties should not be copied')
+	t.notOk(mergedObject.admin, 'the destination should not inherit attacker properties')
+	t.equal(Object.prototype, Object.getPrototypeOf(mergedObject), 'the destination should retain its normal prototype')
+	t.end()
+})
+
 test('merging objects with plain and non-plain properties', function(t) {
 	var plainSymbolKey = Symbol('plainSymbolKey')
 	var parent = {
